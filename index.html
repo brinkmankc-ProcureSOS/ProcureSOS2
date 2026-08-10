@@ -1,0 +1,2852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProcureSOS - B2B Multi-Industry Procurement Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f9ff', 500: '#0284c7', 600: '#0284c7', 700: '#0369a1', 900: '#0c4a6e' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-slate-800 min-h-screen font-sans antialiased relative">
+
+  <!-- TOP BRANDING & NAVIGATION HEADER -->
+  <header id="mainHeader" class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 hidden">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-4">
+      
+      <!-- PROCURESOS CREATIVE IMPRESSIONABLE BRAND LOGO -->
+      <div class="flex items-center space-x-3.5">
+        <div class="relative group cursor-pointer" onclick="setActiveView('marketplace')">
+          <svg class="w-12 h-12 filter drop-shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="52" height="52" rx="16" fill="url(#px-creative-bg)" stroke="url(#px-creative-border)" stroke-width="2"/>
+            <path d="M26 8L39 13V24C39 32.5 33.4 39.8 26 42C18.6 39.8 13 32.5 13 24V13L26 8Z" fill="url(#px-shield-grad)" stroke="#38BDF8" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M22 24L26 28L32 20" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="26" cy="14" r="2.5" fill="#E0F2FE"/>
+            <circle cx="17" cy="33" r="2" fill="#38BDF8"/>
+            <circle cx="35" cy="33" r="2" fill="#38BDF8"/>
+            <defs>
+              <linearGradient id="px-creative-bg" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0369A1"/>
+                <stop offset="0.5" stop-color="#0284C7"/>
+                <stop offset="1" stop-color="#4F46E5"/>
+              </linearGradient>
+              <linearGradient id="px-creative-border" x1="52" y1="0" x2="0" y2="52" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38BDF8" stop-opacity="0.9"/>
+                <stop offset="1" stop-color="#818CF8" stop-opacity="0.3"/>
+              </linearGradient>
+              <linearGradient id="px-shield-grad" x1="13" y1="8" x2="39" y2="42" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0284C7" stop-opacity="0.85"/>
+                <stop offset="1" stop-color="#1E1B4B" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <span class="text-2xl font-black text-white tracking-tight leading-none cursor-pointer" onclick="setActiveView('marketplace')">Procure<span class="text-sky-400">SOS</span></span>
+          </div>
+          <p class="text-[11px] font-medium text-slate-400 mt-0.5 tracking-wide">B2B Multi-Industry Procurement Engine</p>
+        </div>
+      </div>
+
+      <!-- Navigation & Auth Controls -->
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-1 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+          <button id="navMarketplace" onclick="setActiveView('marketplace')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 bg-sky-600 text-white shadow-md shadow-sky-600/30">
+            <i class="fa-solid fa-store"></i><span>Marketplace</span>
+          </button>
+          
+          <button id="navManageRfqs" onclick="setActiveView('manage-rfqs')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white relative">
+            <i class="fa-solid fa-list-check"></i><span>My RFQs Portal</span>
+            <span id="buyerPortalNavBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[9px] font-black rounded-full flex items-center justify-center animate-bounce">!</span>
+          </button>
+
+          <button id="navManageBids" onclick="setActiveView('manage-bids')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white relative hidden">
+            <i class="fa-solid fa-gavel"></i><span>My Bids Portal</span>
+            <span id="vendorPortalNavBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-white text-[9px] font-black rounded-full flex items-center justify-center animate-bounce">!</span>
+          </button>
+
+          <button id="navProfile" onclick="setActiveView('profile')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white">
+            <i class="fa-solid fa-address-card"></i><span>My Profile</span>
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-1 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+          <button id="btnSwitchBuyer" onclick="setRole('buyer')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-sky-600 text-white shadow-md shadow-sky-600/30">
+            <i class="fa-solid fa-building"></i><span>Buyer</span>
+          </button>
+          <button id="btnSwitchVendor" onclick="setRole('vendor')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 text-slate-400 hover:text-white">
+            <i class="fa-solid fa-truck-field"></i><span>Vendor</span>
+          </button>
+        </div>
+
+        <button id="headerAuthBtn" onclick="toggleAuthModal(true)" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-2xl border border-slate-700 text-xs transition flex items-center space-x-2 shadow-sm">
+          <i class="fa-solid fa-right-to-bracket text-sky-400"></i>
+          <span id="headerAuthButtonText">Sign In / Register</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ENFORCED ENTRY LOGIN & REGISTRATION GATEWAY OVERLAY -->
+  <div id="authModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+
+      <div class="text-center space-y-2">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white mx-auto flex items-center justify-center text-2xl font-black shadow-md">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 id="modalTitle" class="text-xl font-bold text-slate-900">Welcome to ProcureSOS</h3>
+        <p class="text-xs text-slate-500">Sign in or register for an account.</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+        <button id="authTabBuyer" onclick="setAuthType('buyer')" class="py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 bg-white text-slate-900 shadow-sm">
+          <i class="fa-solid fa-building text-sky-600"></i><span>Business / Buyer</span>
+        </button>
+        <button id="authTabVendor" onclick="setAuthType('vendor')" class="py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 text-slate-500 hover:text-slate-900">
+          <i class="fa-solid fa-store text-amber-600"></i><span>Vendor Partner</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleSignInSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Company / Business Name</label>
+          <div class="relative">
+            <i class="fa-solid fa-building absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="text" id="authCompany" required placeholder="Acme Corporation" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Work Email</label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="email" id="authEmail" required class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Password</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="password" id="authPassword" required value="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+          </div>
+        </div>
+
+        <button id="authSubmitButton" type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-xs">
+          <i class="fa-solid fa-user-plus"></i><span>Complete Signup & Link to Profile</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- NEW BID & DIRECT MESSAGE POPUP NOTIFICATION MODAL -->
+  <div id="newBidNotificationModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+      
+      <button onclick="toggleNewBidModal(false)" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center space-x-3.5 border-b border-slate-100 pb-4">
+        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl font-bold shrink-0 shadow-inner">
+          <i class="fa-solid fa-bell animate-bounce"></i>
+        </div>
+        <div>
+          <span id="incomingModalBadge" class="text-[10px] font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">New Vendor Submission</span>
+          <h3 id="incomingModalTitle" class="text-lg font-bold text-slate-900 mt-1">Direct Message & Bid Received</h3>
+        </div>
+      </div>
+
+      <div id="incomingBidPopupContent" class="space-y-4 bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs"></div>
+
+      <div class="pt-2 flex justify-end space-x-3">
+        <button type="button" onclick="toggleNewBidModal(false)" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">Close</button>
+        <button type="button" id="incomingModalActionBtn" onclick="goToMyRfqsPortal()" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-list-check"></i><span>Open in My RFQ Portal</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIRECT MESSAGE BUYER MODAL OVERLAY -->
+  <div id="messageBuyerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+      
+      <button onclick="toggleMessageModal(false)" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h3 class="text-xl font-bold text-slate-900 flex items-center">
+          <i class="fa-solid fa-paper-plane text-sky-600 me-2"></i>Send Direct Message to Buyer
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">Vendor name, message, total quote price, and attached response will be added directly to the buyer's My RFQ portal.</p>
+      </div>
+
+      <form onsubmit="handleSendDirectMessage(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Vendor Name</label>
+          <div class="relative">
+            <i class="fa-solid fa-store absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="text" id="msgVendorName" required readonly class="w-full bg-slate-100 border border-slate-300 rounded-xl pl-8 pr-3 py-2.5 text-xs text-slate-700 outline-none cursor-not-allowed">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Subject</label>
+          <input type="text" id="msgSubject" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Total Quote Price ($)</label>
+          <div class="relative">
+            <i class="fa-solid fa-dollar-sign absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="number" id="msgQuotePrice" required placeholder="10500" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-8 pr-3 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Message Body</label>
+          <textarea id="msgBody" rows="3" required placeholder="Type your inquiry, proposal clarification, or message here..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-sky-600"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-paperclip text-sky-600 me-1"></i>Attach RFQ Response / Proposal Document</label>
+          <div class="border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-xl p-4 text-center bg-slate-50 transition cursor-pointer relative">
+            <input type="file" id="msgDocumentFile" onchange="handleFileSelect(event, 'msgDocumentFileName')" class="absolute inset-0 opacity-0 cursor-pointer">
+            <div class="space-y-1">
+              <i class="fa-solid fa-cloud-arrow-up text-sky-600 text-xl"></i>
+              <p class="text-xs font-bold text-slate-700" id="msgDocumentFileName">Click to browse or drag & drop document file</p>
+              <p class="text-[10px] text-slate-400">PDF, DOCX, XLSX, or ZIP up to 25MB</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end space-x-3">
+          <button type="button" onclick="toggleMessageModal(false)" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-paper-plane"></i><span>Send Message & Add to Buyer Portal</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DIRECT MESSAGE VENDOR MODAL OVERLAY (BUYER TO VENDOR) -->
+  <div id="messageVendorModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+      
+      <button onclick="toggleVendorMessageModal(false)" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h3 class="text-xl font-bold text-slate-900 flex items-center">
+          <i class="fa-solid fa-reply text-amber-600 me-2"></i>Send Direct Message to Vendor
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">Respond directly to a vendor's submitted proposal. This message and attachment will be delivered straight to the vendor's Bids Portal.</p>
+      </div>
+
+      <form onsubmit="handleSendVendorMessage(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Vendor</label>
+          <input type="text" id="msgTargetVendorNameDisplay" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-700 font-bold cursor-not-allowed">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Subject</label>
+          <input type="text" id="msgVendorSubject" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Message Body</label>
+          <textarea id="msgVendorBody" rows="4" required placeholder="Request scope clarification, revised pricing, or schedule a interview call..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-amber-600"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-paperclip text-amber-600 me-1"></i>Attach Document / Feedback File (Optional)</label>
+          <div class="border-2 border-dashed border-slate-300 hover:border-amber-500 rounded-xl p-4 text-center bg-slate-50 transition cursor-pointer relative">
+            <input type="file" id="msgVendorDocumentFile" onchange="handleFileSelect(event, 'msgVendorDocumentFileName')" class="absolute inset-0 opacity-0 cursor-pointer">
+            <div class="space-y-1">
+              <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-xl"></i>
+              <p class="text-xs font-bold text-slate-700" id="msgVendorDocumentFileName">Click to browse or drag & drop document file</p>
+              <p class="text-[10px] text-slate-400">PDF, DOCX, XLSX, or ZIP up to 25MB</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end space-x-3">
+          <button type="button" onclick="toggleVendorMessageModal(false)" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-paper-plane"></i><span>Send Response to Vendor Portal</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- VENDOR REPLY TO BUYER MODAL OVERLAY (VENDOR TO BUYER) -->
+  <div id="replyToBuyerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+      
+      <button onclick="toggleVendorReplyModal(false)" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h3 class="text-xl font-bold text-slate-900 flex items-center">
+          <i class="fa-solid fa-reply text-sky-600 me-2"></i>Respond to Buyer Message
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">Send a reply back to the buyer. This response will update the message thread in both portals.</p>
+      </div>
+
+      <form onsubmit="handleSendVendorReply(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Buyer Organization</label>
+          <input type="text" id="replyTargetBuyerDisplay" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-700 font-bold cursor-not-allowed">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Subject</label>
+          <input type="text" id="replySubject" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Reply Message</label>
+          <textarea id="replyBody" rows="4" required placeholder="Type your response to the buyer's feedback or inquiry..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-sky-600"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-paperclip text-sky-600 me-1"></i>Attach Document / Revised Proposal (Optional)</label>
+          <div class="border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-xl p-4 text-center bg-slate-50 transition cursor-pointer relative">
+            <input type="file" id="replyDocumentFile" onchange="handleFileSelect(event, 'replyDocumentFileName')" class="absolute inset-0 opacity-0 cursor-pointer">
+            <div class="space-y-1">
+              <i class="fa-solid fa-cloud-arrow-up text-sky-600 text-xl"></i>
+              <p class="text-xs font-bold text-slate-700" id="replyDocumentFileName">Click to browse or drag & drop document file</p>
+              <p class="text-[10px] text-slate-400">PDF, DOCX, XLSX, or ZIP up to 25MB</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end space-x-3">
+          <button type="button" onclick="toggleVendorReplyModal(false)" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-paper-plane"></i><span>Send Reply to Buyer Portal</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT BUYER RFQ MODAL -->
+  <div id="editRfqModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl relative animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+      <button onclick="toggleEditRfqModal(false)" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h3 class="text-xl font-bold text-slate-900 flex items-center"><i class="fa-solid fa-pen-to-square text-sky-600 me-2"></i>Edit Organizational RFQ</h3>
+        <p class="text-xs text-slate-500">Update project specs, location, or target budget for your active RFQ listing.</p>
+      </div>
+
+      <form onsubmit="handleSaveRfqEdit(event)" class="space-y-4">
+        <input type="hidden" id="editRfqId">
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">RFQ Title</label>
+          <input type="text" id="editRfqTitle" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Category</label>
+            <select id="editRfqCategory" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Project Location (City, State)</label>
+            <input type="text" id="editRfqLocation" required placeholder="e.g. Austin, TX" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Budget ($)</label>
+          <input type="number" id="editRfqBudget" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bid Closing Date</label>
+          <input type="date" id="editRfqClosingDate" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Requirement Specs</label>
+          <textarea id="editRfqDesc" rows="4" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-sky-600"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Attachment File Name</label>
+          <input type="text" id="editRfqAttachment" placeholder="e.g. Spec_Document.pdf" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+
+        <div class="pt-2 flex justify-end space-x-3">
+          <button type="button" onclick="toggleEditRfqModal(false)" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-floppy-disk"></i><span>Save RFQ Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT VENDOR BID MODAL -->
+  <div id="editBidModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+      <button onclick="toggleEditBidModal(false)" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h3 class="text-xl font-bold text-slate-900 flex items-center"><i class="fa-solid fa-pen-to-square text-amber-600 me-2"></i>Modify Submitted Proposal</h3>
+        <p class="text-xs text-slate-500">Adjust pricing or scope notes for your vendor bid.</p>
+      </div>
+
+      <form onsubmit="handleSaveBidEdit(event)" class="space-y-4">
+        <input type="hidden" id="editBidRfqId">
+        <input type="hidden" id="editBidId">
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target RFQ Listing</label>
+          <input type="text" id="editBidRfqTitleDisplay" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-600 cursor-not-allowed">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bid Amount ($)</label>
+          <input type="number" id="editBidAmount" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Proposal Scope & Notes</label>
+          <textarea id="editBidNotes" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-amber-600"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Attached Quote Document</label>
+          <input type="text" id="editBidAttachment" placeholder="e.g. Revised_Proposal.pdf" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600">
+        </div>
+
+        <div class="pt-2 flex justify-end space-x-3">
+          <button type="button" onclick="toggleEditBidModal(false)" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-floppy-disk"></i><span>Save & Resubmit Bid</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto p-6 space-y-8">
+
+    <!-- VIEW 1: PROFILE MANAGEMENT VIEW -->
+    <div id="viewProfile" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-white shadow-lg flex flex-wrap justify-between items-center gap-4">
+        <div class="flex items-center space-x-4">
+          <div id="profileAvatarBadge" class="w-16 h-16 rounded-2xl bg-sky-600 text-white flex items-center justify-center text-2xl font-black shadow-md"></div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <h2 id="profileHeaderName" class="text-xl font-bold tracking-tight">Company Name</h2>
+              <span id="profileRoleBadge" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">Buyer Account</span>
+            </div>
+            <p id="profileHeaderIndustry" class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-industry me-1"></i>Commercial Enterprise</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 uppercase font-bold block">Account Status</span>
+            <span id="profileVerificationBadge" class="text-xs font-bold text-emerald-400 flex items-center justify-end"><i class="fa-solid fa-circle-check me-1"></i>Profile Complete & Linked</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUYER PROFILE FORM -->
+      <div id="buyerProfileFormContainer" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
+        <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center"><i class="fa-solid fa-building text-sky-600 me-2"></i>Business / Buyer Organization Profile</h3>
+            <p class="text-xs text-slate-500">Creating your profile unlocks free RFQ postings across all categories</p>
+          </div>
+          <span class="text-xs bg-sky-100 text-sky-800 border border-sky-200 font-bold px-3 py-1 rounded-full">Buyer Mode</span>
+        </div>
+
+        <form onsubmit="handleSaveBuyerProfile(event)" class="space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Company / Organization Name</label>
+              <input type="text" id="buyerProfileCompany" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-sky-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Industry Sector</label>
+              <input type="text" id="buyerProfileIndustry" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-sky-600">
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Contact Name</label>
+              <input type="text" id="buyerProfileContact" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-sky-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Contact Email</label>
+              <input type="email" id="buyerProfileEmail" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-sky-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Phone Number</label>
+              <input type="tel" id="buyerProfilePhone" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-sky-600">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Headquarters Location</label>
+            <input type="text" id="buyerProfileLocation" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-sky-600">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Procurement Overview & Requirements</label>
+            <textarea id="buyerProfileOverview" rows="3" class="w-full bg-white border border-slate-300 rounded-xl p-3 text-sm outline-none focus:border-sky-600"></textarea>
+          </div>
+
+          <div class="pt-2 flex justify-end">
+            <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2 text-xs">
+              <i class="fa-solid fa-floppy-disk"></i><span>Save & Activate Free RFQ Posting</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- VENDOR PROFILE FORM -->
+      <div id="vendorProfileFormContainer" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6 hidden">
+        <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center"><i class="fa-solid fa-store text-amber-600 me-2"></i>Vendor Marketplace Profile</h3>
+            <p class="text-xs text-slate-500">Set up your vendor credentials and capabilities</p>
+          </div>
+          <span class="text-xs bg-amber-100 text-amber-800 border border-amber-200 font-bold px-3 py-1 rounded-full">Vendor Mode</span>
+        </div>
+
+        <form onsubmit="handleSaveVendorProfile(event)" class="space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Vendor / Contracting Company</label>
+              <input type="text" id="vendorProfileCompany" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Primary Specialty / Field</label>
+              <input type="text" id="vendorProfileSpecialty" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Representative Name</label>
+              <input type="text" id="vendorProfileContact" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Business Email</label>
+              <input type="email" id="vendorProfileEmail" required class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Business Phone</label>
+              <input type="tel" id="vendorProfilePhone" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Certifications & Licenses</label>
+              <input type="text" id="vendorProfileCertifications" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Service Radius / Coverage</label>
+              <input type="text" id="vendorProfileCoverage" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-amber-600">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Company Bio & Past Performance</label>
+            <textarea id="vendorProfileBio" rows="3" class="w-full bg-white border border-slate-300 rounded-xl p-3 text-sm outline-none focus:border-amber-600"></textarea>
+          </div>
+
+          <div class="pt-2 flex justify-end">
+            <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2 text-xs">
+              <i class="fa-solid fa-floppy-disk"></i><span>Save Vendor Profile</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="border-t border-slate-200 pt-6 mt-6 space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center"><i class="fa-solid fa-credit-card text-amber-600 me-2"></i>Subscription & Billing Management</h4>
+              <p class="text-xs text-slate-500">Manage your monthly $39.95 vendor subscription plan.</p>
+            </div>
+            <div id="profileSubBadgeContainer">
+              <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase">Active ($39.95/mo)</span>
+            </div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4">
+            <div class="space-y-1 max-w-md">
+              <p class="text-xs font-bold text-slate-900">Vendor Plan Status & Actions</p>
+              <p class="text-[11px] text-slate-500 leading-relaxed">Subscribe or reactivate via payment API integration to unlock direct messaging and bidding capabilities.</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button type="button" onclick="handleSubscribeVendorPlan()" id="profileSubscribeBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2 shadow-sm">
+                <i class="fa-solid fa-circle-check"></i><span>Subscribe ($39.95/mo)</span>
+              </button>
+              <button type="button" onclick="handleCancelVendorSubscription()" id="cancelSubBtn" class="bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2">
+                <i class="fa-solid fa-triangle-exclamation"></i><span>Cancel Subscription</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: BUSINESS RFQ MANAGEMENT PORTAL (BUYER ONLY) -->
+    <div id="viewManageRfqs" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-white shadow-lg flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <h2 class="text-xl font-bold tracking-tight">Business RFQ Portal</h2>
+            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">Buyer Control Center</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Review, modify specifications, or respond to vendor direct messages and bids for RFQs posted by <strong id="portalCompanyName" class="text-sky-300">Vanguard Corporate Center</strong>.</p>
+        </div>
+        <button onclick="setActiveView('marketplace')" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2 shadow-md">
+          <i class="fa-solid fa-plus"></i><span>Post New RFQ</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Total Postings</span>
+          <span id="portalTotalRfqs" class="text-2xl font-black text-slate-900 font-mono">0</span>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Total Budget Allocation</span>
+          <span id="portalTotalBudget" class="text-2xl font-black text-emerald-600 font-mono">$0</span>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Proposals / Messages</span>
+          <span id="portalTotalBids" class="text-2xl font-black text-amber-600 font-mono">0</span>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Engagement Ratio</span>
+          <span id="portalLowestBidRatio" class="text-2xl font-black text-sky-600 font-mono">0%</span>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center"><i class="fa-solid fa-folder-open text-sky-600 me-2"></i>Active Organizational RFQs & Direct Messages</h3>
+          <input type="text" id="portalSearch" oninput="renderPortalRfqs()" placeholder="Filter my RFQs..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 outline-none focus:border-sky-600">
+        </div>
+        <div id="portalRfqList" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: VENDOR BID MANAGEMENT PORTAL (VENDOR ONLY) -->
+    <div id="viewManageBids" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-white shadow-lg flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <h2 class="text-xl font-bold tracking-tight">Vendor Bids Portal</h2>
+            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">Contractor Control Center</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Track, edit submitted proposals, or view buyer feedback and direct responses for <strong id="vendorPortalCompanyName" class="text-amber-300">Greenscape Pro Services</strong>.</p>
+        </div>
+        <button onclick="setActiveView('marketplace')" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2 shadow-md">
+          <i class="fa-solid fa-magnifying-glass"></i><span>Find More RFQs</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Submitted Proposals</span>
+          <span id="vendorTotalBids" class="text-2xl font-black text-amber-600 font-mono">0</span>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Total Pipeline Value</span>
+          <span id="vendorTotalPipeline" class="text-2xl font-black text-emerald-600 font-mono">$0</span>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Average Bid Value</span>
+          <span id="vendorAvgBid" class="text-2xl font-black text-sky-600 font-mono">$0</span>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <span class="text-[10px] font-bold uppercase text-slate-500 block">Subscription Status</span>
+          <span id="vendorSubStateText" class="text-xs font-extrabold text-emerald-700 font-mono uppercase block mt-1">Active ($39.95)</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-wrap justify-between items-center gap-4">
+        <div class="space-y-1 max-w-xl">
+          <h4 class="text-sm font-bold text-slate-900 flex items-center"><i class="fa-solid fa-key text-amber-600 me-2"></i>Vendor Subscription & Access Control</h4>
+          <p class="text-xs text-slate-600">Your $39.95 monthly subscription unlocks direct buyer messaging and proposal submissions. You can subscribe or cancel your subscription at any time.</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button type="button" onclick="handleSubscribeVendorPlan()" id="portalSubscribeBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2 shadow-sm">
+            <i class="fa-solid fa-circle-check"></i><span>Subscribe ($39.95/mo)</span>
+          </button>
+          <button type="button" onclick="handleCancelVendorSubscription()" id="portalCancelSubBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2 shadow-sm">
+            <i class="fa-solid fa-ban"></i><span>Cancel Subscription</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center"><i class="fa-solid fa-gavel text-amber-600 me-2"></i>Active Submitted Proposals & Buyer Responses</h3>
+          <input type="text" id="vendorBidSearch" oninput="renderVendorBidsPortal()" placeholder="Filter submitted bids..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 outline-none focus:border-amber-600">
+        </div>
+        <div id="vendorBidList" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 4: RFQ FULL SPECIFICATION DETAIL PAGE -->
+    <div id="viewRfqDetail" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <button onclick="setActiveView('marketplace')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+          <i class="fa-solid fa-arrow-left"></i><span>Back to Marketplace</span>
+        </button>
+        <span id="detailRfqIdBadge" class="font-mono text-xs font-bold bg-sky-100 text-sky-800 px-3 py-1 rounded-full border border-sky-200">RFQ-1000</span>
+      </div>
+
+      <div id="rfqDetailContent" class="space-y-6"></div>
+    </div>
+
+    <!-- VIEW 5: MARKETPLACE MAIN DASHBOARD -->
+    <div id="viewMarketplace" class="space-y-8">
+
+      <!-- WORKFLOW SECTION -->
+      <section class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden">
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900 flex items-center"><i class="fa-solid fa-diagram-project text-sky-600 me-2"></i>ProcureSOS Workflow</h2>
+            <p class="text-xs text-slate-500">Connecting businesses and vendors across commercial sectors</p>
+          </div>
+          <span id="roleIndicatorBadge" class="text-xs px-3 py-1 rounded-full font-bold bg-sky-100 text-sky-800 border border-sky-200">Active Mode: Buyer</span>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 group hover:border-sky-500 transition shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-sm font-bold">1</span>
+              <i class="fa-solid fa-id-card text-2xl text-slate-400 group-hover:text-sky-600 transition"></i>
+            </div>
+            <h3 class="font-bold text-sm text-slate-900">Sign Up & Profile</h3>
+            <p class="text-xs text-slate-500 mt-1">Businesses register and complete a profile to post RFQs 100% free.</p>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 group hover:border-indigo-500 transition shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold">2</span>
+              <i class="fa-solid fa-file-pen text-2xl text-slate-400 group-hover:text-indigo-600 transition"></i>
+            </div>
+            <h3 class="font-bold text-sm text-slate-900">Post Free RFQs</h3>
+            <p class="text-xs text-slate-500 mt-1">Registered buyers post full project requirements & spec documents free.</p>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 group hover:border-amber-500 transition shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold">3</span>
+              <i class="fa-solid fa-lock text-2xl text-slate-400 group-hover:text-amber-600 transition"></i>
+            </div>
+            <h3 class="font-bold text-sm text-slate-900">Vendor Access</h3>
+            <p class="text-xs text-slate-500 mt-1">Vendors preview basic info free. $39.95/mo unlocks contact details & bidding.</p>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 group hover:border-emerald-500 transition shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">4</span>
+              <i class="fa-solid fa-handshake text-2xl text-slate-400 group-hover:text-emerald-600 transition"></i>
+            </div>
+            <h3 class="font-bold text-sm text-slate-900">Award Contract</h3>
+            <p class="text-xs text-slate-500 mt-1">Buyers connect directly with paid subscribers and award contracts.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN MARKETPLACE LAYOUT -->
+      <div class="grid lg:grid-cols-12 gap-8">
+
+        <!-- LEFT COLUMN: CONTROLS & FORMS -->
+        <div class="lg:col-span-5 space-y-6">
+
+          <!-- BUYER CONTROLS PANEL -->
+          <div id="buyerControls" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 space-y-5 shadow-sm">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+              <div>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center"><i class="fa-solid fa-square-plus text-sky-600 me-2"></i>Post New RFQ</h2>
+                <p class="text-xs text-slate-500">Posting as: <strong id="activeBuyerNameDisplay" class="text-sky-700">Vanguard Corporate Center</strong></p>
+              </div>
+              <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-full">$0.00 FREE</span>
+            </div>
+
+            <div id="buyerProfileGateNotice" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
+              <p class="text-xs font-bold text-amber-900 flex items-center"><i class="fa-solid fa-circle-exclamation text-amber-600 me-2"></i>Profile Required</p>
+              <p class="text-xs text-amber-800">You must sign up and create your business profile before posting free RFQs.</p>
+              <button onclick="setActiveView('profile')" class="mt-1 bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Set Up Profile Now</button>
+            </div>
+
+            <form id="buyerRfqForm" onsubmit="handlePostRfq(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">RFQ Title</label>
+                <div class="relative">
+                  <i class="fa-solid fa-heading absolute left-3 top-3 text-slate-400 text-xs"></i>
+                  <input type="text" id="inputTitle" required placeholder="e.g. Commercial Landscape Maintenance Contract" class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-600 transition">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Service Category</label>
+                  <select id="inputCategory" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm text-slate-900 outline-none focus:border-sky-600"></select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Project Location (City, State)</label>
+                  <div class="relative">
+                    <i class="fa-solid fa-location-dot absolute left-3 top-3 text-slate-400 text-xs"></i>
+                    <input type="text" id="inputLocation" required placeholder="e.g. Austin, TX" class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-600">
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Budget ($)</label>
+                <div class="relative">
+                  <i class="fa-solid fa-dollar-sign absolute left-3 top-3 text-slate-400 text-xs"></i>
+                  <input type="number" id="inputBudget" required placeholder="12500" class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-600">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bid Closing Date</label>
+                <div class="relative">
+                  <i class="fa-solid fa-calendar absolute left-3 top-3 text-slate-400 text-xs"></i>
+                  <input type="date" id="inputClosingDate" required class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-600">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Requirement Specs</label>
+                <textarea id="inputDesc" rows="3" required placeholder="Detail service expectations, timeline, volume requirements, or compliance needs..." class="w-full bg-white border border-slate-300 rounded-xl p-3 text-sm text-slate-900 outline-none focus:border-sky-600"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-paperclip text-sky-600 me-1"></i>Attach RFQ Documents / Specification File</label>
+                <div class="border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-xl p-4 text-center bg-white transition cursor-pointer relative">
+                  <input type="file" id="inputRfqDocFile" onchange="handleFileSelect(event, 'inputRfqDocFileName')" class="absolute inset-0 opacity-0 cursor-pointer">
+                  <div class="space-y-1">
+                    <i class="fa-solid fa-cloud-arrow-up text-sky-600 text-xl"></i>
+                    <p class="text-xs font-bold text-slate-700" id="inputRfqDocFileName">Click to browse or drag & drop RFQ document</p>
+                    <p class="text-[10px] text-slate-400">PDF, DOCX, XLSX, or ZIP up to 25MB</p>
+                  </div>
+                </div>
+              </div>
+
+              <button id="btnPublishRfq" type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-paper-plane"></i><span>Publish Free RFQ to Marketplace</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- VENDOR CONTROLS PANEL -->
+          <div id="vendorControls" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 space-y-5 shadow-sm hidden">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+              <div>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center"><i class="fa-solid fa-gavel text-amber-600 me-2"></i>Place Competitive Bid</h2>
+                <p class="text-xs text-slate-500">Bidding as: <strong id="activeVendorNameDisplay" class="text-amber-700">Greenscape Pro Services</strong></p>
+              </div>
+              <div id="subStatusBadge" class="flex items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <i class="fa-solid fa-key"></i><span>$39.95/mo Active</span>
+              </div>
+            </div>
+
+            <div id="vendorGateNotice" class="hidden bg-white border border-amber-200 rounded-2xl p-5 space-y-4 shadow-sm">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center space-x-2 text-slate-900 font-bold text-sm">
+                  <i class="fa-solid fa-lock text-amber-600 text-lg"></i>
+                  <span>Vendor Subscription Required</span>
+                </div>
+                <span class="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded border border-amber-200">$39.95 / Month</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">Basic RFQ details are visible to all vendors. To direct message buyers and submit response bids, an active subscription is required.</p>
+              <button type="button" onclick="handleSubscribeVendorPlan()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm">
+                <i class="fa-solid fa-circle-check"></i><span>Subscribe Now ($39.95/mo)</span>
+              </button>
+            </div>
+
+            <form onsubmit="handlePlaceBid(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target RFQ Listing (Filtered by Category)</label>
+                <select id="inputRfqTarget" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm text-slate-900 outline-none focus:border-amber-600"></select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bid Amount ($)</label>
+                <input type="number" id="inputBidAmount" required placeholder="10800" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm text-slate-900 outline-none focus:border-amber-600">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Proposal Highlights</label>
+                <input type="text" id="inputBidNotes" required placeholder="e.g. Includes weekly lawn care, irrigation maintenance & insurance" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm text-slate-900 outline-none focus:border-amber-600">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">
+                  <i class="fa-solid fa-cloud-arrow-up text-amber-600 me-1"></i>Upload Bid Documents / Proposal File
+                </label>
+                <div class="border-2 border-dashed border-slate-300 hover:border-amber-500 rounded-xl p-3 text-center bg-white transition cursor-pointer relative">
+                  <input type="file" id="inputBidDocFile" onchange="handleFileSelect(event, 'inputBidDocFileName')" class="absolute inset-0 opacity-0 cursor-pointer">
+                  <div class="space-y-1">
+                    <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-lg"></i>
+                    <p class="text-xs font-bold text-slate-700" id="inputBidDocFileName">Click to browse or drag & drop bid documents</p>
+                    <p class="text-[10px] text-slate-400">PDF, DOCX, XLSX, or ZIP up to 25MB</p>
+                  </div>
+                </div>
+              </div>
+
+              <button id="btnSubmitBid" type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-gavel"></i><span>Submit Response Bid</span>
+              </button>
+            </form>
+
+            <div class="pt-3 border-t border-slate-200 flex justify-between items-center text-xs text-slate-500">
+              <span>Vendor Sub ($39.95/mo):</span>
+              <button onclick="toggleSubscriptionState()" class="text-sky-600 font-semibold hover:underline flex items-center space-x-1">
+                <i class="fa-solid fa-rotate"></i><span>Toggle Active / Inactive</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- METRICS WIDGET -->
+          <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center"><i class="fa-solid fa-chart-pie text-sky-600 me-2"></i>Live System Metrics</h3>
+            <div class="grid grid-cols-2 gap-3 font-mono">
+              <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm">
+                <span class="text-[10px] text-slate-500 uppercase block">Active RFQs</span>
+                <span id="statRfqCount" class="text-xl font-black text-sky-600">1,241,890</span>
+              </div>
+              <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm">
+                <span class="text-[10px] text-slate-500 uppercase block">Total Bids Placed</span>
+                <span id="statBidCount" class="text-xl font-black text-amber-600">5,890,120</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: FEED & FILTER BAR -->
+        <div class="lg:col-span-7 space-y-4">
+          
+          <div class="bg-slate-50 border border-slate-200 rounded-3xl p-4 space-y-3 shadow-sm">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold uppercase text-slate-600 flex items-center"><i class="fa-solid fa-filter text-sky-600 me-2"></i>Filter Marketplace Service Categories</span>
+              <button onclick="clearFilters()" class="text-xs text-sky-600 hover:underline">Clear Filters</button>
+            </div>
+            
+            <div class="grid sm:grid-cols-12 gap-3">
+              <div class="sm:col-span-6 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                <input type="text" id="filterKeyword" oninput="render()" placeholder="Search keywords..." class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-900 outline-none focus:border-sky-600">
+              </div>
+              
+              <div class="sm:col-span-6">
+                <select id="filterCategory" onchange="render()" class="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs text-slate-900 outline-none focus:border-sky-600">
+                  <option value="ALL">All Service Categories</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center pt-2">
+            <h2 class="text-lg font-bold text-slate-900 flex items-center">
+              <i class="fa-solid fa-list-check text-sky-600 me-2"></i>Marketplace Activity Feed
+            </h2>
+            <span class="text-xs text-slate-500 flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse me-2"></span>Click any card to view full details</span>
+          </div>
+
+          <div id="rfqFeedContainer" class="space-y-4"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    // EXPANDED 150 COMPLETE B2B SERVICE CATEGORIES
+    const CATEGORIES = [
+      { name: "Commercial Landscaping & Lawn Care", icon: "🌱" },
+      { name: "Tree Trimming & Arborist Services", icon: "🌳" },
+      { name: "Irrigation Systems & Sprinkler Repair", icon: "💧" },
+      { name: "Snow Removal & De-Icing", icon: "❄️" },
+      { name: "Hardscaping & Outdoor Paving", icon: "🧱" },
+      { name: "Commercial Janitorial & Cleaning", icon: "🧹" },
+      { name: "HVAC Installation & Maintenance", icon: "❄️" },
+      { name: "Commercial Plumbing Services", icon: "🔧" },
+      { name: "Electrical Contracting & Rewiring", icon: "⚡" },
+      { name: "Pest Control & Extermination", icon: "🪲" },
+      { name: "Roofing Repair & Waterproofing", icon: "🏠" },
+      { name: "Commercial Painting & Coating", icon: "🎨" },
+      { name: "Waste Management & Dumpster Rental", icon: "♻️" },
+      { name: "Corrugated Boxes & Shipping Supplies", icon: "📦" },
+      { name: "Freight Pallets & Crating Materials", icon: "🪵" },
+      { name: "Protective Bubble Wrap & Cushioning", icon: "🫧" },
+      { name: "Industrial Poly Bags & Shrink Wrap", icon: "🛍️" },
+      { name: "Custom Printed Tape & Packaging", icon: "🏷️" },
+      { name: "Bulk Office Paper & Stationery", icon: "📄" },
+      { name: "Ergonomic Office Furniture & Desks", icon: "🪑" },
+      { name: "Printers, Ink & Toner Cartridges", icon: "𖥎" },
+      { name: "Breakroom Coffee, Water & Snacks", icon: "☕" },
+      { name: "Breakroom & Restroom Sanitation Supplies", icon: "🧻" },
+      { name: "Freight Forwarding & Truckload Cargo", icon: "🚛" },
+      { name: "Cold Chain Refrigerated Freight", icon: "🧊" },
+      { name: "Courier & Same-Day Express Delivery", icon: "🛵" },
+      { name: "Warehousing & 3PL Order Fulfillment", icon: "🏭" },
+      { name: "Fleet Vehicle Repair & Maintenance", icon: "🚘" },
+      { name: "CPA Accounting & Corporate Tax Prep", icon: "📊" },
+      { name: "Payroll Processing & Disbursement", icon: "💵" },
+      { name: "Financial Auditing & Compliance", icon: "📑" },
+      { name: "Corporate Insurance & Risk Management", icon: "🛡️" },
+      { name: "Equipment Leasing & Financing", icon: "🏦" },
+      { name: "Corporate Legal Counsel & Contract Review", icon: "⚖️" },
+      { name: "Patent & Intellectual Property Law", icon: "📜" },
+      { name: "Human Resources & Staffing Services", icon: "👥" },
+      { name: "Employee Benefits & Health Insurance Brokers", icon: "🏥" },
+      { name: "Executive Search & Talent Acquisition", icon: "👔" },
+      { name: "On-Site Security Guards & Patrols", icon: "👮" },
+      { name: "CCTV Surveillance & Access Control Systems", icon: "📹" },
+      { name: "Fire Alarm Inspection & Extinguisher Service", icon: "🧯" },
+      { name: "Hazardous Material Disposal & Safety", icon: "☣️" },
+      { name: "Commercial Printing & Large Format Banners", icon: "🖼️" },
+      { name: "Promotional Swag & Branded Apparel", icon: "👕" },
+      { name: "Digital Marketing & SEO Management", icon: "📈" },
+      { name: "Event Planning & Corporate Catering", icon: "🍱" },
+      { name: "IT Managed Services & Help Desk", icon: "💻" },
+      { name: "Cloud Migration & Infrastructure Hosting", icon: "☁️" },
+      { name: "Cybersecurity Audits & Penetration Testing", icon: "🔒" },
+      { name: "Telecommunications & Business VoIP Hardware", icon: "📞" },
+
+      { name: "Commercial Elevator & Escalator Servicing", icon: "🛗" },
+      { name: "Commercial Glass, Storefronts & Windows", icon: "🪟" },
+      { name: "Industrial Floor Scrubbing & Concrete Polishing", icon: "🧼" },
+      { name: "Parking Lot Striping & Sealcoating", icon: "🚗" },
+      { name: "Commercial Door & Overhead Gate Repair", icon: "🚪" },
+      { name: "Signage Fabrication & Installation", icon: "🪧" },
+      { name: "Solar Panel Installation & Commercial Energy", icon: "☀️" },
+      { name: "Emergency Backup Generator Sales & Service", icon: "🔌" },
+      { name: "Commercial Insulation & Thermal Barriers", icon: "🧱" },
+      { name: "Scaffolding Rental & Tower Erection", icon: "🏗️" },
+      { name: "Heavy Machinery & Crane Rental", icon: "🚜" },
+      { name: "Structural Steel Fabrication & Welding", icon: "⚙️" },
+      { name: "Demolition & Concrete Core Drilling", icon: "💥" },
+      { name: "Industrial Pipefitting & Piping Fabrication", icon: "🚰" },
+      { name: "Excavation, Grading & Earthmoving", icon: "⛏️" },
+      { name: "Soil Testing & Environmental Engineering", icon: "🧪" },
+      { name: "Commercial Flooring & Epoxy Coatings", icon: "🪵" },
+      { name: "Acoustical Ceiling Tile Installation", icon: "🏠" },
+      { name: "Commercial Fire Sprinkler System Install", icon: "🚿" },
+      { name: "Cleanroom Construction & HEPA Filtration", icon: "🔬" },
+
+      { name: "Heavy Haul & Over-Dimensional Logistics", icon: "🚚" },
+      { name: "Customs Brokerage & Import/Export Compliance", icon: "🛃" },
+      { name: "Intermodal Container Shipping & Drayage", icon: "🚢" },
+      { name: "Air Freight Forwarding & Charter Cargo", icon: "✈️" },
+      { name: "Fleet Fuel Card & Bulk Diesel Delivery", icon: "⛽" },
+      { name: "GPS Fleet Tracking & Telematics Solutions", icon: "📍" },
+      { name: "Commercial Vehicle Wraps & Graphics", icon: "🎨" },
+      { name: "Pallet Jack & Forklift Repair & Leasing", icon: "🏗️" },
+      { name: "Cross-Docking & Distribution Logistics", icon: "🔁" },
+      { name: "Inventory Auditing & Warehouse Stocktaking", icon: "📋" },
+
+      { name: "Custom Injection Molding & Plastics", icon: "🧩" },
+      { name: "CNC Machining, Milling & Turning", icon: "⚙️" },
+      { name: "Sheet Metal Stamping & Laser Cutting", icon: "✂️" },
+      { name: "3D Printing & Rapid Prototyping Services", icon: "🖨️" },
+      { name: "Electronic Assembly & PCB Fabrication", icon: "🔌" },
+      { name: "Chemical Blending & Toll Manufacturing", icon: "🧪" },
+      { name: "Industrial Robotics & Automation Integration", icon: "🤖" },
+      { name: "Motor Rewinding & Pump Repair", icon: "🧰" },
+      { name: "Compressed Air Systems & Compressor Repair", icon: "💨" },
+      { name: "Industrial Boiler Maintenance & Inspection", icon: "🔥" },
+
+      { name: "Disaster Recovery & Data Backup Solutions", icon: "💾" },
+      { name: "Enterprise Resource Planning (ERP) Software", icon: "📊" },
+      { name: "Custom Software Development & Mobile Apps", icon: "📱" },
+      { name: "Database Administration & Tuning", icon: "🗄️" },
+      { name: "A/V Integration & Conference Room Automation", icon: "🎙️" },
+      { name: "Fiber Optic Splicing & Low Voltage Cabling", icon: "🔌" },
+      { name: "SaaS Expense Management & License Audits", icon: "💻" },
+      { name: "Point of Sale (POS) Hardware & Software", icon: "💳" },
+      { name: "Mainframe & Legacy System Maintenance", icon: "🖥️" },
+      { name: "Artificial Intelligence & Machine Learning Consulting", icon: "🧠" },
+
+      { name: "Commercial Laundromat & Linen Rental", icon: "🧺" },
+      { name: "Uniform Supply, Alteration & Laundry", icon: "👔" },
+      { name: "Medical Waste Disposal & Sharps Services", icon: "💉" },
+      { name: "Commercial Kitchen Appliance Repair", icon: "🍳" },
+      { name: "Grease Trap Cleaning & Interceptor Maintenance", icon: "🛢️" },
+      { name: "Vending Machine Management & Pantry Stocking", icon: "🥤" },
+      { name: "Janitorial Paper Products & Dispenser Rental", icon: "🧻" },
+      { name: "Mat & Dust Control Towel Services", icon: "🧹" },
+      { name: "Water Purification & Office Dispenser Rental", icon: "🚰" },
+      { name: "Document Shredding & Secure Destruction", icon: "🗑️" },
+
+      { name: "Mergers & Acquisitions (M&A) Advisory", icon: "🤝" },
+      { name: "Commercial Real Estate Brokerage", icon: "🏢" },
+      { name: "Commercial Property Appraisal & Valuation", icon: "📐" },
+      { name: "Business Process Outsourcing (BPO)", icon: "📞" },
+      { name: "Translation & Multi-Language Interpretation", icon: "🗣️" },
+      { name: "Mystery Shopping & Quality Assurance", icon: "🕵️" },
+      { name: "Background Checks & Tenant Screening", icon: "🔍" },
+      { name: "Corporate Travel Management & Booking", icon: "✈️" },
+      { name: "Employee Wellness & Assistance Programs", icon: "🧘" },
+      { name: "Corporate Relocation & Moving Services", icon: "🚛" },
+
+      { name: "Commercial Photography & Videography", icon: "📷" },
+      { name: "Drone Aerial Inspection & Mapping", icon: "🚁" },
+      { name: "Copywriting, PR & Press Release Distribution", icon: "✍️" },
+      { name: "Trade Show Booth Fabrication & Rental", icon: "🎪" },
+      { name: "Social Media Management & Influencer Ads", icon: "📲" },
+      { name: "Branding & Corporate Identity Design", icon: "🎨" },
+      { name: "Media Buying, Billboard & Transit Ads", icon: "📺" },
+      { name: "Podcast Production & Audio Editing", icon: "🎧" },
+      { name: "Direct Mail Printing & Postal Logistics", icon: "📬" },
+      { name: "Market Research & Consumer Focus Groups", icon: "📈" },
+
+      { name: "Laboratory Calibration & Metrology", icon: "🔬" },
+      { name: "Pharmaceutical Packaging & Cold Vaults", icon: "💊" },
+      { name: "DNA & Chemical Testing Services", icon: "🧬" },
+      { name: "Industrial Hygiene & Occupational Safety", icon: "🥽" },
+      { name: "Asbestos & Lead Abatement Contractors", icon: "⚠️" },
+      { name: "Water Quality Testing & Treatment", icon: "🧪" },
+      { name: "Air Quality Testing & Mold Remediation", icon: "🌬️" },
+      { name: "Radiation Shielding & Safety Services", icon: "☢️" },
+      { name: "Clinical Trial Logistics & Bio-Shipping", icon: "🚑" },
+      { name: "Medical Equipment Repair & Calibration", icon: "🩺" },
+
+      { name: "Aviation Fueling & Fixed Base Operator (FBO)", icon: "✈️" },
+      { name: "Aircraft Maintenance, Repair & Overhaul (MRO)", icon: "🛠️" },
+      { name: "Railcar Repair, Storage & Switch Logistics", icon: "🚃" },
+      { name: "Marine Freight, Tugboat & Barge Towing", icon: "🚢" },
+      { name: "Port Terminal Handling & Container Freight", icon: "⚓" },
+      { name: "Automotive Parts Stamping & OEM Supply", icon: "🚗" },
+      { name: "EV Charging Station Fleet Installation", icon: "⚡" },
+      { name: "Traffic Control & Roadway Barricade Rental", icon: "🚧" },
+      { name: "Public Transit Fleet Washing & Sanitization", icon: "🚌" },
+      { name: "Heavy Equipment Asset Auctions & Liquidation", icon: "🔨" },
+
+      { name: "Public Relations & Crisis Management", icon: "📢" },
+      { name: "Government Relations & Lobbying Consulting", icon: "🏛️" },
+      { name: "Grant Writing & Federal Compliance", icon: "📝" },
+      { name: "Municipal Utility Meter Reading Services", icon: "📟" },
+      { name: "Stormwater Management & Retention Ponds", icon: "🌊" },
+      { name: "Traffic Engineering & Impact Studies", icon: "🚦" },
+      { name: "GIS Mapping & Land Surveying Services", icon: "🗺️" },
+      { name: "Commercial Security Shredding & E-Waste", icon: "💾" },
+      { name: "On-Site Employee Mobile Health Clinics", icon: "🩺" },
+      { name: "Disaster Clean-Up & Emergency Relief Logistics", icon: "🛟" }
+    ];
+
+    const BUYER_NAMES = [
+      "Vanguard Corporate Center", "Apex Fulfillment Logistics", "Precision Tooling Corp",
+      "Summit Enterprise Systems", "Metro Regional Healthcare", "Titan Manufacturing Group",
+      "Pinnacle Commercial Real Estate", "Horizon Energy Dynamics", "Beacon Global Logistics",
+      "Strata Financial Services"
+    ];
+
+    const VENDOR_NAMES = [
+      "Greenscape Pro Services", "NextGen Enterprise Solutions", "Standard Industrial Co",
+      "OmniCorp Facility Partners", "Premier Business Suppliers", "Apex Tech Contractors"
+    ];
+
+    const SCOPE_MODIFIERS = [
+      "HQ West Wing Campus", "North Distribution Hub", "Phase 2 Expansion",
+      "Regional Operations Center", "Downtown Corporate Tower", "South Facility Grounds",
+      "East Annex Complex", "Logistics Depot A", "Tech Center Building B", "Executive Suite Level 4"
+    ];
+
+    const TASK_DESCRIPTIONS = [
+      "Annual Service Contract", "Emergency Maintenance & Overhaul", "Quarterly On-Site Assessment",
+      "System Upgrade & Optimization", "Full Facilities Replacement", "Routine Inspection & Servicing",
+      "Custom Enterprise Package", "Turnkey Implementation Plan", "Phase 1 Onboarding", "Preventative Care Retainer"
+    ];
+
+    const CITIES = [
+      "Dallas, TX", "Houston, TX", "Austin, TX", "San Antonio, TX", "Fort Worth, TX",
+      "Phoenix, AZ", "Denver, CO", "Chicago, IL", "Atlanta, GA", "Charlotte, NC",
+      "Miami, FL", "Seattle, WA", "Portland, OR", "Nashville, TN", "Las Vegas, NV"
+    ];
+
+    let state = {
+      view: 'marketplace',
+      selectedRfqId: null,
+      role: 'buyer',
+      authType: 'buyer',
+      isLoggedIn: false,
+      buyerHasProfile: true,
+      vendorSubscribed: true,
+      unreadIncomingBidsCount: 0,
+      unreadVendorFeedbackCount: 0,
+      latestIncomingSubmission: null,
+      latestVendorFeedback: null,
+      activeTargetBidForMsg: null,
+      activeTargetBidForReply: null,
+      buyerProfile: {
+        company: "Vanguard Corporate Center",
+        industry: "Commercial Property Management",
+        contact: "Alex Vance",
+        email: "procurement@vanguardcorp.com",
+        phone: "(555) 234-5678",
+        location: "Dallas-Fort Worth, TX",
+        overview: "Primary facility buyer overseeing commercial real estate operations."
+      },
+      vendorProfile: {
+        company: "Greenscape Pro Services",
+        specialty: "Commercial Landscaping & Groundskeeping",
+        contact: "Jordan Miller",
+        email: "bids@greenscapepro.com",
+        phone: "(555) 987-6543",
+        certifications: "OSHA Certified, Licensed Arborist, Insured ($2M)",
+        coverage: "DFW Metroplex (50-mile radius)",
+        bio: "Premier commercial landscaping vendor specializing in enterprise campus maintenance."
+      },
+      rfqs: []
+    };
+
+    function generateBulkRfqs() {
+      let bulkList = [];
+      let globalIdCounter = 1000;
+
+      CATEGORIES.forEach((cat, catIdx) => {
+        for (let i = 1; i <= 200; i++) {
+          const rfqId = `RFQ-${globalIdCounter++}`;
+          const buyer = BUYER_NAMES[i % BUYER_NAMES.length];
+          
+          let baseMultiplier = 5000;
+          if (cat.name.includes("Landscaping") || cat.name.includes("Janitorial") || cat.name.includes("Pest Control")) {
+            baseMultiplier = 2500; 
+          } else if (cat.name.includes("Freight") || cat.name.includes("Logistics") || cat.name.includes("Construction") || cat.name.includes("Software")) {
+            baseMultiplier = 15000; 
+          } else {
+            baseMultiplier = 6000; 
+          }
+          const budget = (Math.floor(Math.random() * 12) + 2) * baseMultiplier;
+
+          const modifier = SCOPE_MODIFIERS[(i + catIdx) % SCOPE_MODIFIERS.length];
+          const task = TASK_DESCRIPTIONS[(i * 3 + catIdx) % TASK_DESCRIPTIONS.length];
+          const location = CITIES[(i + catIdx) % CITIES.length];
+          const closingDate = `2026-09-${(1 + (i % 28)).toString().padStart(2, '0')}`;
+
+          const lotTitle = `${cat.name} - ${modifier} [${task}] (Lot #${200 + i})`;
+
+          const uniqueDesc = `Request for Quotation (RFQ) for SMB Operations & Services: ${cat.name}
+Reference ID: ${rfqId} | Location: ${location} | Execution Window: 30-Day Onboarding with Ongoing Support
+
+1. Scope of Work & Deliverables:
+- Execution of core ${cat.name.toLowerCase()} services tailored to small and medium-sized business operational needs at ${modifier}.
+- Key milestone deliverables include initial facility audit, implementation of agreed service schedules, and regular monthly check-ins with internal management.
+- Vendor is expected to provide trained, local technicians with appropriate tools, safety gear, and standard commercial liability coverage.
+
+2. Service Level Agreements (SLAs) & Response Times:
+- Routine maintenance and scheduled service requests to be fulfilled within normal business hours (Mon-Fri, 8 AM - 5 PM).
+- Emergency or critical support turnaround window: Response guaranteed within 4 hours of notification.
+- Monthly performance summary reports delivered digitally via email or client portal by the 5th business day of each month.
+
+3. Pricing & Commercial Terms:
+- Proposal must clearly itemize labor rates, material/parts costs, and any recurring fees.
+- Payment terms: Net 30 upon satisfactory completion and management sign-off of monthly deliverables. No hidden surcharges permitted.`;
+
+          let bids = [];
+          if (i % 3 === 0) {
+            const vName = VENDOR_NAMES[i % VENDOR_NAMES.length];
+            bids.push({
+              id: `BID-${Math.floor(Math.random() * 9000) + 1000}`,
+              vendor: vName,
+              vendorEmail: `sales@${vName.toLowerCase().replace(/[^a-z]/g, '')}.com`,
+              amount: budget - (Math.floor(Math.random() * 15) + 2) * 100,
+              notes: `Comprehensive vendor proposal covering full scope for ${lotTitle}.`,
+              attachment: `Proposal_${rfqId}.pdf`,
+              date: 'Recently',
+              awardStatus: 'pending',
+              buyerResponses: []
+            });
+          }
+
+          bulkList.push({
+            id: rfqId,
+            title: lotTitle,
+            category: cat.name,
+            categoryIcon: cat.icon,
+            location: location,
+            budget: budget,
+            closingDate: closingDate,
+            desc: uniqueDesc,
+            buyer: buyer,
+            buyerEmail: `contact@${buyer.toLowerCase().replace(/[^a-z]/g, '')}.com`,
+            buyerPhone: `(555) ${100 + (i % 800)}-${1000 + (i % 8000)}`,
+            attachment: i % 2 === 0 ? `Spec_Document_${rfqId}.pdf` : null,
+            bids: bids
+          });
+        }
+      });
+
+      // Randomize the entire RFQ feed order so every category is shuffled together
+      bulkList.sort(() => Math.random() - 0.5);
+
+      state.rfqs = bulkList;
+    }
+
+    function viewRfqDetails(rfqId) {
+      state.selectedRfqId = rfqId;
+      setActiveView('rfq-detail');
+    }
+
+    function toggleMessageModal(show) {
+      document.getElementById('messageBuyerModal').classList.toggle('hidden', !show);
+    }
+
+    function toggleNewBidModal(show) {
+      document.getElementById('newBidNotificationModal').classList.toggle('hidden', !show);
+    }
+
+    function handleFileSelect(event, targetTextId) {
+      const file = event.target.files[0];
+      if (file) {
+        document.getElementById(targetTextId).textContent = `Selected: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+      }
+    }
+
+    function openMessageBuyerModal(rfqId) {
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (!targetRfq) return;
+
+      document.getElementById('msgVendorName').value = state.vendorProfile.company;
+      document.getElementById('msgSubject').value = `Direct Message & Quote regarding ${targetRfq.id}: ${targetRfq.title}`;
+      document.getElementById('msgQuotePrice').value = targetRfq.budget;
+      document.getElementById('msgBody').value = '';
+      document.getElementById('msgDocumentFile').value = '';
+      document.getElementById('msgDocumentFileName').textContent = 'Click to browse or drag & drop document file';
+
+      toggleMessageModal(true);
+    }
+
+    function handleSendDirectMessage(e) {
+      e.preventDefault();
+      const targetRfq = state.rfqs.find(r => r.id === state.selectedRfqId);
+      if (!targetRfq) return;
+
+      const vendorName = document.getElementById('msgVendorName').value;
+      const subject = document.getElementById('msgSubject').value;
+      const quotePrice = parseFloat(document.getElementById('msgQuotePrice').value) || targetRfq.budget;
+      const messageBody = document.getElementById('msgBody').value;
+      const fileInput = document.getElementById('msgDocumentFile');
+      const attachedFileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+      const newDirectMessageBid = {
+        id: `MSG-${Math.floor(Math.random() * 9000) + 1000}`,
+        vendor: vendorName,
+        vendorEmail: state.vendorProfile.email,
+        amount: quotePrice,
+        notes: `[Direct Message - ${subject}]: ${messageBody}`,
+        attachment: attachedFileName,
+        date: 'Just Now',
+        awardStatus: 'pending',
+        buyerResponses: []
+      };
+
+      targetRfq.bids.unshift(newDirectMessageBid);
+
+      state.unreadIncomingBidsCount++;
+      state.latestIncomingSubmission = {
+        type: 'Direct Message & Quote',
+        rfqId: targetRfq.id,
+        rfqTitle: targetRfq.title,
+        vendor: vendorName,
+        amount: quotePrice,
+        notes: messageBody,
+        attachment: attachedFileName,
+        isFeedback: false
+      };
+
+      toggleMessageModal(false);
+      showPopupNotification(state.latestIncomingSubmission);
+      render();
+    }
+
+    function setBidAwardStatus(rfqId, bidId, status) {
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (!targetRfq) return;
+      const targetBid = targetRfq.bids.find(b => b.id === bidId);
+      if (!targetBid) return;
+
+      targetBid.awardStatus = status;
+
+      const statusText = status === 'awarded' ? 'Awarded to Vendor!' : (status === 'no-award' ? 'Marked as No Award' : 'Reset to Pending');
+      alert(`Proposal ${targetBid.id} from ${targetBid.vendor} has been successfully updated: ${statusText}`);
+      render();
+    }
+
+    function showPopupNotification(sub) {
+      const badge = document.getElementById('incomingModalBadge');
+      const title = document.getElementById('incomingModalTitle');
+      const container = document.getElementById('incomingBidPopupContent');
+      const actionBtn = document.getElementById('incomingModalActionBtn');
+
+      if (sub.isFeedback) {
+        badge.className = 'text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200';
+        badge.textContent = 'Buyer Response Received';
+        title.textContent = 'New Buyer Message in Bids Portal';
+        actionBtn.innerHTML = '<i class="fa-solid fa-gavel"></i><span>Open in Vendor Bids Portal</span>';
+        actionBtn.onclick = goToVendorBidsPortal;
+
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div class="bg-white border border-slate-200 rounded-xl p-3 space-y-1.5 shadow-sm">
+              <span class="text-[10px] font-bold uppercase text-slate-400">Target RFQ Lot</span>
+              <p class="font-bold text-slate-900">${sub.rfqId} - ${sub.rfqTitle}</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+              <span class="text-[10px] font-bold uppercase text-slate-400">Buyer Organization</span>
+              <p class="font-bold text-slate-900 mt-0.5"><i class="fa-solid fa-building text-sky-600 me-1"></i>${sub.buyer}</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-xl p-3 space-y-1 shadow-sm">
+              <span class="text-[10px] font-bold uppercase text-slate-400">Buyer Message & Feedback</span>
+              <p class="text-slate-800 font-medium">${sub.message}</p>
+              ${sub.attachment ? `<span class="text-[11px] font-bold text-amber-800 block mt-2"><i class="fa-solid fa-file-pdf me-1"></i>Attached Feedback Document: ${sub.attachment}</span>` : ''}
+            </div>
+          </div>
+        `;
+      } else {
+        badge.className = 'text-[10px] font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200';
+        badge.textContent = 'New Vendor Submission';
+        title.textContent = 'Direct Message & Bid Received';
+        actionBtn.innerHTML = '<i class="fa-solid fa-list-check"></i><span>Open in My RFQ Portal</span>';
+        actionBtn.onclick = goToMyRfqsPortal;
+
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div class="bg-white border border-slate-200 rounded-xl p-3 space-y-1.5 shadow-sm">
+              <span class="text-[10px] font-bold uppercase text-slate-400">Target RFQ Lot</span>
+              <p class="font-bold text-slate-900">${sub.rfqId} - ${sub.rfqTitle}</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                <span class="text-[10px] font-bold uppercase text-slate-400">Vendor Partner</span>
+                <p class="font-bold text-slate-900 mt-0.5"><i class="fa-solid fa-store text-amber-600 me-1"></i>${sub.vendor}</p>
+              </div>
+              <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                <span class="text-[10px] font-bold uppercase text-slate-400">Quote Price</span>
+                <p class="font-black text-emerald-700 font-mono text-base mt-0.5">$${sub.amount.toLocaleString()}</p>
+              </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-xl p-3 space-y-1 shadow-sm">
+              <span class="text-[10px] font-bold uppercase text-slate-400">Message / Proposal Notes</span>
+              <p class="text-slate-700 italic">${sub.notes}</p>
+              ${sub.attachment ? `<span class="text-[11px] font-bold text-sky-800 block mt-2"><i class="fa-solid fa-file-pdf me-1"></i>Attached Document: ${sub.attachment}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }
+
+      toggleNewBidModal(true);
+    }
+
+    function goToMyRfqsPortal() {
+      toggleNewBidModal(false);
+      state.unreadIncomingBidsCount = 0;
+      setActiveView('manage-rfqs');
+    }
+
+    function goToVendorBidsPortal() {
+      toggleNewBidModal(false);
+      state.unreadVendorFeedbackCount = 0;
+      setActiveView('manage-bids');
+    }
+
+    function toggleVendorMessageModal(show) {
+      document.getElementById('messageVendorModal').classList.toggle('hidden', !show);
+    }
+
+    function openMessageVendorModal(rfqId, bidId) {
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (!targetRfq) return;
+      const targetBid = targetRfq.bids.find(b => b.id === bidId);
+      if (!targetBid) return;
+
+      state.activeTargetBidForMsg = { rfqId: targetRfq.id, rfqTitle: targetRfq.title, buyer: targetRfq.buyer, bid: targetBid };
+
+      document.getElementById('msgTargetVendorNameDisplay').value = targetBid.vendor;
+      document.getElementById('msgVendorSubject').value = `Buyer Feedback regarding Proposal ${targetBid.id} on ${targetRfq.id}`;
+      document.getElementById('msgVendorBody').value = '';
+      document.getElementById('msgVendorDocumentFile').value = '';
+      document.getElementById('msgVendorDocumentFileName').textContent = 'Click to browse or drag & drop document file';
+
+      toggleVendorMessageModal(true);
+    }
+
+    function handleSendVendorMessage(e) {
+      e.preventDefault();
+      if (!state.activeTargetBidForMsg) return;
+
+      const targetInfo = state.activeTargetBidForMsg;
+      const subject = document.getElementById('msgVendorSubject').value;
+      const messageBody = document.getElementById('msgVendorBody').value;
+      const fileInput = document.getElementById('msgVendorDocumentFile');
+      const attachedFileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+      const responseObj = {
+        id: `RESP-${Math.floor(Math.random() * 9000) + 1000}`,
+        sender: 'buyer',
+        buyer: targetInfo.buyer,
+        subject: subject,
+        message: messageBody,
+        attachment: attachedFileName,
+        date: 'Just Now'
+      };
+
+      targetInfo.bid.buyerResponses.push(responseObj);
+
+      state.unreadVendorFeedbackCount++;
+      state.latestVendorFeedback = {
+        isFeedback: true,
+        rfqId: targetInfo.rfqId,
+        rfqTitle: targetInfo.rfqTitle,
+        buyer: targetInfo.buyer,
+        message: messageBody,
+        attachment: attachedFileName
+      };
+
+      toggleVendorMessageModal(false);
+
+      if (state.role === 'vendor') {
+        showPopupNotification(state.latestVendorFeedback);
+      } else {
+        alert(`Buyer response successfully sent to Vendor (${targetInfo.bid.vendor})! It has been delivered directly to their Vendor Bids Portal.`);
+      }
+
+      render();
+    }
+
+    function toggleVendorReplyModal(show) {
+      document.getElementById('replyToBuyerModal').classList.toggle('hidden', !show);
+    }
+
+    function openVendorReplyModal(rfqId, bidId) {
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (!targetRfq) return;
+      const targetBid = targetRfq.bids.find(b => b.id === bidId);
+      if (!targetBid) return;
+
+      state.activeTargetBidForReply = { rfqId: targetRfq.id, rfqTitle: targetRfq.title, buyer: targetRfq.buyer, bid: targetBid };
+
+      document.getElementById('replyTargetBuyerDisplay').value = targetRfq.buyer;
+      document.getElementById('replySubject').value = `Re: Buyer Feedback regarding Proposal ${targetBid.id} on ${targetRfq.id}`;
+      document.getElementById('replyBody').value = '';
+      document.getElementById('replyDocumentFile').value = '';
+      document.getElementById('replyDocumentFileName').textContent = 'Click to browse or drag & drop document file';
+
+      toggleVendorReplyModal(true);
+    }
+
+    function handleSendVendorReply(e) {
+      e.preventDefault();
+      if (!state.activeTargetBidForReply) return;
+
+      const targetInfo = state.activeTargetBidForReply;
+      const subject = document.getElementById('replySubject').value;
+      const messageBody = document.getElementById('replyBody').value;
+      const fileInput = document.getElementById('replyDocumentFile');
+      const attachedFileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+      const vendorReplyObj = {
+        id: `RESP-V-${Math.floor(Math.random() * 9000) + 1000}`,
+        sender: 'vendor',
+        vendor: state.vendorProfile.company,
+        subject: subject,
+        message: messageBody,
+        attachment: attachedFileName,
+        date: 'Just Now'
+      };
+
+      targetInfo.bid.buyerResponses.push(vendorReplyObj);
+      state.unreadIncomingBidsCount++;
+
+      toggleVendorReplyModal(false);
+      alert(`Reply successfully sent to Buyer (${targetInfo.buyer})! It has been added to their My RFQ Portal.`);
+      render();
+    }
+
+    function handleSubscribeVendorPlan() {
+      setTimeout(() => {
+        state.vendorSubscribed = true;
+        alert("Payment successful! Your vendor subscription ($39.95/mo) has been activated via the payment API. Direct messaging and bidding are now unlocked.");
+        render();
+      }, 300);
+    }
+
+    function handleCancelVendorSubscription() {
+      if (confirm("Are you sure you want to cancel your vendor subscription? You will lose access to direct messaging and new bidding at the end of your billing period.")) {
+        state.vendorSubscribed = false;
+        alert("Vendor subscription has been successfully canceled. Your account will remain active until the billing cycle ends.");
+        render();
+      }
+    }
+
+    function renderRfqDetailView() {
+      const targetRfq = state.rfqs.find(r => r.id === state.selectedRfqId);
+      const container = document.getElementById('rfqDetailContent');
+      document.getElementById('detailRfqIdBadge').textContent = state.selectedRfqId || 'RFQ';
+
+      if (!targetRfq) {
+        container.innerHTML = `
+          <div class="p-12 text-center text-slate-500 bg-slate-50 rounded-3xl border border-slate-200">
+            <i class="fa-solid fa-triangle-exclamation text-4xl mb-3 text-amber-500"></i>
+            <p class="font-bold text-slate-800">RFQ Listing Not Found</p>
+            <p class="text-xs mt-1">The requested procurement lot may have been withdrawn or removed.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const isBuyerOwner = state.role === 'buyer' && targetRfq.buyer.toLowerCase() === state.buyerProfile.company.toLowerCase();
+      const canVendorContact = state.role === 'vendor' && state.vendorSubscribed;
+
+      let submissionsDisplayHtml = '';
+
+      if (state.role === 'buyer' || isBuyerOwner) {
+        submissionsDisplayHtml = targetRfq.bids.map(b => {
+          const responsesHtml = (b.buyerResponses || []).map(resp => {
+            const isFromVendor = resp.sender === 'vendor';
+            const bgClass = isFromVendor ? 'bg-amber-50 border-amber-200 text-amber-900 ml-4' : 'bg-sky-50 border-sky-200 text-sky-900 ml-4';
+            const iconClass = isFromVendor ? 'fa-store text-amber-600' : 'fa-reply text-sky-600';
+            const labelText = isFromVendor ? `Vendor Reply (${resp.vendor})` : `Buyer Response (${resp.buyer})`;
+
+            return `
+              <div class="border ${bgClass} p-3 rounded-xl space-y-1 mt-2">
+                <div class="flex justify-between items-center text-[11px] font-bold">
+                  <span><i class="fa-solid ${iconClass} me-1"></i>${labelText}</span>
+                  <span class="text-slate-400">${resp.date}</span>
+                </div>
+                <p class="text-xs text-slate-700">${resp.message}</p>
+                ${resp.attachment ? `<span class="text-[10px] font-bold block mt-1"><i class="fa-solid fa-file-pdf me-1"></i>Attached: ${resp.attachment}</span>` : ''}
+              </div>
+            `;
+          }).join('');
+
+          let awardBadgeHtml = '';
+          let awardActionButtonsHtml = '';
+
+          if (b.awardStatus === 'awarded') {
+            awardBadgeHtml = `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-2.5 py-1 rounded-full text-xs inline-flex items-center"><i class="fa-solid fa-trophy text-emerald-600 me-1.5"></i>Contract Awarded</span>`;
+          } else if (b.awardStatus === 'no-award') {
+            awardBadgeHtml = `<span class="bg-rose-100 text-rose-800 border border-rose-300 font-bold px-2.5 py-1 rounded-full text-xs inline-flex items-center"><i class="fa-solid fa-circle-xmark text-rose-600 me-1.5"></i>No Award</span>`;
+          } else {
+            awardBadgeHtml = `<span class="bg-slate-100 text-slate-600 border border-slate-300 font-semibold px-2.5 py-1 rounded-full text-xs">Pending Decision</span>`;
+          }
+
+          if (state.role === 'buyer') {
+            awardActionButtonsHtml = `
+              <div class="flex items-center space-x-2 pt-2 border-t border-slate-200">
+                <span class="text-[11px] font-bold uppercase text-slate-500 me-1">Buyer Decision:</span>
+                <button onclick="event.stopPropagation(); setBidAwardStatus('${targetRfq.id}', '${b.id}', 'awarded')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center space-x-1 shadow-sm ${b.awardStatus === 'awarded' ? 'ring-2 ring-emerald-400' : ''}">
+                  <i class="fa-solid fa-trophy"></i><span>Award</span>
+                </button>
+                <button onclick="event.stopPropagation(); setBidAwardStatus('${targetRfq.id}', '${b.id}', 'no-award')" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition flex items-center space-x-1 shadow-sm ${b.awardStatus === 'no-award' ? 'ring-2 ring-rose-400' : ''}">
+                  <i class="fa-solid fa-ban"></i><span>No Award</span>
+                </button>
+                ${b.awardStatus !== 'pending' ? `
+                  <button onclick="event.stopPropagation(); setBidAwardStatus('${targetRfq.id}', '${b.id}', 'pending')" class="px-2 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-[11px] font-bold transition" title="Reset to Pending">
+                    Reset
+                  </button>
+                ` : ''}
+              </div>
+            `;
+          }
+
+          return `
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-3">
+              <div class="flex flex-wrap justify-between items-start gap-3">
+                <div class="space-y-1.5 max-w-md">
+                  <div class="flex items-center space-x-2">
+                    <div class="font-bold text-slate-900 flex items-center text-sm">
+                      <i class="fa-solid fa-building me-2 text-slate-400"></i>${b.vendor}
+                    </div>
+                    ${awardBadgeHtml}
+                  </div>
+                  <p class="text-xs text-slate-600">${b.notes}</p>
+                  ${b.attachment ? `<span class="text-[11px] font-bold text-amber-800 block mt-1"><i class="fa-solid fa-file-pdf me-1"></i>Attached: ${b.attachment}</span>` : ''}
+                </div>
+                
+                <div class="text-right flex flex-col items-end space-y-2">
+                  <div>
+                    <span class="text-xl font-black text-emerald-700 font-mono block">$${b.amount.toLocaleString()}</span>
+                    <span class="text-[10px] text-slate-400">Submitted: ${b.date}</span>
+                  </div>
+
+                  <button onclick="event.stopPropagation(); openMessageVendorModal('${targetRfq.id}', '${b.id}')" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center space-x-1.5 shadow-sm">
+                    <i class="fa-solid fa-paper-plane"></i><span>Message Vendor</span>
+                  </button>
+                </div>
+              </div>
+
+              ${awardActionButtonsHtml}
+
+              ${responsesHtml}
+            </div>
+          `;
+        }).join('');
+      } else {
+        const myVendorName = state.vendorProfile.company.toLowerCase();
+        const myBidsOnThisRfq = targetRfq.bids.filter(b => b.vendor.toLowerCase() === myVendorName);
+
+        let myBidHtml = myBidsOnThisRfq.map(b => {
+          let awardNoticeHtml = '';
+          if (b.awardStatus === 'awarded') {
+            awardNoticeHtml = `<div class="bg-emerald-100 border border-emerald-300 text-emerald-900 p-3 rounded-xl text-xs font-bold flex items-center"><i class="fa-solid fa-trophy text-emerald-600 text-base me-2"></i> Congratulations! Your proposal has been awarded the contract by the buyer.</div>`;
+          } else if (b.awardStatus === 'no-award') {
+            awardNoticeHtml = `<div class="bg-rose-50 border border-rose-200 text-rose-900 p-3 rounded-xl text-xs font-medium flex items-center"><i class="fa-solid fa-circle-xmark text-rose-600 text-base me-2"></i> Status: This proposal was marked as No Award for this RFQ lot.</div>`;
+          } else {
+            awardNoticeHtml = `<div class="bg-amber-50 border border-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-medium flex items-center"><i class="fa-solid fa-hourglass-half text-amber-600 me-2"></i> Status: Proposal under review by buyer.</div>`;
+          }
+
+          const responsesHtml = (b.buyerResponses || []).map(resp => {
+            const isFromVendor = resp.sender === 'vendor';
+            const bgClass = isFromVendor ? 'bg-amber-50 border-amber-200 text-amber-900 ml-2' : 'bg-sky-50 border-sky-200 text-sky-900 ml-2';
+            const iconClass = isFromVendor ? 'fa-store text-amber-600' : 'fa-reply text-sky-600';
+            const labelText = isFromVendor ? `Your Reply (${resp.vendor})` : `Buyer Feedback from ${resp.buyer}`;
+
+            return `
+              <div class="border ${bgClass} p-3 rounded-xl space-y-1 mt-2">
+                <div class="flex justify-between items-center text-[11px] font-bold">
+                  <span><i class="fa-solid ${iconClass} me-1"></i>${labelText}</span>
+                  <span class="text-slate-400">${resp.date}</span>
+                </div>
+                <p class="text-xs text-slate-800">${resp.message}</p>
+                ${resp.attachment ? `<span class="text-[10px] font-bold block mt-1"><i class="fa-solid fa-file-pdf me-1"></i>Attached File: ${resp.attachment}</span>` : ''}
+              </div>
+            `;
+          }).join('');
+
+          const lastResponse = (b.buyerResponses || []).length > 0 ? b.buyerResponses[b.buyerResponses.length - 1] : null;
+          const showRespondButton = lastResponse && lastResponse.sender === 'buyer';
+
+          return `
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-3">
+              ${awardNoticeHtml}
+              <div class="flex flex-wrap justify-between items-center gap-3">
+                <div class="space-y-1 max-w-md">
+                  <div class="font-bold text-slate-900 flex items-center text-sm">
+                    <i class="fa-solid fa-store text-amber-600 me-2"></i>Your Submitted Proposal <span class="ms-2 text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-full">Active</span>
+                  </div>
+                  <p class="text-xs text-slate-700">${b.notes}</p>
+                  ${b.attachment ? `<span class="text-[11px] font-bold text-amber-900 block mt-1"><i class="fa-solid fa-file-pdf me-1"></i>Attached: ${b.attachment}</span>` : ''}
+                </div>
+                <div class="text-right">
+                  <span class="text-xl font-black text-emerald-700 font-mono block">$${b.amount.toLocaleString()}</span>
+                  <span class="text-[10px] text-slate-400">Submitted: ${b.date}</span>
+                </div>
+              </div>
+
+              ${responsesHtml}
+
+              ${showRespondButton ? `
+                <div class="pt-2 flex justify-end">
+                  <button onclick="event.stopPropagation(); openVendorReplyModal('${targetRfq.id}', '${b.id}')" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+                    <i class="fa-solid fa-reply"></i><span>Respond to Buyer Message</span>
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+
+        let blindSummaryHtml = `
+          <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between text-xs">
+            <div class="flex items-center space-x-3 text-slate-700 font-medium">
+              <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900">Sealed Competitive Bidding Environment</p>
+                <p class="text-slate-500 mt-0.5">Vendor identities and quote details are confidential and securely masked for fair pricing.</p>
+              </div>
+            </div>
+            <div class="text-right bg-white border border-slate-200 px-4 py-2.5 rounded-xl">
+              <span class="text-[10px] text-slate-400 uppercase font-bold block">Total Bids Submitted</span>
+              <span class="text-lg font-black text-amber-600 font-mono">${targetRfq.bids.length} Proposal(s)</span>
+            </div>
+          </div>
+        `;
+
+        submissionsDisplayHtml = myBidHtml + blindSummaryHtml;
+      }
+
+      container.innerHTML = `
+        <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl relative overflow-hidden">
+          <div class="flex flex-wrap justify-between items-start gap-4 border-b border-slate-800 pb-6">
+            <div class="space-y-2 max-w-3xl">
+              <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase tracking-wider">
+                  ${targetRfq.categoryIcon} ${targetRfq.category}
+                </span>
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 uppercase tracking-wider">
+                  <i class="fa-solid fa-location-dot text-sky-400 me-1"></i>${targetRfq.location || 'Not Specified'}
+                </span>
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+                  <i class="fa-solid fa-calendar-days text-amber-400 me-1"></i>Closing: ${targetRfq.closingDate || 'TBD'}
+                </span>
+              </div>
+              <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white mt-1">${targetRfq.title}</h1>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl text-right min-w-[200px]">
+              <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Target Project Budget</span>
+              <span class="text-3xl font-black text-emerald-400 font-mono">$${targetRfq.budget.toLocaleString()}</span>
+              <span class="text-[11px] text-slate-400 block mt-0.5">Approved Allocation</span>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-4 gap-4 text-xs">
+            <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4">
+              <span class="text-slate-400 font-bold uppercase block mb-1">Lot Listing Ref</span>
+              <span class="font-mono font-bold text-sky-400 text-base">${targetRfq.id}</span>
+            </div>
+            <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4">
+              <span class="text-slate-400 font-bold uppercase block mb-1">Bid Closing Date</span>
+              <span class="font-bold text-amber-400 text-base"><i class="fa-solid fa-clock me-1"></i>${targetRfq.closingDate || 'TBD'}</span>
+            </div>
+            <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4">
+              <span class="text-slate-400 font-bold uppercase block mb-1">Proposals Submitted</span>
+              <span class="font-bold text-amber-400 text-base">${targetRfq.bids.length} Total Bid(s)</span>
+            </div>
+            <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4">
+              <span class="text-slate-400 font-bold uppercase block mb-1">Specification Attachment</span>
+              <span class="font-semibold text-slate-200">${targetRfq.attachment ? targetRfq.attachment : 'No files attached'}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 space-y-6">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+              <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center">
+                <i class="fa-solid fa-file-lines text-sky-600 me-2"></i>Detailed Project Specifications
+              </h3>
+              <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">${targetRfq.desc}</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+              <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center">
+                  <i class="fa-solid fa-gavel text-amber-600 me-2"></i>${state.role === 'buyer' ? `Submitted Bids, Award Controls & Responses (${targetRfq.bids.length})` : 'Proposal Status & Buyer Feedback Thread'}
+                </h3>
+              </div>
+              <div class="space-y-3">
+                ${submissionsDisplayHtml || '<p class="text-xs text-slate-400 italic p-4 text-center border border-dashed border-slate-200 rounded-2xl">No proposals have been submitted for this RFQ lot yet.</p>'}
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 space-y-6">
+            ${state.role === 'vendor' ? `
+              <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 pb-2">Direct Buyer Communication</h3>
+                
+                ${canVendorContact ? `
+                  <div class="space-y-3">
+                    <p class="text-xs text-slate-600 leading-relaxed">Send your vendor name, inquiry, RFQ response document, and total quote price directly to the buyer's My RFQ portal.</p>
+                    <button onclick="openMessageBuyerModal('${targetRfq.id}')" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-md">
+                      <i class="fa-solid fa-paper-plane"></i><span>Direct Message Buyer & Total Quote</span>
+                    </button>
+                  </div>
+                ` : `
+                  <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-center space-y-2">
+                    <i class="fa-solid fa-lock text-2xl text-amber-600"></i>
+                    <p class="text-xs font-bold text-amber-900">Buyer Contact Locked</p>
+                    <p class="text-[11px] text-amber-800">Active $39.95/mo Vendor Subscription is required to send direct messages to buyers.</p>
+                    <button onclick="handleSubscribeVendorPlan()" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs transition">Subscribe Now ($39.95/mo)</button>
+                  </div>
+                `}
+              </div>
+            ` : ''}
+
+            ${isBuyerOwner ? `
+              <div class="bg-sky-50 border border-sky-200 rounded-3xl p-6 space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-900">Buyer Listing Controls</h3>
+                <div class="space-y-2">
+                  <button onclick="openEditModal('${targetRfq.id}')" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-pen-to-square"></i><span>Edit This RFQ</span>
+                  </button>
+                  <button onclick="deleteRfq('${targetRfq.id}')" class="w-full bg-white border border-rose-300 text-rose-600 hover:bg-rose-50 font-bold py-2.5 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-trash-can"></i><span>Delete RFQ</span>
+                  </button>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleAuthModal(show) {
+      document.getElementById('authModal').classList.toggle('hidden', !show);
+    }
+
+    function toggleEditRfqModal(show) {
+      document.getElementById('editRfqModal').classList.toggle('hidden', !show);
+    }
+
+    function toggleEditBidModal(show) {
+      document.getElementById('editBidModal').classList.toggle('hidden', !show);
+    }
+
+    function setAuthType(type) {
+      state.authType = type;
+      const tabBuyer = document.getElementById('authTabBuyer');
+      const tabVendor = document.getElementById('authTabVendor');
+      const submitBtn = document.getElementById('authSubmitButton');
+      const emailInput = document.getElementById('authEmail');
+      const companyInput = document.getElementById('authCompany');
+
+      if (type === 'buyer') {
+        tabBuyer.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 bg-white text-slate-900 shadow-sm';
+        tabVendor.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 text-slate-500 hover:text-slate-900';
+        submitBtn.className = 'w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-xs';
+        submitBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i><span>Sign Up Business & Link to Profile</span>';
+        emailInput.value = state.buyerProfile.email;
+        companyInput.value = state.buyerProfile.company;
+      } else {
+        tabVendor.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 bg-white text-slate-900 shadow-sm';
+        tabBuyer.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 text-slate-500 hover:text-slate-900';
+        submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-xs';
+        submitBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i><span>Sign Up Vendor Account</span>';
+        emailInput.value = state.vendorProfile.email;
+        companyInput.value = state.vendorProfile.company;
+      }
+    }
+
+    function handleSignInSubmit(e) {
+      e.preventDefault();
+      const compName = document.getElementById('authCompany').value;
+      const compEmail = document.getElementById('authEmail').value;
+
+      if (state.authType === 'buyer') {
+        state.buyerProfile.company = compName;
+        state.buyerProfile.email = compEmail;
+        state.buyerHasProfile = true;
+      } else {
+        state.vendorProfile.company = compName;
+        state.vendorProfile.email = compEmail;
+      }
+
+      state.isLoggedIn = true;
+      setRole(state.authType);
+      toggleAuthModal(false);
+      
+      document.getElementById('mainHeader').classList.remove('hidden');
+      setActiveView('profile');
+    }
+
+    function populateCategoryDropdowns() {
+      const selectForm = document.getElementById('inputCategory');
+      const selectFilter = document.getElementById('filterCategory');
+      const selectEdit = document.getElementById('editRfqCategory');
+
+      selectForm.innerHTML = '';
+      selectFilter.innerHTML = '<option value="ALL">All Service Categories</option>';
+      selectEdit.innerHTML = '';
+
+      CATEGORIES.forEach(c => {
+        const optForm = document.createElement('option');
+        optForm.value = c.name;
+        optForm.textContent = `${c.icon} ${c.name}`;
+        selectForm.appendChild(optForm);
+
+        const optFilter = document.createElement('option');
+        optFilter.value = c.name;
+        optFilter.textContent = `${c.icon} ${c.name}`;
+        selectFilter.appendChild(optFilter);
+
+        const optEdit = document.createElement('option');
+        optEdit.value = c.name;
+        optEdit.textContent = `${c.icon} ${c.name}`;
+        selectEdit.appendChild(optEdit);
+      });
+    }
+
+    function setActiveView(view) {
+      if (!state.isLoggedIn) {
+        toggleAuthModal(true);
+        return;
+      }
+
+      if (view === 'manage-bids' && state.role !== 'vendor') {
+        alert('Access Restricted: Only Vendor accounts can access the Vendor Bids Portal.');
+        view = 'marketplace';
+      }
+      if (view === 'manage-rfqs' && state.role !== 'buyer') {
+        alert('Access Restricted: Only Buyer accounts can access the Business RFQ Portal.');
+        view = 'marketplace';
+      }
+
+      state.view = view;
+      document.getElementById('viewMarketplace').classList.toggle('hidden', view !== 'marketplace');
+      document.getElementById('viewManageRfqs').classList.toggle('hidden', view !== 'manage-rfqs');
+      document.getElementById('viewManageBids').classList.toggle('hidden', view !== 'manage-bids');
+      document.getElementById('viewProfile').classList.toggle('hidden', view !== 'profile');
+      document.getElementById('viewRfqDetail').classList.toggle('hidden', view !== 'rfq-detail');
+
+      document.getElementById('navMarketplace').className = (view === 'marketplace' || view === 'rfq-detail')
+        ? 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 bg-sky-600 text-white shadow-md shadow-sky-600/30'
+        : 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white';
+
+      document.getElementById('navManageRfqs').className = view === 'manage-rfqs'
+        ? 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 bg-sky-600 text-white shadow-md shadow-sky-600/30'
+        : 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white';
+
+      document.getElementById('navManageBids').className = view === 'manage-bids'
+        ? 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 bg-amber-600 text-white shadow-md shadow-amber-600/30'
+        : 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white';
+
+      document.getElementById('navProfile').className = view === 'profile'
+        ? 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 bg-sky-600 text-white shadow-md shadow-sky-600/30'
+        : 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 text-slate-400 hover:text-white';
+
+      render();
+    }
+
+    function setRole(role) {
+      state.role = role;
+
+      document.getElementById('btnSwitchBuyer').className = role === 'buyer' 
+        ? 'px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-sky-600 text-white shadow-md shadow-sky-600/30' 
+        : 'px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 text-slate-400 hover:text-white';
+      
+      document.getElementById('btnSwitchVendor').className = role === 'vendor' 
+        ? 'px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-amber-600 text-white shadow-md shadow-amber-600/30' 
+        : 'px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 text-slate-400 hover:text-white';
+
+      document.getElementById('navManageRfqs').classList.toggle('hidden', role !== 'buyer');
+      document.getElementById('navManageBids').classList.toggle('hidden', role !== 'vendor');
+
+      document.getElementById('buyerControls').classList.toggle('hidden', role !== 'buyer');
+      document.getElementById('vendorControls').classList.toggle('hidden', role !== 'vendor');
+      document.getElementById('buyerProfileFormContainer').classList.toggle('hidden', role !== 'buyer');
+      document.getElementById('vendorProfileFormContainer').classList.toggle('hidden', role !== 'vendor');
+
+      document.getElementById('roleIndicatorBadge').textContent = `Active Mode: ${role === 'buyer' ? 'Buyer Portal' : 'Vendor Marketplace'}`;
+
+      if (role === 'vendor' && state.view === 'manage-rfqs') {
+        setActiveView('marketplace');
+      } else if (role === 'buyer' && state.view === 'manage-bids') {
+        setActiveView('marketplace');
+      } else {
+        render();
+      }
+    }
+
+    function syncProfileForms() {
+      document.getElementById('buyerProfileCompany').value = state.buyerProfile.company;
+      document.getElementById('buyerProfileIndustry').value = state.buyerProfile.industry;
+      document.getElementById('buyerProfileContact').value = state.buyerProfile.contact;
+      document.getElementById('buyerProfileEmail').value = state.buyerProfile.email;
+      document.getElementById('buyerProfilePhone').value = state.buyerProfile.phone;
+      document.getElementById('buyerProfileLocation').value = state.buyerProfile.location;
+      document.getElementById('buyerProfileOverview').value = state.buyerProfile.overview;
+      document.getElementById('activeBuyerNameDisplay').textContent = state.buyerProfile.company;
+      document.getElementById('portalCompanyName').textContent = state.buyerProfile.company;
+
+      document.getElementById('vendorProfileCompany').value = state.vendorProfile.company;
+      document.getElementById('vendorProfileSpecialty').value = state.vendorProfile.specialty;
+      document.getElementById('vendorProfileContact').value = state.vendorProfile.contact;
+      document.getElementById('vendorProfileEmail').value = state.vendorProfile.email;
+      document.getElementById('vendorProfilePhone').value = state.vendorProfile.phone;
+      document.getElementById('vendorProfileCertifications').value = state.vendorProfile.certifications;
+      document.getElementById('vendorProfileCoverage').value = state.vendorProfile.coverage;
+      document.getElementById('vendorProfileBio').value = state.vendorProfile.bio;
+      document.getElementById('activeVendorNameDisplay').textContent = state.vendorProfile.company;
+      document.getElementById('vendorPortalCompanyName').textContent = state.vendorProfile.company;
+
+      const avatar = document.getElementById('profileAvatarBadge');
+      const headerName = document.getElementById('profileHeaderName');
+      const headerIndustry = document.getElementById('profileHeaderIndustry');
+      const roleBadge = document.getElementById('profileRoleBadge');
+
+      if (state.role === 'buyer') {
+        avatar.className = 'w-16 h-16 rounded-2xl bg-sky-600 text-white flex items-center justify-center text-2xl font-black shadow-md';
+        avatar.innerHTML = '<i class="fa-solid fa-building"></i>';
+        headerName.textContent = state.buyerProfile.company;
+        headerIndustry.innerHTML = `<i class="fa-solid fa-industry me-1"></i>${state.buyerProfile.industry}`;
+        roleBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase';
+        roleBadge.textContent = 'Buyer Account';
+      } else {
+        avatar.className = 'w-16 h-16 rounded-2xl bg-amber-600 text-white flex items-center justify-center text-2xl font-black shadow-md';
+        avatar.innerHTML = '<i class="fa-solid fa-store"></i>';
+        headerName.textContent = state.vendorProfile.company;
+        headerIndustry.innerHTML = `<i class="fa-solid fa-award me-1"></i>${state.vendorProfile.specialty}`;
+        roleBadge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase';
+        roleBadge.textContent = 'Vendor Account';
+      }
+
+      document.getElementById('headerAuthButtonText').textContent = state.isLoggedIn ? 'Account Settings' : 'Sign In / Register';
+    }
+
+    function openEditModal(rfqId) {
+      if (state.role !== 'buyer') return;
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (!targetRfq) return;
+
+      document.getElementById('editRfqId').value = targetRfq.id;
+      document.getElementById('editRfqTitle').value = targetRfq.title;
+      document.getElementById('editRfqCategory').value = targetRfq.category;
+      document.getElementById('editRfqLocation').value = targetRfq.location || '';
+      document.getElementById('editRfqBudget').value = targetRfq.budget;
+      document.getElementById('editRfqClosingDate').value = targetRfq.closingDate || '2026-09-30';
+      document.getElementById('editRfqDesc').value = targetRfq.desc;
+      document.getElementById('editRfqAttachment').value = targetRfq.attachment || '';
+
+      toggleEditRfqModal(true);
+    }
+
+    function handleSaveRfqEdit(e) {
+      e.preventDefault();
+      const id = document.getElementById('editRfqId').value;
+      const targetRfq = state.rfqs.find(r => r.id === id);
+
+      if (targetRfq) {
+        const catName = document.getElementById('editRfqCategory').value;
+        const categoryObj = CATEGORIES.find(c => c.name === catName) || { icon: '📦' };
+
+        targetRfq.title = document.getElementById('editRfqTitle').value;
+        targetRfq.category = catName;
+        targetRfq.categoryIcon = categoryObj.icon;
+        targetRfq.location = document.getElementById('editRfqLocation').value;
+        targetRfq.budget = parseFloat(document.getElementById('editRfqBudget').value);
+        targetRfq.closingDate = document.getElementById('editRfqClosingDate').value;
+        targetRfq.desc = document.getElementById('editRfqDesc').value;
+        targetRfq.attachment = document.getElementById('editRfqAttachment').value || null;
+
+        toggleEditRfqModal(false);
+        render();
+      }
+    }
+
+    function deleteRfq(rfqId) {
+      if (confirm(`Are you sure you want to withdraw/delete ${rfqId}?`)) {
+        state.rfqs = state.rfqs.filter(r => r.id !== rfqId);
+        if (state.view === 'rfq-detail') {
+          setActiveView('marketplace');
+        } else {
+          render();
+        }
+      }
+    }
+
+    function openEditBidModal(rfqId, bidId) {
+      if (state.role !== 'vendor') return;
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (!targetRfq) return;
+      const targetBid = targetRfq.bids.find(b => b.id === bidId);
+      if (!targetBid) return;
+
+      document.getElementById('editBidRfqId').value = rfqId;
+      document.getElementById('editBidId').value = bidId;
+      document.getElementById('editBidRfqTitleDisplay').value = `${rfqId} - ${targetRfq.title}`;
+      document.getElementById('editBidAmount').value = targetBid.amount;
+      document.getElementById('editBidNotes').value = targetBid.notes;
+      document.getElementById('editBidAttachment').value = targetBid.attachment || '';
+
+      toggleEditBidModal(true);
+    }
+
+    function handleSaveBidEdit(e) {
+      e.preventDefault();
+      const rfqId = document.getElementById('editBidRfqId').value;
+      const bidId = document.getElementById('editBidId').value;
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+
+      if (targetRfq) {
+        const targetBid = targetRfq.bids.find(b => b.id === bidId);
+        if (targetBid) {
+          targetBid.amount = parseFloat(document.getElementById('editBidAmount').value);
+          targetBid.notes = document.getElementById('editBidNotes').value;
+          targetBid.attachment = document.getElementById('editBidAttachment').value || null;
+          targetBid.date = 'Updated Just Now';
+
+          toggleEditBidModal(false);
+          render();
+        }
+      }
+    }
+
+    function deleteBid(rfqId, bidId) {
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+      if (targetRfq) {
+        targetRfq.bids = targetRfq.bids.filter(b => b.id !== bidId);
+        render();
+      }
+    }
+
+    function renderPortalRfqs() {
+      if (state.role !== 'buyer') return;
+
+      const myCompany = state.buyerProfile.company.toLowerCase();
+      const searchTerm = (document.getElementById('portalSearch')?.value || '').toLowerCase();
+
+      const myRfqs = state.rfqs.filter(r => 
+        r.buyer.toLowerCase() === myCompany && 
+        (r.title.toLowerCase().includes(searchTerm) || r.id.toLowerCase().includes(searchTerm) || (r.location && r.location.toLowerCase().includes(searchTerm)))
+      );
+
+      const portalContainer = document.getElementById('portalRfqList');
+      const totalBudget = myRfqs.reduce((acc, r) => acc + r.budget, 0);
+      const totalBids = myRfqs.reduce((acc, r) => acc + r.bids.length, 0);
+      
+      document.getElementById('portalTotalRfqs').textContent = myRfqs.length;
+      document.getElementById('portalTotalBudget').textContent = `$${totalBudget.toLocaleString()}`;
+      document.getElementById('portalTotalBids').textContent = totalBids;
+      document.getElementById('portalLowestBidRatio').textContent = myRfqs.length > 0 ? `${Math.round((totalBids / myRfqs.length) * 100)}%` : '0%';
+
+      const navBadge = document.getElementById('buyerPortalNavBadge');
+      if (state.unreadIncomingBidsCount > 0) {
+        navBadge.classList.remove('hidden');
+        navBadge.textContent = state.unreadIncomingBidsCount;
+      } else {
+        navBadge.classList.add('hidden');
+      }
+
+      if (myRfqs.length === 0) {
+        portalContainer.innerHTML = `
+          <div class="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+            <i class="fa-solid fa-folder-open text-3xl mb-2"></i>
+            <p class="text-xs">No active RFQs posted under ${state.buyerProfile.company}.</p>
+          </div>
+        `;
+        return;
+      }
+
+      portalContainer.innerHTML = myRfqs.map(rfq => {
+        const bidsSummary = rfq.bids.map(b => {
+          let awardBadgeHtml = '';
+          if (b.awardStatus === 'awarded') {
+            awardBadgeHtml = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-trophy me-1"></i>Awarded</span>`;
+          } else if (b.awardStatus === 'no-award') {
+            awardBadgeHtml = `<span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-xmark me-1"></i>No Award</span>`;
+          }
+
+          const responsesSummary = (b.buyerResponses || []).map(resp => {
+            const isFromVendor = resp.sender === 'vendor';
+            const bgClass = isFromVendor ? 'bg-amber-50 border-amber-200 text-amber-900 ml-4' : 'bg-sky-50 border-sky-200 text-sky-900 ml-4';
+            const iconClass = isFromVendor ? 'fa-store text-amber-600' : 'fa-reply text-sky-600';
+            const labelText = isFromVendor ? `Vendor Reply (${resp.vendor})` : `Buyer Response (${resp.buyer})`;
+
+            return `
+              <div class="border ${bgClass} p-2 rounded-lg text-[11px] mt-1">
+                <span class="font-bold"><i class="fa-solid ${iconClass} me-1"></i>${labelText}:</span> ${resp.message}
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="bg-white border border-slate-200 p-3 rounded-xl space-y-2 text-xs">
+              <div class="flex justify-between items-center">
+                <div class="space-y-1">
+                  <div class="flex items-center space-x-2">
+                    <span class="font-bold text-slate-900">${b.vendor}</span>
+                    ${awardBadgeHtml}
+                  </div>
+                  <p class="text-[11px] text-slate-500 line-clamp-1">${b.notes}</p>
+                  ${b.attachment ? `<span class="text-[10px] text-amber-800 font-bold block"><i class="fa-solid fa-file-pdf me-1"></i>${b.attachment}</span>` : ''}
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span class="font-mono font-bold text-emerald-700">$${b.amount.toLocaleString()}</span>
+                  <div class="flex items-center space-x-1">
+                    <button onclick="event.stopPropagation(); setBidAwardStatus('${rfq.id}', '${b.id}', 'awarded')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] rounded transition" title="Award">Award</button>
+                    <button onclick="event.stopPropagation(); setBidAwardStatus('${rfq.id}', '${b.id}', 'no-award')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] rounded transition" title="No Award">No Award</button>
+                    <button onclick="event.stopPropagation(); openMessageVendorModal('${rfq.id}', '${b.id}')" class="px-2 py-1 bg-amber-50 border border-amber-200 hover:bg-amber-100 text-amber-800 font-bold text-[10px] rounded transition">Msg</button>
+                  </div>
+                </div>
+              </div>
+              ${responsesSummary}
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 cursor-pointer hover:border-sky-500 transition" onclick="viewRfqDetails('${rfq.id}')">
+            <div class="flex flex-wrap justify-between items-start gap-2">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-mono font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded">${rfq.id}</span>
+                  <span class="text-xs font-semibold text-slate-600">${rfq.categoryIcon} ${rfq.category}</span>
+                  <span class="text-xs font-semibold text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded"><i class="fa-solid fa-location-dot me-1 text-sky-600"></i>${rfq.location || 'Not Specified'}</span>
+                  <span class="text-xs font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded"><i class="fa-solid fa-calendar-days me-1 text-amber-600"></i>Closing: ${rfq.closingDate || 'TBD'}</span>
+                </div>
+                <h4 class="text-base font-bold text-slate-900 mt-1 hover:text-sky-600">${rfq.title}</h4>
+              </div>
+              
+              <div class="flex items-center space-x-2" onclick="event.stopPropagation()">
+                <button onclick="openEditModal('${rfq.id}')" class="px-3 py-1.5 bg-white border border-slate-300 hover:border-sky-600 text-slate-700 hover:text-sky-600 font-bold text-xs rounded-xl transition flex items-center space-x-1 shadow-sm">
+                  <i class="fa-solid fa-pen-to-square"></i><span>Edit</span>
+                </button>
+                <button onclick="deleteRfq('${rfq.id}')" class="px-3 py-1.5 bg-white border border-slate-300 hover:border-rose-600 text-slate-700 hover:text-rose-600 font-bold text-xs rounded-xl transition flex items-center space-x-1 shadow-sm">
+                  <i class="fa-solid fa-trash-can"></i><span>Delete</span>
+                </button>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">${rfq.desc}</p>
+
+            ${rfq.bids.length > 0 ? `
+              <div class="space-y-1.5 pt-1">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Direct Messages & Proposals (${rfq.bids.length}):</span>
+                <div class="space-y-1.5">${bidsSummary}</div>
+              </div>
+            ` : ''}
+
+            <div class="flex flex-wrap justify-between items-center text-xs pt-2 border-t border-slate-200 gap-2">
+              <div class="flex items-center space-x-4">
+                <span>Location: <strong class="text-slate-800 font-bold">${rfq.location || 'Not Specified'}</strong></span>
+                <span>Closing Date: <strong class="text-amber-700 font-bold">${rfq.closingDate || 'TBD'}</strong></span>
+                <span>Target Budget: <strong class="text-emerald-700 font-mono font-bold">$${rfq.budget.toLocaleString()}</strong></span>
+                <span>Submissions: <strong class="text-amber-700 font-bold">${rfq.bids.length}</strong></span>
+              </div>
+              ${rfq.attachment ? `<span class="text-sky-600 font-semibold flex items-center"><i class="fa-solid fa-paperclip me-1"></i>${rfq.attachment}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderVendorBidsPortal() {
+      if (state.role !== 'vendor') return;
+
+      const myVendor = state.vendorProfile.company.toLowerCase();
+      const searchTerm = (document.getElementById('vendorBidSearch')?.value || '').toLowerCase();
+
+      let myBidsList = [];
+      state.rfqs.forEach(rfq => {
+        rfq.bids.forEach(bid => {
+          if (bid.vendor.toLowerCase() === myVendor) {
+            if (rfq.title.toLowerCase().includes(searchTerm) || bid.id.toLowerCase().includes(searchTerm) || rfq.id.toLowerCase().includes(searchTerm) || (rfq.location && rfq.location.toLowerCase().includes(searchTerm))) {
+              myBidsList.push({
+                rfqId: rfq.id,
+                rfqTitle: rfq.title,
+                rfqLocation: rfq.location,
+                rfqClosingDate: rfq.closingDate,
+                rfqBudget: rfq.budget,
+                rfqCategory: rfq.category,
+                rfqIcon: rfq.categoryIcon,
+                buyer: rfq.buyer,
+                ...bid
+              });
+            }
+          }
+        });
+      });
+
+      const vendorContainer = document.getElementById('vendorBidList');
+      const totalPipeline = myBidsList.reduce((acc, b) => acc + b.amount, 0);
+      const avgBid = myBidsList.length > 0 ? totalPipeline / myBidsList.length : 0;
+
+      document.getElementById('vendorTotalBids').textContent = myBidsList.length;
+      document.getElementById('vendorTotalPipeline').textContent = `$${totalPipeline.toLocaleString()}`;
+      document.getElementById('vendorAvgBid').textContent = `$${Math.round(avgBid).toLocaleString()}`;
+      document.getElementById('vendorSubStateText').textContent = state.vendorSubscribed ? 'Active ($39.95)' : 'Canceled / Inactive';
+
+      const navBadge = document.getElementById('vendorPortalNavBadge');
+      if (state.unreadVendorFeedbackCount > 0) {
+        navBadge.classList.remove('hidden');
+        navBadge.textContent = state.unreadVendorFeedbackCount;
+      } else {
+        navBadge.classList.add('hidden');
+      }
+
+      const portalSubBtn = document.getElementById('portalSubscribeBtn');
+      const portalCancelBtn = document.getElementById('portalCancelSubBtn');
+      if (portalSubBtn && portalCancelBtn) {
+        portalSubBtn.classList.toggle('hidden', state.vendorSubscribed);
+        portalCancelBtn.classList.toggle('hidden', !state.vendorSubscribed);
+      }
+
+      if (myBidsList.length === 0) {
+        vendorContainer.innerHTML = `
+          <div class="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+            <i class="fa-solid fa-gavel text-3xl mb-2"></i>
+            <p class="text-xs">No active bids or proposals submitted under ${state.vendorProfile.company}.</p>
+          </div>
+        `;
+        return;
+      }
+
+      vendorContainer.innerHTML = myBidsList.map(bid => {
+        let awardStatusNotice = '';
+        if (bid.awardStatus === 'awarded') {
+          awardStatusNotice = `<div class="bg-emerald-100 border border-emerald-300 text-emerald-900 p-2.5 rounded-xl text-xs font-bold flex items-center mb-2"><i class="fa-solid fa-trophy text-emerald-600 me-2"></i>Contract Awarded to You!</div>`;
+        } else if (bid.awardStatus === 'no-award') {
+          awardStatusNotice = `<div class="bg-rose-50 border border-rose-200 text-rose-900 p-2.5 rounded-xl text-xs font-medium flex items-center mb-2"><i class="fa-solid fa-circle-xmark text-rose-600 me-2"></i>Marked as No Award</div>`;
+        }
+
+        const feedbackHtml = (bid.buyerResponses || []).map(resp => {
+          const isFromVendor = resp.sender === 'vendor';
+          const bgClass = isFromVendor ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-sky-50 border-sky-200 text-sky-900';
+          const iconClass = isFromVendor ? 'fa-store text-amber-600' : 'fa-reply text-sky-600';
+          const labelText = isFromVendor ? `Your Reply (${resp.vendor})` : `Buyer Feedback from ${resp.buyer}`;
+
+          return `
+            <div class="border ${bgClass} rounded-xl p-3 space-y-1">
+              <div class="flex justify-between items-center text-[11px]">
+                <span class="font-bold"><i class="fa-solid ${iconClass} me-1"></i>${labelText}</span>
+                <span class="text-slate-400">${resp.date}</span>
+              </div>
+              <p class="text-xs font-medium">${resp.message}</p>
+              ${resp.attachment ? `<span class="text-[11px] font-bold block mt-1"><i class="fa-solid fa-file-pdf me-1"></i>Attached: ${resp.attachment}</span>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        const lastResponse = (bid.buyerResponses || []).length > 0 ? bid.buyerResponses[bid.buyerResponses.length - 1] : null;
+        const showRespondButton = lastResponse && lastResponse.sender === 'buyer';
+
+        return `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 cursor-pointer hover:border-amber-500 transition" onclick="viewRfqDetails('${bid.rfqId}')">
+            ${awardStatusNotice}
+            <div class="flex flex-wrap justify-between items-start gap-2">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-mono font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded">${bid.id}</span>
+                  <span class="text-xs font-semibold text-slate-600">${bid.rfqIcon} ${bid.rfqCategory}</span>
+                  <span class="text-xs font-semibold text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded"><i class="fa-solid fa-location-dot me-1 text-amber-600"></i>${bid.rfqLocation || 'Not Specified'}</span>
+                  <span class="text-xs font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded"><i class="fa-solid fa-calendar-days me-1 text-amber-600"></i>Closing: ${bid.rfqClosingDate || 'TBD'}</span>
+                </div>
+                <h4 class="text-base font-bold text-slate-900 mt-1 hover:text-amber-600">${bid.rfqTitle} <span class="text-xs font-mono text-slate-400">(${bid.rfqId})</span></h4>
+                <p class="text-xs text-slate-500"><i class="fa-solid fa-building me-1 text-slate-400"></i>Buyer: ${bid.buyer}</p>
+              </div>
+
+              <div class="flex items-center space-x-2" onclick="event.stopPropagation()">
+                <button onclick="openEditBidModal('${bid.rfqId}', '${bid.id}')" class="px-3 py-1.5 bg-white border border-slate-300 hover:border-amber-600 text-slate-700 hover:text-amber-600 font-bold text-xs rounded-xl transition flex items-center space-x-1 shadow-sm">
+                  <i class="fa-solid fa-pen-to-square"></i><span>Edit</span>
+                </button>
+                <button onclick="deleteBid('${bid.rfqId}', '${bid.id}')" class="px-3 py-1.5 bg-white border border-slate-300 hover:border-rose-600 text-slate-700 hover:text-rose-600 font-bold text-xs rounded-xl transition flex items-center space-x-1 shadow-sm">
+                  <i class="fa-solid fa-trash-can"></i><span>Withdraw</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 p-3 rounded-xl space-y-1">
+              <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Your Proposal Scope & Pricing</span>
+              <div class="flex justify-between items-center">
+                <p class="text-xs text-slate-700 font-medium">${bid.notes}</p>
+                <span class="text-lg font-black text-emerald-700 font-mono">$${bid.amount.toLocaleString()}</span>
+              </div>
+              ${bid.attachment ? `<span class="text-[11px] font-bold text-amber-800 block mt-1"><i class="fa-solid fa-file-pdf me-1"></i>Attached: ${bid.attachment}</span>` : ''}
+            </div>
+
+            ${feedbackHtml ? `
+              <div class="space-y-2 pt-1">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider"><i class="fa-solid fa-comments text-sky-600 me-1"></i>Buyer Communications & Responses:</span>
+                ${feedbackHtml}
+              </div>
+            ` : ''}
+
+            ${showRespondButton ? `
+              <div class="pt-2 flex justify-end" onclick="event.stopPropagation()">
+                <button onclick="openVendorReplyModal('${bid.rfqId}', '${bid.id}')" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+                  <i class="fa-solid fa-reply"></i><span>Respond to Buyer Message</span>
+                </button>
+              </div>
+            ` : ''}
+
+            <div class="flex justify-between items-center text-[11px] text-slate-400 pt-1">
+              <span>Location: <strong class="text-slate-700">${bid.rfqLocation || 'Not Specified'}</strong> | Closing Date: <strong class="text-amber-700">${bid.rfqClosingDate || 'TBD'}</strong> | Target Budget: $${bid.rfqBudget.toLocaleString()}</span>
+              <span>Last Modified: ${bid.date}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleSaveBuyerProfile(e) {
+      e.preventDefault();
+      state.buyerProfile = {
+        company: document.getElementById('buyerProfileCompany').value,
+        industry: document.getElementById('buyerProfileIndustry').value,
+        contact: document.getElementById('buyerProfileContact').value,
+        email: document.getElementById('buyerProfileEmail').value,
+        phone: document.getElementById('buyerProfilePhone').value,
+        location: document.getElementById('buyerProfileLocation').value,
+        overview: document.getElementById('buyerProfileOverview').value
+      };
+      state.buyerHasProfile = true;
+      alert('Buyer Profile Saved & Linked!');
+      setActiveView('marketplace');
+    }
+
+    function handleSaveVendorProfile(e) {
+      e.preventDefault();
+      state.vendorProfile = {
+        company: document.getElementById('vendorProfileCompany').value,
+        specialty: document.getElementById('vendorProfileSpecialty').value,
+        contact: document.getElementById('vendorProfileContact').value,
+        email: document.getElementById('vendorProfileEmail').value,
+        phone: document.getElementById('vendorProfilePhone').value,
+        certifications: document.getElementById('vendorProfileCertifications').value,
+        coverage: document.getElementById('vendorProfileCoverage').value,
+        bio: document.getElementById('vendorProfileBio').value
+      };
+      alert('Vendor Profile Updated & Linked!');
+      render();
+    }
+
+    function toggleSubscriptionState() {
+      state.vendorSubscribed = !state.vendorSubscribed;
+      render();
+    }
+
+    function clearFilters() {
+      document.getElementById('filterKeyword').value = '';
+      document.getElementById('filterCategory').value = 'ALL';
+      render();
+    }
+
+    function handlePostRfq(e) {
+      e.preventDefault();
+      if (state.role !== 'buyer') {
+        alert('Only buyers can post RFQs.');
+        return;
+      }
+
+      const selectedCatName = document.getElementById('inputCategory').value;
+      const categoryObj = CATEGORIES.find(c => c.name === selectedCatName) || { icon: '📦' };
+      const fileInput = document.getElementById('inputRfqDocFile');
+      const attachedFileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+      const newRfq = {
+        id: 'RFQ-' + (Math.floor(Math.random() * 90000) + 10000),
+        title: document.getElementById('inputTitle').value,
+        category: selectedCatName,
+        categoryIcon: categoryObj.icon,
+        location: document.getElementById('inputLocation').value,
+        budget: parseFloat(document.getElementById('inputBudget').value),
+        closingDate: document.getElementById('inputClosingDate').value,
+        desc: document.getElementById('inputDesc').value,
+        buyer: state.buyerProfile.company,
+        buyerEmail: state.buyerProfile.email,
+        buyerPhone: state.buyerProfile.phone,
+        attachment: attachedFileName,
+        bids: []
+      };
+
+      state.rfqs.unshift(newRfq);
+      document.getElementById('inputTitle').value = '';
+      document.getElementById('inputLocation').value = '';
+      document.getElementById('inputBudget').value = '';
+      document.getElementById('inputClosingDate').value = '';
+      document.getElementById('inputDesc').value = '';
+      fileInput.value = '';
+      document.getElementById('inputRfqDocFileName').textContent = 'Click to browse or drag & drop RFQ document';
+      render();
+    }
+
+    function handlePlaceBid(e) {
+      e.preventDefault();
+      if (state.role !== 'vendor') {
+        alert('Only vendors can place bids.');
+        return;
+      }
+
+      const rfqId = document.getElementById('inputRfqTarget').value;
+      const targetRfq = state.rfqs.find(r => r.id === rfqId);
+
+      if (targetRfq) {
+        const bidAmount = parseFloat(document.getElementById('inputBidAmount').value);
+        const bidNotes = document.getElementById('inputBidNotes').value;
+        
+        const fileInput = document.getElementById('inputBidDocFile');
+        const bidDoc = fileInput.files.length > 0 ? fileInput.files[0].name : (document.getElementById('inputBidDoc')?.value || null);
+
+        const newBidEntry = {
+          id: 'BID-' + (Math.floor(Math.random() * 9000) + 1000),
+          vendor: state.vendorProfile.company,
+          vendorEmail: state.vendorProfile.email,
+          amount: bidAmount,
+          notes: bidNotes,
+          attachment: bidDoc,
+          date: 'Just now',
+          awardStatus: 'pending',
+          buyerResponses: []
+        };
+
+        targetRfq.bids.unshift(newBidEntry);
+
+        document.getElementById('inputBidAmount').value = '';
+        document.getElementById('inputBidNotes').value = '';
+        fileInput.value = '';
+        document.getElementById('inputBidDocFileName').textContent = 'Click to browse or drag & drop bid documents';
+
+        if (targetRfq.buyer.toLowerCase() === state.buyerProfile.company.toLowerCase()) {
+          state.unreadIncomingBidsCount++;
+          state.latestIncomingSubmission = {
+            type: 'Competitive Bid Proposal',
+            rfqId: targetRfq.id,
+            rfqTitle: targetRfq.title,
+            vendor: state.vendorProfile.company,
+            amount: bidAmount,
+            notes: bidNotes,
+            attachment: bidDoc,
+            isFeedback: false
+          };
+          showPopupNotification(state.latestIncomingSubmission);
+        } else {
+          alert('Bid submitted successfully!');
+        }
+
+        render();
+      }
+    }
+
+    function render() {
+      syncProfileForms();
+
+      if (!state.isLoggedIn) {
+        toggleAuthModal(true);
+        return;
+      }
+
+      if (state.view === 'rfq-detail') {
+        renderRfqDetailView();
+        return;
+      }
+
+      document.getElementById('buyerProfileGateNotice').classList.toggle('hidden', state.buyerHasProfile);
+
+      const badge = document.getElementById('subStatusBadge');
+      badge.className = state.vendorSubscribed
+        ? 'flex items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200'
+        : 'flex items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-800 border border-emerald-200';
+      badge.innerHTML = state.vendorSubscribed 
+        ? '<i class="fa-solid fa-key"></i><span>$39.95/mo Sub Active</span>' 
+        : '<i class="fa-solid fa-lock"></i><span>Canceled / Locked</span>';
+
+      document.getElementById('vendorGateNotice').classList.toggle('hidden', state.vendorSubscribed);
+      document.getElementById('btnSubmitBid').disabled = !state.vendorSubscribed;
+
+      const profileSubContainer = document.getElementById('profileSubBadgeContainer');
+      const profileSubscribeBtn = document.getElementById('profileSubscribeBtn');
+      const cancelSubBtn = document.getElementById('cancelSubBtn');
+
+      if (profileSubContainer) {
+        profileSubContainer.innerHTML = state.vendorSubscribed
+          ? '<span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase">Active ($39.95/mo)</span>'
+          : '<span class="text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 uppercase">Canceled / Inactive</span>';
+      }
+      if (profileSubscribeBtn && cancelSubBtn) {
+        profileSubscribeBtn.classList.toggle('hidden', state.vendorSubscribed);
+        cancelSubBtn.classList.toggle('hidden', !state.vendorSubscribed);
+      }
+
+      const keyword = (document.getElementById('filterKeyword')?.value || '').toLowerCase();
+      const selectedCat = document.getElementById('filterCategory')?.value || 'ALL';
+
+      const filteredRfqs = state.rfqs.filter(rfq => {
+        const matchesCategory = selectedCat === 'ALL' || rfq.category === selectedCat;
+        const matchesKeyword = rfq.title.toLowerCase().includes(keyword) || 
+                               rfq.desc.toLowerCase().includes(keyword) ||
+                               (rfq.location && rfq.location.toLowerCase().includes(keyword));
+        return matchesCategory && matchesKeyword;
+      });
+
+      const selectTarget = document.getElementById('inputRfqTarget');
+      const categoryRfqs = selectedCat === 'ALL' 
+        ? state.rfqs.slice(0, 50)
+        : state.rfqs.filter(r => r.category === selectedCat);
+
+      if (categoryRfqs.length === 0) {
+        selectTarget.innerHTML = `<option value="">No active RFQs in selected category</option>`;
+      } else {
+        selectTarget.innerHTML = categoryRfqs.map(r => 
+          `<option value="${r.id}">${r.id} - ${r.title} (${r.location}) [Closing: ${r.closingDate}] [Max: $${r.budget.toLocaleString()}]</option>`
+        ).join('');
+      }
+
+      const feed = document.getElementById('rfqFeedContainer');
+      const displayList = filteredRfqs.slice(0, 30);
+
+      if (displayList.length === 0) {
+        feed.innerHTML = `<div class="p-12 text-center text-slate-500 bg-slate-50 rounded-3xl border border-slate-200"><i class="fa-solid fa-filter-circle-xmark text-4xl mb-3 text-slate-400"></i><p>No listings match your search criteria.</p></div>`;
+      } else {
+        feed.innerHTML = displayList.map(rfq => {
+          let submissionsPreviewHtml = '';
+
+          if (state.role === 'buyer') {
+            submissionsPreviewHtml = rfq.bids.map(b => {
+              let awardBadgeHtml = '';
+              if (b.awardStatus === 'awarded') {
+                awardBadgeHtml = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-trophy me-1"></i>Awarded</span>`;
+              } else if (b.awardStatus === 'no-award') {
+                awardBadgeHtml = `<span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-xmark me-1"></i>No Award</span>`;
+              }
+
+              return `
+                <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex justify-between items-center text-xs">
+                  <div class="space-y-1">
+                    <div class="flex items-center space-x-2">
+                      <div class="font-bold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-building me-1.5 text-slate-400"></i>${b.vendor}
+                      </div>
+                      ${awardBadgeHtml}
+                    </div>
+                    <p class="text-slate-600">${b.notes}</p>
+                    ${b.attachment ? `<span class="text-[10px] text-amber-800 font-bold block"><i class="fa-solid fa-file-pdf me-1"></i>${b.attachment}</span>` : ''}
+                  </div>
+
+                  <div class="text-right flex items-center space-x-3">
+                    <div>
+                      <span class="text-emerald-700 font-mono font-extrabold text-sm block">$${b.amount.toLocaleString()}</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                      <button onclick="event.stopPropagation(); setBidAwardStatus('${rfq.id}', '${b.id}', 'awarded')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] rounded transition">Award</button>
+                      <button onclick="event.stopPropagation(); setBidAwardStatus('${rfq.id}', '${b.id}', 'no-award')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] rounded transition">No Award</button>
+                      <button onclick="event.stopPropagation(); openMessageVendorModal('${rfq.id}', '${b.id}')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-lg transition flex items-center space-x-1 shadow-sm">
+                        <i class="fa-solid fa-paper-plane"></i><span>Msg</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          } else {
+            const myVendorName = state.vendorProfile.company.toLowerCase();
+            const myBidsOnThisRfq = rfq.bids.filter(b => b.vendor.toLowerCase() === myVendorName);
+
+            let myBidPreview = myBidsOnThisRfq.map(b => {
+              let awardStatusNotice = '';
+              if (b.awardStatus === 'awarded') {
+                awardStatusNotice = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full ml-2"><i class="fa-solid fa-trophy me-1"></i>Awarded to You</span>`;
+              } else if (b.awardStatus === 'no-award') {
+                awardStatusNotice = `<span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full ml-2"><i class="fa-solid fa-circle-xmark me-1"></i>No Award</span>`;
+              }
+
+              return `
+                <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl space-y-2 text-xs">
+                  <div class="flex justify-between items-center">
+                    <div class="space-y-1">
+                      <div class="flex items-center">
+                        <div class="font-bold text-slate-900 flex items-center">
+                          <i class="fa-solid fa-store me-1.5 text-amber-600"></i>Your Proposal <span class="ms-2 text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-full">Active</span>
+                        </div>
+                        ${awardStatusNotice}
+                      </div>
+                      <p class="text-slate-700">${b.notes}</p>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-emerald-700 font-mono font-extrabold text-sm block">$${b.amount.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  ${(b.buyerResponses || []).length > 0 ? `<div class="text-[11px] font-bold text-sky-800 bg-sky-50 p-2 rounded-lg"><i class="fa-solid fa-reply me-1"></i>${b.buyerResponses.length} Buyer Response(s) in Bids Portal</div>` : ''}
+                </div>
+              `;
+            }).join('');
+
+            let blindCountPreview = `
+              <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl flex justify-between items-center text-xs text-slate-600">
+                <span class="flex items-center"><i class="fa-solid fa-shield-halved text-sky-600 me-2"></i>Sealed Competitive Market</span>
+                <span class="font-bold text-amber-600 font-mono">${rfq.bids.length} Proposal(s) Submitted</span>
+              </div>
+            `;
+
+            submissionsPreviewHtml = myBidPreview + blindCountPreview;
+          }
+
+          return `
+            <div onclick="viewRfqDetails('${rfq.id}')" class="bg-white border border-slate-200 rounded-3xl p-5 space-y-4 hover:border-sky-500 hover:shadow-md cursor-pointer transition shadow-sm group">
+              <div class="flex justify-between items-start">
+                <div class="space-y-1">
+                  <div class="flex items-center space-x-2">
+                    <span class="text-xs font-semibold text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-full inline-flex items-center space-x-1">
+                      <span>${rfq.categoryIcon}</span> <span>${rfq.category}</span>
+                    </span>
+                    <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full inline-flex items-center">
+                      <i class="fa-solid fa-location-dot me-1 text-sky-600"></i>${rfq.location || 'Not Specified'}
+                    </span>
+                    <span class="text-xs font-semibold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full inline-flex items-center">
+                      <i class="fa-solid fa-calendar-days me-1 text-amber-600"></i>Closing: ${rfq.closingDate || 'TBD'}
+                    </span>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-900 mt-1 group-hover:text-sky-600 transition flex items-center">
+                    <span>${rfq.title}</span>
+                    <i class="fa-solid fa-arrow-right-long text-sky-500 text-sm ms-2 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                  </h3>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                  <div class="text-right bg-slate-50 border border-slate-200 px-3 py-2 rounded-2xl group-hover:bg-sky-50 transition">
+                    <span class="text-[10px] text-slate-500 uppercase font-bold block">Target Budget</span>
+                    <span class="text-lg font-extrabold text-emerald-700 font-mono">$${rfq.budget.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">${rfq.desc}</p>
+
+              ${rfq.attachment ? `<span class="text-xs text-sky-600 font-semibold inline-flex items-center"><i class="fa-solid fa-paperclip me-1"></i>Attachment: ${rfq.attachment}</span>` : ''}
+
+              <div class="pt-3 border-t border-slate-100 space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-bold text-slate-700 flex items-center"><i class="fa-solid fa-gavel me-1.5 text-amber-600"></i>Proposals Submitted (${rfq.bids.length})</span>
+                  <span class="text-sky-600 font-bold group-hover:underline text-[11px] flex items-center">View Full Details & Specs <i class="fa-solid fa-chevron-right ms-1 text-[10px]"></i></span>
+                </div>
+                <div class="space-y-2">${submissionsPreviewHtml || '<p class="text-xs text-slate-400 italic">No vendor submissions yet.</p>'}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      renderPortalRfqs();
+      renderVendorBidsPortal();
+
+      document.getElementById('statRfqCount').textContent = '1,241,890';
+      document.getElementById('statBidCount').textContent = '5,890,120';
+    }
+
+    populateCategoryDropdowns();
+    generateBulkRfqs();
+    setAuthType('buyer');
+    render();
+  </script>
+</body>
+</html>
