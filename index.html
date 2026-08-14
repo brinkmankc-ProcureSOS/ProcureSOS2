@@ -726,7 +726,7 @@
 
                 <h3 style="color: #0f172a; margin-top: 1.25rem;">Limitation of Liability for User Data</h3>
                 <p>ProcureSOS and its owners are not responsible for any user data entered on the website.</p>
-                <p>All data entered on the website is entered exclusively by users of the website[cite: 8].</p>
+                <p>All data entered on the website is entered exclusively by users of the website.</p>
                 <p>ProcureSOS and its owners hold no responsibility or liability for the accuracy, completeness, or reliability of this data.</p>
 
                 <h3 style="color: #0f172a; margin-top: 1.25rem;">User Data and Privacy</h3>
@@ -760,104 +760,96 @@
 </footer>
 
 <script>
-    // Initialize Supabase Client with your credentials[cite: 5, 6, 7]
-    const SUPABASE_URL = 'https://asptflxjowmdbvqsutuf.supabase.co';[cite: 5, 7]
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcHRmbHhqb3dtZGJ2cXN1dHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjQ4ODEsImV4cCI6MjEwMjMwMDg4MX0.nT141S2aJGl5CW7Fs8jw0eYfdJxn6_Y1BlbvnpZFFxM';[cite: 5, 7]
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);[cite: 5, 7]
+    // Initialize Supabase Client with your credentials
+    const SUPABASE_URL = 'https://asptflxjowmdbvqsutuf.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcHRmbHhqb3dtZGJ2cXN1dHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjQ4ODEsImV4cCI6MjEwMjMwMDg4MX0.nT141S2aJGl5CW7Fs8jw0eYfdJxn6_Y1BlbvnpZFFxM';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let rfqs = [];[cite: 7]
+    let rfqs = [];
 
-    // Load projects from Supabase database on startup[cite: 7]
-    async function fetchRFQs() {[cite: 7]
-        try {[cite: 7]
-            const { data, error } = await supabaseClient[cite: 7]
-                .from('rfqs') // Ensure your table name matches your Supabase schema (e.g., 'rfqs' or 'projects')[cite: 7]
-                .select('*')[cite: 7]
-                .order('id', { ascending: false });[cite: 7]
+    // Load projects from Supabase database on startup
+    async function fetchRFQs() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('rfqs') 
+                .select('*')
+                .order('id', { ascending: false });
 
-            if (error) throw error;[cite: 7]
+            if (error) throw error;
             
-            rfqs = data && data.length > 0 ? data : getFallbackMockData();[cite: 7]
-        } catch (err) {[cite: 7]
-            console.warn('Falling back to localStorage due to database connection:', err);[cite: 7]
-            rfqs = JSON.parse(localStorage.getItem('procuresos_rfqs')) || getFallbackMockData();[cite: 7]
-        }[cite: 7]
+            rfqs = data && data.length > 0 ? data : getFallbackMockData();
+        } catch (err) {
+            console.warn('Falling back to localStorage due to database connection:', err);
+            rfqs = JSON.parse(localStorage.getItem('procuresos_rfqs')) || getFallbackMockData();
+        }
         
-        if (typeof renderRFQs === 'function') {[cite: 7]
-            renderRFQs();[cite: 7]
-        }[cite: 7]
-    }[cite: 7]
+        if (typeof renderRFQs === 'function') {
+            renderRFQs();
+        }
+    }
 
-    function getFallbackMockData() {[cite: 7]
-        return [[cite: 7]
-            {[cite: 7]
-                id: 1,[cite: 7]
-                title: "Industrial Grade Valve Procurement",[cite: 7]
-                buyer: "Apex Manufacturing",[cite: 7]
-                category: "Hardware",[cite: 7]
-                budget: "$45,000",[cite: 7]
-                deadline: "2026-09-15",[cite: 7]
-                status: "Open"[cite: 7]
-            }[cite: 7]
-        ];[cite: 7]
-    }[cite: 7]
+    function getFallbackMockData() {
+        return [
+            {
+                id: 1,
+                title: "Industrial Grade Valve Procurement",
+                buyer: "Apex Manufacturing",
+                email: "contact@apexmfg.com",
+                category: "Hardware",
+                location: "Houston, TX",
+                budget: "$45,000",
+                timeline: "Immediate / Urgent",
+                deadline: "2026-09-15",
+                description: "Looking for industrial grade valves for manufacturing plant overhaul.",
+                status: "Open"
+            }
+        ];
+    }
 
-    // Trigger load on page load[cite: 7]
-    document.addEventListener('DOMContentLoaded', fetchRFQs);[cite: 7]
+    document.addEventListener('DOMContentLoaded', fetchRFQs);
 
-    async function handlePostRFQ(event) {[cite: 7]
-        if (event) event.preventDefault();[cite: 7]
+    async function handlePostRFQ(event) {
+        if (event) event.preventDefault();
 
-        // 1. Capture form values[cite: 7]
-        const titleInput = document.getElementById('projectTitle') || document.getElementById('projectName');[cite: 7]
-        const buyerInput = document.getElementById('buyerName') || document.getElementById('vendor');[cite: 7]
-        const budgetInput = document.getElementById('projectBudget') || document.getElementById('amount');[cite: 7]
-        const categoryInput = document.getElementById('projectCategory');[cite: 7]
-        const deadlineInput = document.getElementById('projectDeadline');[cite: 7]
+        // Capture all form fields correctly
+        const newRfq = {
+            title: document.getElementById('projectTitle').value,
+            buyer: document.getElementById('buyerName').value,
+            email: document.getElementById('rfq-email').value,
+            category: document.getElementById('projectCategory').value,
+            location: document.getElementById('rfq-location').value,
+            budget: document.getElementById('projectBudget').value,
+            timeline: document.getElementById('budgetFrequency').value,
+            deadline: document.getElementById('projectDeadline').value,
+            description: document.getElementById('rfq-desc').value,
+            status: 'Open'
+        };
 
-        // 2. Create the new RFQ object[cite: 7]
-        const newRfq = {[cite: 7]
-            title: titleInput ? titleInput.value : 'Untitled Project',[cite: 7]
-            buyer: buyerInput ? buyerInput.value : 'Anonymous Buyer',[cite: 7]
-            budget: budgetInput ? budgetInput.value : '$0',[cite: 7]
-            category: categoryInput ? categoryInput.value : 'General',[cite: 7]
-            deadline: deadlineInput ? deadlineInput.value : 'TBD',[cite: 7]
-            status: 'Open'[cite: 7]
-        };[cite: 7]
+        try {
+            const { data, error } = await supabaseClient
+                .from('rfqs')
+                .insert([newRfq])
+                .select();
 
-        try {[cite: 7]
-            // 3. Insert into Supabase database[cite: 7]
-            const { data, error } = await supabaseClient[cite: 7]
-                .from('rfqs')[cite: 7]
-                .insert([newRfq])[cite: 7]
-                .select();[cite: 7]
+            if (error) throw error;
 
-            if (error) throw error;[cite: 7]
+            if (data && data.length > 0) {
+                rfqs.unshift(data[0]);
+            }
+        } catch (err) {
+            console.warn('Supabase insert failed, saving to localStorage fallback:', err);
+            newRfq.id = Date.now();
+            rfqs.unshift(newRfq);
+            localStorage.setItem('procuresos_rfqs', JSON.stringify(rfqs));
+        }
 
-            // Add returned record (with generated ID) to local array[cite: 7]
-            if (data && data.length > 0) {[cite: 7]
-                rfqs.unshift(data[0]);[cite: 7]
-            }[cite: 7]
-        } catch (err) {[cite: 7]
-            console.warn('Supabase insert failed, saving to localStorage fallback:', err);[cite: 7]
-            newRfq.id = Date.now();[cite: 7]
-            rfqs.unshift(newRfq);[cite: 7]
-            localStorage.setItem('procuresos_rfqs', JSON.stringify(rfqs));[cite: 7]
-        }[cite: 7]
+        if (typeof renderRFQs === 'function') {
+            renderRFQs();
+        }
 
-        // 4. Re-render the UI marketplace view[cite: 7]
-        if (typeof renderRFQs === 'function') {[cite: 7]
-            renderRFQs();[cite: 7]
-        }[cite: 7]
+        const form = document.getElementById('rfqForm');
+        if (form) form.reset();
 
-        // 5. Reset form and close modal[cite: 7]
-        const form = document.getElementById('rfqForm') || document.getElementById('postRfqForm');[cite: 7]
-        if (form) form.reset();[cite: 7]
-        
-        const modal = document.getElementById('rfqModal') || document.getElementById('postModal');[cite: 7]
-        if (modal) modal.style.display = 'none';[cite: 7]
-
-        // Navigate back to marketplace view to see the newly posted project
         switchTab('marketplace');
     }
 
@@ -1023,7 +1015,9 @@
         const filteredRFQs = rfqs.filter(rfq => {
             if (selectedFilterCategory === 'All') return true;
             const query = selectedFilterCategory.toLowerCase();
-            return (rfq.category && rfq.category.toLowerCase().includes(query)) || (rfq.title && rfq.title.toLowerCase().includes(query));
+            return (rfq.category && rfq.category.toLowerCase().includes(query)) || 
+                   (rfq.title && rfq.title.toLowerCase().includes(query)) ||
+                   (rfq.location && rfq.location.toLowerCase().includes(query));
         });
 
         const totalPages = Math.ceil(filteredRFQs.length / itemsPerPage) || 1;
@@ -1046,7 +1040,9 @@
             card.innerHTML = `
                 <span class="badge">${rfq.category || 'General'}</span>
                 <h3 style="margin: 0.2rem 0 0.4rem 0; font-size: 1.05rem; color: #0f172a;">${rfq.title}</h3>
-                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.4rem;"><strong>Buyer:</strong> ${rfq.buyer} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span> | <strong>Deadline:</strong> ${rfq.deadline}</p>
+                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.4rem;">
+                    <strong>Location:</strong> ${rfq.location || 'Nationwide'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span> | <strong>Deadline:</strong> ${rfq.deadline}
+                </p>
                 <p style="font-size: 0.8rem; color: #475569; margin: 0; font-style: italic;">Tap to view details & unlock contact info &rarr;</p>
             `;
             container.appendChild(card);
@@ -1084,11 +1080,15 @@
             <div class="card">
                 <span class="badge">${rfq.category || 'General'}</span>
                 <h2 style="margin-top: 0.25rem;">${rfq.title}</h2>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;">
+                    <strong>Buyer:</strong> ${rfq.buyer} | <strong>Location:</strong> ${rfq.location || 'N/A'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span>
+                </p>
                 <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
-                    <strong>Buyer:</strong> ${rfq.buyer} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span> | <strong>Deadline:</strong> <span style="color: #dc2626; font-weight: 600;">${rfq.deadline}</span>
+                    <strong>Timeline:</strong> ${rfq.timeline || 'N/A'} | <strong>Deadline:</strong> <span style="color: #dc2626; font-weight: 600;">${rfq.deadline}</span>
                 </p>
                 <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3 style="margin-top: 0; font-size: 1rem; color: #1e293b;">Project Scope & Status</h3>
+                    <h3 style="margin-top: 0; font-size: 1rem; color: #1e293b;">Project Description</h3>
+                    <p style="margin: 0 0 1rem 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${rfq.description || 'No description provided.'}</p>
                     <p style="margin: 0; line-height: 1.6; color: #334155;">Status: <strong>${rfq.status || 'Open'}</strong></p>
                 </div>
                 ${contactSectionHtml}
