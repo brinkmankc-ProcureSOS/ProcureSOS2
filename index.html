@@ -231,25 +231,7 @@
         @media (min-width: 480px) { .logo-tagline { display: block; } }
         @media (min-width: 768px) { .logo-tagline { font-size: 0.65rem; } }
 
-        .nav-buttons { display: flex; align-items: center; gap: 0.5rem; }
-        @media (min-width: 768px) { .nav-buttons { gap: 0.75rem; } }
-        .nav-buttons button { 
-            background: var(--accent-gradient); 
-            color: white; 
-            border: none; 
-            padding: 0.55rem 0.85rem; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 0.8rem; 
-            box-shadow: 0 2px 5px rgba(79, 70, 229, 0.25); 
-            transition: transform 0.1s ease; 
-            min-height: 40px; 
-            white-space: nowrap;
-        }
-        @media (min-width: 768px) { .nav-buttons button { padding: 0.55rem 1.25rem; font-size: 0.9rem; } }
-        .nav-buttons button:active { transform: scale(0.97); }
-        .nav-buttons button:hover { transform: translateY(-1px); filter: brightness(1.05); }
+        .nav-buttons { display: none; }
 
         .hero-banner {
             background: var(--hero-gradient);
@@ -578,10 +560,6 @@
             <span class="logo-tagline">Nationwide Homeowner & Contractor Marketplace</span>
         </div>
     </a>
-    <div class="nav-buttons">
-        <button id="return-marketplace-btn" class="hidden" onclick="switchTab('marketplace')">Marketplace</button>
-        <button onclick="switchTab('post-rfq')" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);">Post Free Project</button>
-    </div>
 </header>
 
 <div class="container">
@@ -731,7 +709,7 @@
 
                 <h3 style="color: #0f172a; margin-top: 1.25rem;">User Data and Privacy</h3>
                 <p>ProcureSOS does not sell user data.</p>
-                <p>Data is maintained solely for the purpose of posting users' projects on the website[cite: 2].</p>
+                <p>Data is maintained solely for the purpose of posting users' projects on the website.</p>
 
                 <h3 style="color: #0f172a; margin-top: 1.25rem;">6. Modifications to Terms</h3>
                 <p>ProcureSOS reserves the right to modify, amend, or update these Terms and Conditions at any time without prior notice. Your continued use of the website following any changes constitutes your formal acceptance of the updated terms.</p>
@@ -806,7 +784,39 @@
         ];
     }
 
-    document.addEventListener('DOMContentLoaded', fetchRFQs);
+    // Combined DOMContentLoaded Event Listener with Stripe Return Handler
+    document.addEventListener('DOMContentLoaded', async () => {
+        await fetchRFQs();
+        await handleStripeReturn();
+    });
+
+    // Handle successful Stripe redirects and update database status
+    async function handleStripeReturn() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentSuccess = urlParams.get('payment_success');
+        const rfqId = urlParams.get('rfq_id') || localStorage.getItem('pending_rfq_id');
+
+        if (paymentSuccess === 'true' && rfqId) {
+            try {
+                // Update the database to mark this project as paid
+                const { error } = await supabaseClient
+                    .from('rfqs')
+                    .update({ is_paid: true })
+                    .eq('id', rfqId);
+
+                if (error) throw error;
+
+                // Clean up local storage and URL parameters
+                localStorage.removeItem('pending_rfq_id');
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Open the project detail view to show the unlocked contact info
+                openRfqDetail(parseInt(rfqId));
+            } catch (err) {
+                console.error('Failed to update payment status in database:', err);
+            }
+        }
+    }
 
     async function handlePostRFQ(event) {
         if (event) event.preventDefault();
@@ -893,14 +903,10 @@
         document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
         document.getElementById('main-tabs-container').style.display = 'flex';
 
-        const returnMarketplaceBtn = document.getElementById('return-marketplace-btn');
         if (tabName === 'marketplace') {
             document.querySelectorAll('.tab')[0].classList.add('active');
             document.getElementById('view-marketplace').classList.remove('hidden');
-            if (returnMarketplaceBtn) returnMarketplaceBtn.classList.add('hidden');
             renderRFQs();
-        } else {
-            if (returnMarketplaceBtn) returnMarketplaceBtn.classList.remove('hidden');
         }
 
         if (tabName === 'post-rfq') {
@@ -1060,7 +1066,7 @@
     async function renderRFQDetail(id) {
         const container = document.getElementById('rfq-detail-container');
         
-        // Fetch latest status from Supabase to check if it's paid[cite: 2, 3]
+        // Fetch latest status from Supabase to check if it's paid
         const { data: rfq, error } = await supabaseClient
             .from('rfqs')
             .select('*')
@@ -1075,7 +1081,7 @@
         let contactSectionHtml = '';
 
         if (rfq.is_paid) {
-            // UNLOCKED VIEW[cite: 3]
+            // UNLOCKED VIEW
             contactSectionHtml = `
                 <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
                     <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
@@ -1084,7 +1090,7 @@
                 </div>
             `;
         } else {
-            // LOCKED VIEW[cite: 3]
+            // LOCKED VIEW
             contactSectionHtml = `
                 <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
                     <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
