@@ -1057,31 +1057,51 @@
         `;
     }
 
-    function renderRFQDetail(id) {
+    async function renderRFQDetail(id) {
         const container = document.getElementById('rfq-detail-container');
-        const rfq = rfqs.find(r => r.id === id);
+        
+        // Fetch latest status from Supabase to check if it's paid[cite: 2, 3]
+        const { data: rfq, error } = await supabaseClient
+            .from('rfqs')
+            .select('*')
+            .eq('id', id)
+            .single();
 
-        if (!rfq) {
+        if (error || !rfq) {
             container.innerHTML = '<div class="card"><p>Project not found.</p></div>';
             return;
         }
 
-        let contactSectionHtml = `
-            <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
-                <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
-                <button onclick="processStripeCheckout(${rfq.id})" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
-                    Unlock Customer Details
-                </button>
-            </div>
-        `;
+        let contactSectionHtml = '';
+
+        if (rfq.is_paid) {
+            // UNLOCKED VIEW[cite: 3]
+            contactSectionHtml = `
+                <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
+                    <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
+                    <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0.25rem;"><strong>Buyer Name:</strong> ${rfq.buyer}</p>
+                    <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0;"><strong>Buyer Email:</strong> <a href="mailto:${rfq.email}" style="color: #047857; text-decoration: underline;">${rfq.email}</a></p>
+                </div>
+            `;
+        } else {
+            // LOCKED VIEW[cite: 3]
+            contactSectionHtml = `
+                <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                    <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
+                    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
+                    <button onclick="processStripeCheckout(${rfq.id})" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
+                        Unlock Customer Details
+                    </button>
+                </div>
+            `;
+        }
 
         container.innerHTML = `
             <div class="card">
                 <span class="badge">${rfq.category || 'General'}</span>
                 <h2 style="margin-top: 0.25rem;">${rfq.title}</h2>
                 <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;">
-                    <strong>Buyer:</strong> ${rfq.buyer} | <strong>Location:</strong> ${rfq.location || 'N/A'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span>
+                    <strong>Location:</strong> ${rfq.location || 'N/A'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span>
                 </p>
                 <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
                     <strong>Timeline:</strong> ${rfq.timeline || 'N/A'} | <strong>Deadline:</strong> <span style="color: #dc2626; font-weight: 600;">${rfq.deadline}</span>
@@ -1089,7 +1109,6 @@
                 <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                     <h3 style="margin-top: 0; font-size: 1rem; color: #1e293b;">Project Description</h3>
                     <p style="margin: 0 0 1rem 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${rfq.description || 'No description provided.'}</p>
-                    <p style="margin: 0; line-height: 1.6; color: #334155;">Status: <strong>${rfq.status || 'Open'}</strong></p>
                 </div>
                 ${contactSectionHtml}
             </div>
