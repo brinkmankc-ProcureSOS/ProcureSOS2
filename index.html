@@ -811,7 +811,7 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
 
                 // Open the project detail view to show the unlocked contact info
-                openRfqDetail(parseInt(rfqId));
+                openRfqDetail(rfqId);
             } catch (err) {
                 console.error('Failed to update payment status in database:', err);
             }
@@ -821,7 +821,6 @@
     async function handlePostRFQ(event) {
         if (event) event.preventDefault();
 
-        // Capture all form fields correctly
         const newRfq = {
             title: document.getElementById('projectTitle').value,
             buyer: document.getElementById('buyerName').value,
@@ -832,7 +831,8 @@
             timeline: document.getElementById('budgetFrequency').value,
             deadline: document.getElementById('projectDeadline').value,
             description: document.getElementById('rfq-desc').value,
-            status: 'Open'
+            status: 'Open',
+            is_paid: false
         };
 
         try {
@@ -841,26 +841,29 @@
                 .insert([newRfq])
                 .select();
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Insert Error:', error);
+                alert('Error saving project to database: ' + error.message);
+                return;
+            }
 
             if (data && data.length > 0) {
                 rfqs.unshift(data[0]);
             }
         } catch (err) {
-            console.warn('Supabase insert failed, saving to localStorage fallback:', err);
-            newRfq.id = Date.now();
-            rfqs.unshift(newRfq);
-            localStorage.setItem('procuresos_rfqs', JSON.stringify(rfqs));
+            console.error('Network or Database exception:', err);
+            alert('Failed to connect to Supabase. Please check your internet connection and API keys.');
+            return;
         }
 
-        if (typeof renderRFQs === 'function') {
-            renderRFQs();
-        }
-
-        const form = document.getElementById('rfqForm');
-        if (form) form.reset();
-
+        renderRFQs();
+        document.getElementById('rfqForm').reset();
         switchTab('marketplace');
+    }
+
+    function openRfqDetail(id) {
+        currentDetailRfqId = id;
+        switchTab('detail');
     }
 
     const categories = [
@@ -921,11 +924,6 @@
             document.getElementById('view-terms').classList.remove('hidden');
         }
         window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-
-    function openRfqDetail(id) {
-        currentDetailRfqId = id;
-        switchTab('detail');
     }
 
     function onFilterInput() {
@@ -1065,23 +1063,23 @@
 
     async function renderRFQDetail(id) {
         const container = document.getElementById('rfq-detail-container');
+        container.innerHTML = '<div class="card"><p>Loading project details...</p></div>';
         
-        // Fetch latest status from Supabase to check if it's paid
+        // Query Supabase for the exact project ID
         const { data: rfq, error } = await supabaseClient
             .from('rfqs')
             .select('*')
             .eq('id', id)
-            .single();
+            .maybeSingle();
 
         if (error || !rfq) {
-            container.innerHTML = '<div class="card"><p>Project not found.</p></div>';
+            container.innerHTML = '<div class="card"><p>Project not found. It may have been removed or failed to sync with the database.</p></div>';
             return;
         }
 
         let contactSectionHtml = '';
 
         if (rfq.is_paid) {
-            // UNLOCKED VIEW
             contactSectionHtml = `
                 <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
                     <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
@@ -1090,12 +1088,11 @@
                 </div>
             `;
         } else {
-            // LOCKED VIEW
             contactSectionHtml = `
                 <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
                     <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
                     <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
-                    <button onclick="processStripeCheckout(${rfq.id})" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
+                    <button onclick="processStripeCheckout('${rfq.id}')" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
                         Unlock Customer Details
                     </button>
                 </div>
