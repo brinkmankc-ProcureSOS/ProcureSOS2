@@ -2,78 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Enhanced mobile viewport meta tag with device-width and viewport-fit for iOS notches & safe areas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ProcureSOS - #1 Nationwide Homeowner & Contractor Marketplace | Post Jobs Free</title>
     
-    <!-- Comprehensive Local & National SEO Meta Tags Optimized for Every Major U.S. City -->
     <meta name="description" content="ProcureSOS connects homeowners and buyers with verified local contractors, handymen, and home service vendors across all major U.S. cities. Post home improvement and repair jobs for free.">
-    <meta name="keywords" content="home repair jobs nationwide, contractor marketplace, post home project free, hire local contractors, home improvement leads, construction vendors, plumbing contractors, electrical repair, roofing services, New York contractors, Los Angeles home services, Chicago contractors, Houston home repair, Phoenix remodeling, Philadelphia contractors, San Antonio home services, San Diego contractors, Dallas home repair, Austin remodeling, San Jose contractors">
+    <meta name="keywords" content="home repair jobs nationwide, contractor marketplace, post home project free, hire local contractors, home improvement leads, construction vendors, plumbing contractors, electrical repair, roofing services">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://procuresos.com/">
-    <meta name="geo.region" content="US">
-    <meta name="geo.placename" content="United States">
-
-    <!-- Open Graph / Social Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://procuresos.com/">
-    <meta property="og:title" content="ProcureSOS - Nationwide Homeowner Projects & Contractor Marketplace">
-    <meta property="og:description" content="Connecting homeowners with trusted local contractors, handymen, and home service professionals across all 50 states and every major U.S. city. Post projects for free.">
-    <meta property="og:image" content="https://procuresos.com/assets/og-image.jpg">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ProcureSOS - Nationwide Homeowner Projects & Contractor Marketplace">
-    <meta name="twitter:description" content="The ultimate marketplace connecting homeowners and contractors across every major U.S. city. Post projects free.">
-
-    <!-- Schema.org JSON-LD Structured Data for Local Business & Nationwide Service Marketplace -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": "https://procuresos.com/#website",
-          "url": "https://procuresos.com/",
-          "name": "ProcureSOS",
-          "description": "Nationwide Homeowner Projects & Contractor Marketplace connecting buyers and verified local vendors in all major U.S. cities.",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://procuresos.com/?s={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
-        },
-        {
-          "@type": "Organization",
-          "@id": "https://procuresos.com/#organization",
-          "name": "ProcureSOS",
-          "url": "https://procuresos.com/",
-          "logo": "https://procuresos.com/assets/logo.png",
-          "sameAs": []
-        },
-        {
-          "@type": "Service",
-          "serviceType": "Homeowner and Contractor Marketplace",
-          "provider": {
-            "@id": "https://procuresos.com/#organization"
-          },
-          "areaServed": [
-            { "@type": "State", "name": "California" },
-            { "@type": "State", "name": "Texas" },
-            { "@type": "State", "name": "Florida" },
-            { "@type": "State", "name": "New York" },
-            { "@type": "State", "name": "Illinois" },
-            { "@type": "State", "name": "Pennsylvania" },
-            { "@type": "State", "name": "Ohio" },
-            { "@type": "State", "name": "Georgia" },
-            { "@type": "State", "name": "North Carolina" },
-            { "@type": "State", "name": "Michigan" }
-          ],
-          "description": "Connecting homeowners and commercial buyers with trusted local contractors, handymen, and home service vendors across all major U.S. metropolitan areas."
-        }
-      ]
-    }
-    </script>
 
     <!-- Supabase CDN Client Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -91,31 +26,21 @@
             --border: #e2e8f0;
         }
 
-        /* Cross-Platform Mobile & Desktop Touch Optimization */
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background-color: var(--background); 
             color: var(--text); 
             margin: 0; 
             padding: 0; 
-            -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
-            position: relative; 
-            overflow-x: hidden; 
             display: flex; 
             flex-direction: column; 
             min-height: 100vh; 
-            /* Safe area support for notched mobile devices (iPhone/Android) */
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
         }
 
-        /* Background Photo Montage Layer representing Homeowner Projects */
         body::before {
             content: '';
             position: fixed;
@@ -136,7 +61,6 @@
         header { 
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border); 
             padding: 0.65rem 1rem; 
             display: flex; 
@@ -146,7 +70,6 @@
             position: sticky; 
             top: 0; 
             z-index: 100; 
-            /* Safe area top padding for iOS/Android status bars & notches */
             padding-top: max(0.65rem, env(safe-area-inset-top));
         }
         @media (min-width: 768px) { header { padding: 1rem 2rem; } }
@@ -164,36 +87,9 @@
             box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
             overflow: hidden;
             flex-shrink: 0;
-            animation: logoPulsate 2s infinite ease-in-out;
-            will-change: transform, box-shadow;
         }
         @media (min-width: 768px) { .logo-mark { width: 44px; height: 44px; border-radius: 12px; } }
-        @keyframes logoPulsate {
-            0% { transform: scale(1); box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4); }
-            50% { transform: scale(1.06); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.7); filter: brightness(1.1); }
-            100% { transform: scale(1); box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4); }
-        }
-        .logo-mark::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.25), transparent);
-            transform: rotate(45deg);
-            animation: shimmer 4s infinite linear;
-        }
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-        .logo-house-icon {
-            width: 20px;
-            height: 20px;
-            fill: #ffffff;
-            z-index: 1;
-        }
+        .logo-house-icon { width: 20px; height: 20px; fill: #ffffff; z-index: 1; }
         @media (min-width: 768px) { .logo-house-icon { width: 24px; height: 24px; } }
         .logo-dot {
             position: absolute;
@@ -206,32 +102,11 @@
             border: 2px solid #ffffff;
             z-index: 2;
         }
-        .logo-text-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-        .logo-text { 
-            font-size: 1.15rem; 
-            font-weight: 800; 
-            color: #0f172a; 
-            text-decoration: none; 
-            line-height: 1.1; 
-            letter-spacing: -0.5px;
-        }
+        .logo-text-wrapper { display: flex; flex-direction: column; }
+        .logo-text { font-size: 1.15rem; font-weight: 800; color: #0f172a; text-decoration: none; line-height: 1.1; letter-spacing: -0.5px; }
         @media (min-width: 768px) { .logo-text { font-size: 1.4rem; } }
-        .logo-tagline {
-            font-size: 0.55rem;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #64748b;
-            font-weight: 700;
-            margin-top: 2px;
-            display: none;
-        }
+        .logo-tagline { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; font-weight: 700; margin-top: 2px; display: none; }
         @media (min-width: 480px) { .logo-tagline { display: block; } }
-        @media (min-width: 768px) { .logo-tagline { font-size: 0.65rem; } }
-
-        .nav-buttons { display: none; }
 
         .hero-banner {
             background: var(--hero-gradient);
@@ -243,41 +118,18 @@
             position: relative;
             overflow: hidden;
         }
-        @media (min-width: 768px) { 
-            .hero-banner { padding: 2.5rem 2rem; margin-bottom: 2rem; } 
-        }
-        .hero-banner::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        @media (min-width: 768px) { .hero-banner::after { width: 400px; height: 400px; } }
+        @media (min-width: 768px) { .hero-banner { padding: 2.5rem 2rem; margin-bottom: 2rem; } }
         .hero-banner h1 { margin: 0 0 0.4rem 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
         @media (min-width: 768px) { .hero-banner h1 { font-size: 2rem; } }
         .hero-banner p { margin: 0; font-size: 0.9rem; opacity: 0.9; max-width: 600px; line-height: 1.5; }
         @media (min-width: 768px) { .hero-banner p { font-size: 1.05rem; } }
 
-        .container { 
-            max-width: 900px; 
-            margin: 0.75rem auto; 
-            padding: 0 0.65rem; 
-            position: relative; 
-            z-index: 1; 
-            flex: 1; 
-            width: 100%; 
-        }
+        .container { max-width: 900px; margin: 0.75rem auto; padding: 0 0.65rem; position: relative; z-index: 1; flex: 1; width: 100%; }
         @media (min-width: 768px) { .container { margin: 2rem auto; padding: 0 1rem; } }
         
         .card { 
             background: var(--card-bg); 
             backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px); 
             border: 1px solid var(--border); 
             border-radius: 12px; 
             padding: 1.1rem; 
@@ -290,36 +142,18 @@
         @media (min-width: 768px) { h2 { font-size: 1.4rem; } }
         
         .form-group { margin-bottom: 1rem; position: relative; }
-        @media (min-width: 768px) { .form-group { margin-bottom: 1.25rem; } }
         .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.85rem; color: #334155; }
-        @media (min-width: 768px) { .form-group label { font-size: 0.9rem; } }
-        
-        /* Font-size 16px explicitly prevents mobile Safari (iOS) and Chrome (Android) auto-zoom on input focus */
         .form-group input, .form-group textarea, .form-group select { 
             width: 100%; 
             padding: 0.8rem 0.9rem; 
             border: 1px solid var(--border); 
             border-radius: 8px; 
-            box-sizing: border-box; 
             font-size: 16px; 
             background: rgba(255, 255, 255, 0.95); 
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        @media (min-width: 768px) { 
-            .form-group input, .form-group textarea, .form-group select { padding: 0.8rem 1rem; font-size: 0.95rem; } 
-        }
-        .form-group select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.9rem center;
-            background-size: 16px;
-            padding-right: 2.5rem;
         }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { 
             outline: none; 
             border-color: #4f46e5; 
-            background: #fff; 
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12); 
         }
         
@@ -334,12 +168,8 @@
             width: 100%; 
             font-size: 1rem; 
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); 
-            transition: filter 0.2s ease, transform 0.1s ease; 
-            min-height: 48px; /* Optimized for thumb touch targets */
+            min-height: 48px; 
         }
-        .btn:active { transform: scale(0.98); }
-        .btn:hover { filter: brightness(1.05); }
-
         .btn-stripe { 
             background: linear-gradient(135deg, #635bff 0%, #4338ca 100%); 
             color: white; 
@@ -351,7 +181,6 @@
             width: 100%; 
             font-size: 1rem; 
             box-shadow: 0 4px 12px rgba(99, 91, 255, 0.35); 
-            transition: filter 0.2s ease, transform 0.1s ease; 
             min-height: 48px; 
             display: flex; 
             align-items: center; 
@@ -359,27 +188,18 @@
             gap: 0.5rem; 
             text-decoration: none; 
         }
-        .btn-stripe:active { transform: scale(0.98); }
-        .btn-stripe:hover { filter: brightness(1.08); }
 
-        /* RFQ Job Marketplace Item Card */
         .rfq-item { 
             border: 1px solid var(--border); 
             border-radius: 12px; 
             padding: 1.1rem 1.1rem 1.1rem 1.5rem; 
             margin-bottom: 1rem; 
             background: rgba(255, 255, 255, 0.92); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-            transition: transform 0.2s ease, box-shadow 0.2s ease; 
             cursor: pointer; 
             position: relative; 
             overflow: hidden;
         }
-        @media (min-width: 768px) { .rfq-item { padding: 1.5rem 1.5rem 1.5rem 2rem; margin-bottom: 1.25rem; } }
-        
-        /* Left Accent Border Gradient */
         .rfq-item::after {
             content: '';
             position: absolute;
@@ -389,34 +209,13 @@
             height: 100%;
             background: var(--accent-gradient);
         }
-
-        /* Watermark / Background SVG Illustration Representation */
-        .rfq-item::before {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            right: -15px;
-            width: 100px;
-            height: 100px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e3a8a' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-size: contain;
-            opacity: 0.12;
-            pointer-events: none;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .rfq-item:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1); border-color: #cbd5e1; }
-        .rfq-item:hover::before { opacity: 0.22; transform: scale(1.08) rotate(-3deg); }
+        .rfq-item:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1); }
 
         .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.6rem; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #eff6ff; color: #1d4ed8; margin-bottom: 0.4rem; border: 1px solid #dbeafe; }
-        @media (min-width: 768px) { .badge { padding: 0.35rem 0.75rem; font-size: 0.75rem; margin-bottom: 0.75rem; } }
         .hidden { display: none !important; }
         
-        .tabs { display: flex; gap: 0.4rem; margin-bottom: 1.1rem; background: rgba(226, 232, 240, 0.7); padding: 4px; border-radius: 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-        @media (min-width: 768px) { .tabs { gap: 0.75rem; margin-bottom: 1.5rem; padding: 5px; } }
-        .tab { flex: 1; text-align: center; padding: 0.6rem 0.4rem; cursor: pointer; font-weight: 600; font-size: 0.8rem; border-radius: 8px; color: #475569; transition: all 0.2s ease; min-height: 42px; display: flex; align-items: center; justify-content: center; }
-        @media (min-width: 768px) { .tab { padding: 0.75rem 1rem; font-size: 0.95rem; } }
+        .tabs { display: flex; gap: 0.4rem; margin-bottom: 1.1rem; background: rgba(226, 232, 240, 0.7); padding: 4px; border-radius: 10px; }
+        .tab { flex: 1; text-align: center; padding: 0.6rem 0.4rem; cursor: pointer; font-weight: 600; font-size: 0.8rem; border-radius: 8px; color: #475569; min-height: 42px; display: flex; align-items: center; justify-content: center; }
         .tab.active { background: rgba(255, 255, 255, 0.95); color: #1e1b4b; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
         .autocomplete-dropdown {
@@ -433,116 +232,38 @@
             z-index: 99;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
             display: none;
-            -webkit-overflow-scrolling: touch;
         }
-        .autocomplete-item {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            border-bottom: 1px solid #f8fafc;
-        }
-        .autocomplete-item:hover, .autocomplete-item:active {
-            background: #eff6ff;
-            color: #2563eb;
-        }
+        .autocomplete-item { padding: 0.8rem 1rem; cursor: pointer; font-size: 0.95rem; border-bottom: 1px solid #f8fafc; }
+        .autocomplete-item:hover { background: #eff6ff; color: #2563eb; }
 
-        .filter-bar { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.65rem; align-items: stretch; position: relative; }
-        @media (min-width: 640px) { .filter-bar { flex-direction: row; align-items: center; gap: 1rem; margin-top: 1rem; } }
+        .filter-bar { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.65rem; position: relative; }
+        @media (min-width: 640px) { .filter-bar { flex-direction: row; align-items: center; gap: 1rem; } }
         .filter-bar input { padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.95); flex: 1; width: 100%; font-size: 16px; min-height: 44px; }
-        @media (min-width: 640px) { .filter-bar input { max-width: 350px; } }
 
-        .pagination-container { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; margin: 1.25rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 10px; border: 1px solid var(--border); text-align: center; }
-        @media (min-width: 640px) { .pagination-container { flex-direction: row; justify-content: space-between; text-align: left; margin: 2rem 0; } }
-        .page-btn { background: var(--accent-gradient); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 5px rgba(79, 70, 229, 0.2); width: 100%; min-height: 44px; }
-        @media (min-width: 640px) { .page-btn { width: auto; } }
-        .page-btn:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+        .pagination-container { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; margin: 1.25rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.92); border-radius: 10px; border: 1px solid var(--border); text-align: center; }
+        @media (min-width: 640px) { .pagination-container { flex-direction: row; justify-content: space-between; } }
+        .page-btn { background: var(--accent-gradient); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; min-height: 44px; }
+        .page-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
         .page-info { font-weight: 600; color: #475569; font-size: 0.9rem; }
-        @media (min-width: 768px) { .page-info { font-size: 0.95rem; } }
         
         .back-btn { background: #e2e8f0; color: #334155; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 1rem; display: inline-flex; align-items: center; gap: 0.55rem; font-size: 0.9rem; min-height: 40px; }
-        .back-btn:hover { background: #cbd5e1; }
 
         footer.site-footer {
             background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border-top: 1px solid var(--border);
             padding: 1.75rem 1rem;
             margin-top: 2.5rem;
             text-align: center;
-            /* Safe area bottom padding for iOS/Android home indicators */
             padding-bottom: max(1.75rem, env(safe-area-inset-bottom));
         }
-        .footer-content {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.85rem;
-        }
-        .footer-logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.55rem;
-            text-decoration: none;
-        }
-        .footer-logo-mark {
-            position: relative;
-            width: 30px;
-            height: 30px;
-            background: var(--logo-blue-gradient);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
-        }
-        .footer-logo-house-icon {
-            width: 16px;
-            height: 16px;
-            fill: #ffffff;
-            z-index: 1;
-        }
-        .footer-logo-dot {
-            position: absolute;
-            bottom: 3px;
-            right: 3px;
-            width: 5px;
-            height: 5px;
-            background: #10b981;
-            border-radius: 50%;
-            border: 1.5px solid #ffffff;
-            z-index: 2;
-        }
-        .footer-logo-text {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: #0f172a;
-            letter-spacing: -0.5px;
-        }
-        .copyright-text {
-            font-size: 0.82rem;
-            color: #64748b;
-            margin: 0;
-            font-weight: 500;
-            text-align: center;
-        }
-        .footer-links {
-            margin-top: 0.35rem;
-        }
-        .footer-links a {
-            font-size: 0.82rem;
-            color: #2563eb;
-            text-decoration: underline;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .footer-links a:hover {
-            color: #1d4ed8;
-        }
+        .footer-content { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; }
+        .footer-logo-container { display: flex; align-items: center; justify-content: center; gap: 0.55rem; text-decoration: none; cursor: pointer; }
+        .footer-logo-mark { position: relative; width: 30px; height: 30px; background: var(--logo-blue-gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-house-icon { width: 16px; height: 16px; fill: #ffffff; z-index: 1; }
+        .footer-logo-dot { position: absolute; bottom: 3px; right: 3px; width: 5px; height: 5px; background: #10b981; border-radius: 50%; border: 1.5px solid #ffffff; z-index: 2; }
+        .footer-logo-text { font-size: 1.05rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
+        .copyright-text { font-size: 0.82rem; color: #64748b; margin: 0; font-weight: 500; }
+        .footer-links a { font-size: 0.82rem; color: #2563eb; text-decoration: underline; font-weight: 500; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -563,7 +284,6 @@
 </header>
 
 <div class="container">
-    <!-- View Switcher Tabs -->
     <div class="tabs" id="main-tabs-container">
         <div class="tab active" onclick="switchTab('marketplace')">Marketplace</div>
         <div class="tab" id="tab-post-rfq" onclick="switchTab('post-rfq')">Post Free Project</div>
@@ -589,7 +309,6 @@
 
         <div class="card">
             <h3 style="margin-top: 0; font-size: 1.05rem; color: #1e293b;">Find Available Homeowner Jobs Nationwide</h3>
-            <!-- Category Search Filter Bar -->
             <div class="filter-bar">
                 <label for="filter-search" style="font-weight: 600; font-size: 0.85rem; color: #475569;">Filter Service or City:</label>
                 <div style="position: relative; flex: 1; width: 100%;">
@@ -603,7 +322,7 @@
         <div id="pagination-wrapper"></div>
     </div>
 
-    <!-- DETAILED JOB VIEW (Separate Screen) -->
+    <!-- DETAILED JOB VIEW -->
     <div id="view-rfq-detail" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div id="rfq-detail-container"></div>
@@ -656,16 +375,10 @@
                 <div class="form-group">
                     <label>Project End Date (Auto-removal date)</label>
                     <input type="date" id="projectDeadline" required>
-                    <small style="display: block; margin-top: 0.35rem; color: #64748b;">The project will automatically expire and be removed from the marketplace after this date.</small>
                 </div>
                 <div class="form-group">
                     <label>Detailed Project Description</label>
-                    <textarea id="rfq-desc" rows="4" placeholder="Describe the scope of work, dimensions, materials needed, etc..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Upload Project Photos / Documents (Optional)</label>
-                    <input type="file" id="rfq-documents" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="padding: 0.6rem; background: #fff;">
-                    <small style="display: block; margin-top: 0.35rem; color: #64748b;">Attach pictures of the area or blueprints for contractors.</small>
+                    <textarea id="rfq-desc" rows="4" placeholder="Describe the scope of work..." required></textarea>
                 </div>
                 <button type="submit" class="btn">Post Project Free to Marketplace</button>
             </form>
@@ -678,47 +391,16 @@
         <div class="card">
             <h2>Terms and Conditions & Hold Harmless Agreement</h2>
             <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;"><strong>Effective Date:</strong> January 1, 2026</p>
-            
             <div style="line-height: 1.7; color: #334155; font-size: 0.95rem;">
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">1. Acceptance of Terms</h3>
-                <p>By accessing, browsing, or using ProcureSOS (the "Website"), you agree to comply with and be bound by these Terms and Conditions. If you do not agree to these terms, you must immediately discontinue use of the website.</p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">2. Nature of Service (Marketplace Only)</h3>
-                <p>ProcureSOS is strictly a digital marketplace and communication platform connecting homeowners and property managers with independent contractors, handymen, and home service vendors. <strong>ProcureSOS does not perform home improvement, construction, or repair services, nor is it a general contractor, subcontractor, or employer of any contractor listed on the platform.</strong></p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">3. No Verification of Contractor Quality</h3>
-                <p><strong>ProcureSOS does not vet, license, bond, insure, endorse, or verify the quality, competence, safety, legality, or reliability of any contractors or home service professionals</strong> who post on or use the marketplace. Homeowners and users acknowledge and agree that they are solely responsible for independently verifying credentials, licenses, insurance coverage, references, and the quality of work of any contractor they choose to hire.</p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">4. Use at Your Own Risk</h3>
-                <p><strong>All users (including homeowners and contractors) use this website entirely at their own risk.</strong> ProcureSOS explicitly disclaims all warranties, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">5. Hold Harmless and Limitation of Liability</h3>
-                <p>To the maximum extent permitted by applicable law, you agree to release, indemnify, defend, and hold harmless ProcureSOS, its owners, operators, officers, directors, employees, agents, and affiliates from and against any and all claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising out of or in any way connected with:</p>
-                <ul style="margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 1.5rem;">
-                    <li>Your use of or inability to use the ProcureSOS website or marketplace;</li>
-                    <li>Any agreements, disputes, property damage, personal injury, financial loss, or interactions between homeowners and contractors;</li>
-                    <li>Any incomplete, substandard, or defective work performed by contractors hired through connections made on this website;</li>
-                    <li>Any breach of these Terms and Conditions by you or any third party using your account.</li>
-                </ul>
-                <p>In no event shall ProcureSOS or its owners be liable for any direct, indirect, punitive, incidental, special, or consequential damages resulting from the use of or reliance upon information provided on this platform.</p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">Limitation of Liability for User Data</h3>
-                <p>ProcureSOS and its owners are not responsible for any user data entered on the website.</p>
-                <p>All data entered on the website is entered exclusively by users of the website.</p>
-                <p>ProcureSOS and its owners hold no responsibility or liability for the accuracy, completeness, or reliability of this data.</p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">User Data and Privacy</h3>
-                <p>ProcureSOS does not sell user data.</p>
-                <p>Data is maintained solely for the purpose of posting users' projects on the website.</p>
-
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">6. Modifications to Terms</h3>
-                <p>ProcureSOS reserves the right to modify, amend, or update these Terms and Conditions at any time without prior notice. Your continued use of the website following any changes constitutes your formal acceptance of the updated terms.</p>
+                <h3 style="color: #0f172a; margin-top: 1.25rem;">1. Nature of Service (Marketplace Only)</h3>
+                <p>ProcureSOS is strictly a digital marketplace and communication platform connecting homeowners with independent contractors and vendors. ProcureSOS does not perform home improvement or construction services.</p>
+                <h3 style="color: #0f172a; margin-top: 1.25rem;">2. Hold Harmless and Limitation of Liability</h3>
+                <p>All users use this website entirely at their own risk. ProcureSOS explicitly disclaims all warranties and shall not be held liable for any disputes, damages, or losses arising from contractor engagements.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- FOOTER WITH COPYRIGHT, LOGO, AND TERMS LINK (CENTERED) -->
 <footer class="site-footer">
     <div class="footer-content">
         <a onclick="switchTab('marketplace')" class="footer-logo-container">
@@ -730,22 +412,21 @@
             </div>
             <span class="footer-logo-text">Procure<span style="color: #4f46e5;">SOS</span></span>
         </a>
-        <p class="copyright-text">&copy; 2026 ProcureSOS. All rights reserved. Connecting Homeowners and Contractors Nationwide in Every Major U.S. City.</p>
+        <p class="copyright-text">&copy; 2026 ProcureSOS. All rights reserved.</p>
         <div class="footer-links">
             <a onclick="switchTab('terms')">Terms and Conditions & Hold Harmless Agreement</a>
         </div>
     </div>
 </footer>
 
-<script[cite: 2]>
-    // Initialize Supabase Client with your credentials
+<!-- Proper Script Wrapper ensuring script execution instead of text rendering -->
+<script>
     const SUPABASE_URL = 'https://asptflxjowmdbvqsutuf.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcHRmbHhqb3dtZGJ2cXN1dHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjQ4ODEsImV4cCI6MjEwMjMwMDg4MX0.nT141S2aJGl5CW7Fs8jw0eYfdJxn6_Y1BlbvnpZFFxM';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcHRmbHhqb3dtZGJ2cXN1dHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let rfqs = [];
 
-    // Load projects from Supabase database on startup
     async function fetchRFQs() {
         try {
             const { data, error } = await supabaseClient
@@ -754,16 +435,12 @@
                 .order('id', { ascending: false });
 
             if (error) throw error;
-            
             rfqs = data && data.length > 0 ? data : getFallbackMockData();
         } catch (err) {
-            console.warn('Falling back to localStorage due to database connection:', err);
+            console.warn('Falling back to localStorage:', err);
             rfqs = JSON.parse(localStorage.getItem('procuresos_rfqs')) || getFallbackMockData();
         }
-        
-        if (typeof renderRFQs === 'function') {
-            renderRFQs();
-        }
+        renderRFQs();
     }
 
     function getFallbackMockData() {
@@ -784,13 +461,11 @@
         ];
     }
 
-    // Combined DOMContentLoaded Event Listener with Stripe Return Handler
     document.addEventListener('DOMContentLoaded', async () => {
         await fetchRFQs();
         await handleStripeReturn();
     });
 
-    // Handle successful Stripe redirects and update database status
     async function handleStripeReturn() {
         const urlParams = new URLSearchParams(window.location.search);
         const paymentSuccess = urlParams.get('payment_success');
@@ -798,29 +473,18 @@
 
         if (paymentSuccess === 'true' && rfqId) {
             try {
-                // Get the currently logged-in user[cite: 4]
                 const { data: { user } } = await supabaseClient.auth.getUser();
-                
-                if (!user) {
-                    alert('Please log in to claim your unlocked project details.');
-                    return;
-                }
+                if (!user) return;
 
-                // Record the purchase for this specific user and project[cite: 4]
-                const { error } = await supabaseClient
+                await supabaseClient
                     .from('purchases')
                     .insert([{ user_id: user.id, rfq_id: rfqId }]);
 
-                if (error && error.code !== '23505') throw error; // Ignore duplicate key error if already inserted[cite: 4]
-
-                // Clean up local storage and URL parameters[cite: 4]
                 localStorage.removeItem('pending_rfq_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
-
-                // Open the project detail view[cite: 4]
                 openRfqDetail(rfqId);
             } catch (err) {
-                console.error('Failed to record purchase in database:', err);
+                console.error('Failed to record purchase:', err);
             }
         }
     }
@@ -848,19 +512,10 @@
                 .insert([newRfq])
                 .select();
 
-            if (error) {
-                console.error('Supabase Insert Error:', error);
-                alert('Error saving project to database: ' + error.message);
-                return;
-            }
-
-            if (data && data.length > 0) {
-                rfqs.unshift(data[0]);
-            }
+            if (error) throw error;
+            if (data && data.length > 0) rfqs.unshift(data[0]);
         } catch (err) {
-            console.error('Network or Database exception:', err);
-            alert('Failed to connect to Supabase. Please check your internet connection and API keys.');
-            return;
+            console.error('Database insertion error:', err);
         }
 
         renderRFQs();
@@ -874,34 +529,12 @@
     }
 
     const categories = [
-        "Air Conditioning Installation & Repair", "App Development Services", "Bathroom Remodeling", 
-        "Carpet & Flooring Installation", "CCTV & Security Surveillance", "Commercial Cleaning Services", 
-        "Commercial Electrician Services", "Commercial Roofing Services", "Concrete & Paving Services", 
-        "Custom Cabinetry & Woodworking", "Custom Software Development", "Deck & Patio Construction", 
-        "Drywall Repair & Installation", "Electrical Wiring & Panel Upgrades", "Energy Efficiency Auditing", 
-        "Epoxy Garage Floor Coating", "Fence Installation & Repair", "Foundation Repair Services", 
-        "Full House Painting", "Gutter Cleaning & Installation", "Handyman Services", 
-        "Hardwood Floor Refinishing", "Home Addition Construction", "Home Automation Setup", 
-        "Home Inspection Services", "Home Security Systems", "Home Theater Installation", 
-        "Hot Tub & Spa Installation", "HVAC Maintenance Services", "Interior Design & Staging", 
-        "Kitchen Remodeling", "Landscaping & Lawn Care", "Mold Remediation Services", 
-        "Moving & Relocation Services", "Pest Control Services", "Plumbing Leak Detection & Repair", 
-        "Pool Maintenance & Repair", "Power Washing Services", "Property Management Services", 
-        "Radon Mitigation Services", "Residential Electrician", "Residential Plumbing Services", 
-        "Roof Replacement & Repair", "Septic Tank Maintenance", "Siding Installation & Repair", 
-        "Smart Thermostat Installation", "Solar Panel Installation", "Soundproofing Services", 
-        "Structural Engineering Consulting", "Sunroom Installation", "Tile & Grout Cleaning", 
-        "Tree Removal & Trimming", "Underground Utility Locating", "Upholstery & Carpet Cleaning", 
-        "Water Heater Installation", "Water Softener & Filtration", "Well Pump Repair & Service", 
-        "Window & Door Replacement", "Wine Cellar Construction", "Yard Drainage Solutions"
+        "Air Conditioning Installation & Repair", "Bathroom Remodeling", "Commercial Roofing Services", 
+        "Electrical Wiring & Panel Upgrades", "Kitchen Remodeling", "Plumbing Leak Detection & Repair", 
+        "Roof Replacement & Repair", "Solar Panel Installation", "Window & Door Replacement"
     ];
 
-    const majorUSCities = [
-        "New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", 
-        "Philadelphia, PA", "San Antonio, TX", "San Diego, CA", "Dallas, TX", "Austin, TX", 
-        "San Jose, CA", "Fort Worth, TX", "Columbus, OH", "Charlotte, NC", "Indianapolis, IN", 
-        "San Francisco, CA", "Seattle, WA", "Denver, CO", "Washington, DC", "Boston, MA"
-    ];
+    const majorUSCities = ["New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", "Dallas, TX", "Austin, TX"];
 
     let selectedFilterCategory = 'All';
     let currentDetailRfqId = null;
@@ -917,9 +550,7 @@
             document.querySelectorAll('.tab')[0].classList.add('active');
             document.getElementById('view-marketplace').classList.remove('hidden');
             renderRFQs();
-        }
-
-        if (tabName === 'post-rfq') {
+        } else if (tabName === 'post-rfq') {
             document.querySelectorAll('.tab')[1].classList.add('active');
             document.getElementById('view-post-rfq').classList.remove('hidden');
         } else if (tabName === 'detail') {
@@ -946,9 +577,7 @@
             return;
         }
 
-        const allSuggestions = [...categories, ...majorUSCities];
-        const matches = allSuggestions.filter(item => item.toLowerCase().includes(query)).slice(0, 8);
-        
+        const matches = [...categories, ...majorUSCities].filter(item => item.toLowerCase().includes(query)).slice(0, 8);
         if (matches.length > 0) {
             dropdown.style.display = 'block';
             matches.forEach(match => {
@@ -1007,8 +636,7 @@
 
     function processStripeCheckout(rfqId) {
         localStorage.setItem('pending_rfq_id', rfqId);
-        const stripePaymentLink = "https://buy.stripe.com/14AaEX0Oa5FZ2DZbr89Zm02";
-        window.location.href = `${stripePaymentLink}?client_reference_id=${rfqId}`;
+        window.location.href = `https://buy.stripe.com/14AaEX0Oa5FZ2DZbr89Zm02?client_reference_id=${rfqId}`;
     }
 
     function changePage(direction) {
@@ -1072,7 +700,6 @@
         const container = document.getElementById('rfq-detail-container');
         container.innerHTML = '<div class="card"><p>Loading project details...</p></div>';
         
-        // 1. Fetch project details[cite: 3]
         const { data: rfq, error } = await supabaseClient
             .from('rfqs')
             .select('*')
@@ -1084,7 +711,6 @@
             return;
         }
 
-        // 2. Check if the current logged-in user has purchased this project[cite: 3]
         let isUnlockedForCurrentUser = false;
         const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -1096,32 +722,24 @@
                 .eq('rfq_id', id)
                 .maybeSingle();
 
-            if (purchaseData) {
-                isUnlockedForCurrentUser = true;
-            }
+            if (purchaseData) isUnlockedForCurrentUser = true;
         }
 
-        let contactSectionHtml = '';
-
-        if (isUnlockedForCurrentUser) {
-            contactSectionHtml = `
-                <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
-                    <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
-                    <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0.25rem;"><strong>Buyer Name:</strong> ${rfq.buyer}</p>
-                    <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0;"><strong>Buyer Email:</strong> <a href="mailto:${rfq.email}" style="color: #047857; text-decoration: underline;">${rfq.email}</a></p>
-                </div>
-            `;
-        } else {
-            contactSectionHtml = `
-                <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
-                    <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
-                    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
-                    <button onclick="processStripeCheckout('${rfq.id}')" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
-                        Unlock Customer Details
-                    </button>
-                </div>
-            `;
-        }
+        let contactSectionHtml = isUnlockedForCurrentUser ? `
+            <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
+                <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
+                <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0.25rem;"><strong>Buyer Name:</strong> ${rfq.buyer}</p>
+                <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0;"><strong>Buyer Email:</strong> <a href="mailto:${rfq.email}" style="color: #047857; text-decoration: underline;">${rfq.email}</a></p>
+            </div>
+        ` : `
+            <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
+                <button onclick="processStripeCheckout('${rfq.id}')" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
+                    Unlock Customer Details
+                </button>
+            </div>
+        `;
 
         container.innerHTML = `
             <div class="card">
