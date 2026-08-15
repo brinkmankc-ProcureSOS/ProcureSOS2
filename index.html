@@ -737,7 +737,7 @@
     </div>
 </footer>
 
-<script>
+<script[cite: 2]>
     // Initialize Supabase Client with your credentials
     const SUPABASE_URL = 'https://asptflxjowmdbvqsutuf.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcHRmbHhqb3dtZGJ2cXN1dHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjQ4ODEsImV4cCI6MjEwMjMwMDg4MX0.nT141S2aJGl5CW7Fs8jw0eYfdJxn6_Y1BlbvnpZFFxM';
@@ -798,22 +798,29 @@
 
         if (paymentSuccess === 'true' && rfqId) {
             try {
-                // Update the database to mark this project as paid
+                // Get the currently logged-in user[cite: 4]
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                
+                if (!user) {
+                    alert('Please log in to claim your unlocked project details.');
+                    return;
+                }
+
+                // Record the purchase for this specific user and project[cite: 4]
                 const { error } = await supabaseClient
-                    .from('rfqs')
-                    .update({ is_paid: true })
-                    .eq('id', rfqId);
+                    .from('purchases')
+                    .insert([{ user_id: user.id, rfq_id: rfqId }]);
 
-                if (error) throw error;
+                if (error && error.code !== '23505') throw error; // Ignore duplicate key error if already inserted[cite: 4]
 
-                // Clean up local storage and URL parameters
+                // Clean up local storage and URL parameters[cite: 4]
                 localStorage.removeItem('pending_rfq_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
 
-                // Open the project detail view to show the unlocked contact info
+                // Open the project detail view[cite: 4]
                 openRfqDetail(rfqId);
             } catch (err) {
-                console.error('Failed to update payment status in database:', err);
+                console.error('Failed to record purchase in database:', err);
             }
         }
     }
@@ -1065,7 +1072,7 @@
         const container = document.getElementById('rfq-detail-container');
         container.innerHTML = '<div class="card"><p>Loading project details...</p></div>';
         
-        // Query Supabase for the exact project ID
+        // 1. Fetch project details[cite: 3]
         const { data: rfq, error } = await supabaseClient
             .from('rfqs')
             .select('*')
@@ -1073,13 +1080,30 @@
             .maybeSingle();
 
         if (error || !rfq) {
-            container.innerHTML = '<div class="card"><p>Project not found. It may have been removed or failed to sync with the database.</p></div>';
+            container.innerHTML = '<div class="card"><p>Project not found.</p></div>';
             return;
+        }
+
+        // 2. Check if the current logged-in user has purchased this project[cite: 3]
+        let isUnlockedForCurrentUser = false;
+        const { data: { user } } = await supabaseClient.auth.getUser();
+
+        if (user) {
+            const { data: purchaseData } = await supabaseClient
+                .from('purchases')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('rfq_id', id)
+                .maybeSingle();
+
+            if (purchaseData) {
+                isUnlockedForCurrentUser = true;
+            }
         }
 
         let contactSectionHtml = '';
 
-        if (rfq.is_paid) {
+        if (isUnlockedForCurrentUser) {
             contactSectionHtml = `
                 <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
                     <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
