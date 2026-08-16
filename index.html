@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ProcureSOS - #1 Nationwide Homeowner & Contractor Marketplace | Post Jobs Free</title>
+    
+    <meta name="description" content="ProcureSOS connects homeowners and buyers with verified local contractors, handymen, and home service vendors across all major U.S. cities. Post home improvement and repair jobs for free.">
+    <meta name="keywords" content="home repair jobs nationwide, contractor marketplace, post home project free, hire local contractors, home improvement leads, construction vendors, plumbing contractors, electrical repair, roofing services">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://procuresos.com/">
+
+    <!-- Supabase CDN Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            --logo-blue-gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            --hero-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%);
+            --background: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --text: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--background); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(248, 250, 252, 0.7), rgba(248, 250, 252, 0.7)),
+                url('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            pointer-events: none;
+        }
+
+        header { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); 
+            padding: 0.65rem 1rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            padding-top: max(0.65rem, env(safe-area-inset-top));
+        }
+        @media (min-width: 768px) { header { padding: 1rem 2rem; } }
+        
+        .logo-container { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; cursor: pointer; }
+        .logo-mark { 
+            position: relative; 
+            width: 38px; 
+            height: 38px; 
+            background: var(--logo-blue-gradient); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        @media (min-width: 768px) { .logo-mark { width: 44px; height: 44px; border-radius: 12px; } }
+        .logo-house-icon { width: 20px; height: 20px; fill: #ffffff; z-index: 1; }
+        @media (min-width: 768px) { .logo-house-icon { width: 24px; height: 24px; } }
+        .logo-dot {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            z-index: 2;
+        }
+        .logo-text-wrapper { display: flex; flex-direction: column; }
+        .logo-text { font-size: 1.15rem; font-weight: 800; color: #0f172a; text-decoration: none; line-height: 1.1; letter-spacing: -0.5px; }
+        @media (min-width: 768px) { .logo-text { font-size: 1.4rem; } }
+        .logo-tagline { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; font-weight: 700; margin-top: 2px; display: none; }
+        @media (min-width: 480px) { .logo-tagline { display: block; } }
+
+        .hero-banner {
+            background: var(--hero-gradient);
+            color: white;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) { .hero-banner { padding: 2.5rem 2rem; margin-bottom: 2rem; } }
+        .hero-banner h1 { margin: 0 0 0.4rem 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
+        @media (min-width: 768px) { .hero-banner h1 { font-size: 2rem; } }
+        .hero-banner p { margin: 0; font-size: 0.9rem; opacity: 0.9; max-width: 600px; line-height: 1.5; }
+        @media (min-width: 768px) { .hero-banner p { font-size: 1.05rem; } }
+
+        .container { max-width: 900px; margin: 0.75rem auto; padding: 0 0.65rem; position: relative; z-index: 1; flex: 1; width: 100%; }
+        @media (min-width: 768px) { .container { margin: 2rem auto; padding: 0 1rem; } }
+        
+        .card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 1.1rem; 
+            margin-bottom: 1.1rem; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); 
+        }
+        @media (min-width: 768px) { .card { padding: 1.75rem; margin-bottom: 1.5rem; } }
+        
+        h2 { margin-top: 0; color: #0f172a; font-size: 1.15rem; }
+        @media (min-width: 768px) { h2 { font-size: 1.4rem; } }
+        
+        .form-group { margin-bottom: 1rem; position: relative; }
+        .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.85rem; color: #334155; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; 
+            padding: 0.8rem 0.9rem; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            font-size: 16px; 
+            background: rgba(255, 255, 255, 0.95); 
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { 
+            outline: none; 
+            border-color: #4f46e5; 
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12); 
+        }
+        
+        .btn { 
+            background: var(--accent-gradient); 
+            color: white; 
+            border: none; 
+            padding: 0.9rem 1.5rem; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            font-size: 1rem; 
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); 
+            min-height: 48px; 
+        }
+        .btn-stripe { 
+            background: linear-gradient(135deg, #635bff 0%, #4338ca 100%); 
+            color: white; 
+            border: none; 
+            padding: 0.9rem 1.5rem; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            font-size: 1rem; 
+            box-shadow: 0 4px 12px rgba(99, 91, 255, 0.35); 
+            min-height: 48px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 0.5rem; 
+            text-decoration: none; 
+        }
+
+        .rfq-item { 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 1.1rem 1.1rem 1.1rem 1.5rem; 
+            margin-bottom: 1rem; 
+            background: rgba(255, 255, 255, 0.92); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+            cursor: pointer; 
+            position: relative; 
+            overflow: hidden;
+        }
+        .rfq-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--accent-gradient);
+        }
+        .rfq-item:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1); }
+
+        .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.6rem; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #eff6ff; color: #1d4ed8; margin-bottom: 0.4rem; border: 1px solid #dbeafe; }
+        .hidden { display: none !important; }
+        
+        .tabs { display: flex; gap: 0.4rem; margin-bottom: 1.1rem; background: rgba(226, 232, 240, 0.7); padding: 4px; border-radius: 10px; }
+        .tab { flex: 1; text-align: center; padding: 0.6rem 0.4rem; cursor: pointer; font-weight: 600; font-size: 0.8rem; border-radius: 8px; color: #475569; min-height: 42px; display: flex; align-items: center; justify-content: center; }
+        .tab.active { background: rgba(255, 255, 255, 0.95); color: #1e1b4b; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 220px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            z-index: 99;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .autocomplete-item { padding: 0.8rem 1rem; cursor: pointer; font-size: 0.95rem; border-bottom: 1px solid #f8fafc; }
+        .autocomplete-item:hover { background: #eff6ff; color: #2563eb; }
+
+        .filter-bar { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.65rem; position: relative; }
+        @media (min-width: 640px) { .filter-bar { flex-direction: row; align-items: center; gap: 1rem; } }
+        .filter-bar input { padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.95); flex: 1; width: 100%; font-size: 16px; min-height: 44px; }
+
+        .pagination-container { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; margin: 1.25rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.92); border-radius: 10px; border: 1px solid var(--border); text-align: center; }
+        @media (min-width: 640px) { .pagination-container { flex-direction: row; justify-content: space-between; } }
+        .page-btn { background: var(--accent-gradient); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; min-height: 44px; }
+        .page-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .page-info { font-weight: 600; color: #475569; font-size: 0.9rem; }
+        
+        .back-btn { background: #e2e8f0; color: #334155; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 1rem; display: inline-flex; align-items: center; gap: 0.55rem; font-size: 0.9rem; min-height: 40px; }
+
+        footer.site-footer {
+            background: rgba(255, 255, 255, 0.92);
+            border-top: 1px solid var(--border);
+            padding: 1.75rem 1rem;
+            margin-top: 2.5rem;
+            text-align: center;
+            padding-bottom: max(1.75rem, env(safe-area-inset-bottom));
+        }
+        .footer-content { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; }
+        .footer-logo-container { display: flex; align-items: center; justify-content: center; gap: 0.55rem; text-decoration: none; cursor: pointer; }
+        .footer-logo-mark { position: relative; width: 30px; height: 30px; background: var(--logo-blue-gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-house-icon { width: 16px; height: 16px; fill: #ffffff; z-index: 1; }
+        .footer-logo-dot { position: absolute; bottom: 3px; right: 3px; width: 5px; height: 5px; background: #10b981; border-radius: 50%; border: 1.5px solid #ffffff; z-index: 2; }
+        .footer-logo-text { font-size: 1.05rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
+        .copyright-text { font-size: 0.82rem; color: #64748b; margin: 0; font-weight: 500; }
+        .footer-links a { font-size: 0.82rem; color: #2563eb; text-decoration: underline; font-weight: 500; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a onclick="switchTab('marketplace')" class="logo-container">
+        <div class="logo-mark">
+            <svg class="logo-house-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/>
+            </svg>
+            <div class="logo-dot"></div>
+        </div>
+        <div class="logo-text-wrapper">
+            <span class="logo-text">Procure<span style="color: #4f46e5;">SOS</span></span>
+            <span class="logo-tagline">Nationwide Homeowner & Contractor Marketplace</span>
+        </div>
+    </a>
+</header>
+
+<div class="container">
+    <div class="tabs" id="main-tabs-container">
+        <div class="tab active" onclick="switchTab('marketplace')">Marketplace</div>
+        <div class="tab" id="tab-post-rfq" onclick="switchTab('post-rfq')">Post Free Project</div>
+    </div>
+
+    <!-- MARKETPLACE VIEW -->
+    <div id="view-marketplace" class="view-section">
+        <div class="hero-banner">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+                <div class="logo-mark" style="width: 40px; height: 40px; border-radius: 10px;">
+                    <svg class="logo-house-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px; height: 22px;">
+                        <path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/>
+                    </svg>
+                    <div class="logo-dot" style="bottom: 5px; right: 5px; width: 6px; height: 6px;"></div>
+                </div>
+                <div>
+                    <h1 style="margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">Procure<span style="color: #818cf8;">SOS</span></h1>
+                    <span style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.9; font-weight: 700;">Nationwide Homeowner Projects & Contractor Marketplace</span>
+                </div>
+            </div>
+            <p>Connecting homeowners and property managers with trusted local contractors, handymen, and home service professionals across all 50 states and major U.S. cities.</p>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.05rem; color: #1e293b;">Find Available Homeowner Jobs Nationwide</h3>
+            <div class="filter-bar">
+                <label for="filter-search" style="font-weight: 600; font-size: 0.85rem; color: #475569;">Filter Service or City:</label>
+                <div style="position: relative; flex: 1; width: 100%;">
+                    <input type="text" id="filter-search" placeholder="Search services or major cities..." oninput="onFilterInput()" autocomplete="off">
+                    <div id="filter-dropdown" class="autocomplete-dropdown"></div>
+                </div>
+                <button onclick="clearFilter()" style="padding: 0.8rem 1rem; background: #e2e8f0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #334155; min-height: 44px;">Reset</button>
+            </div>
+        </div>
+        <div id="rfq-list-container"></div>
+        <div id="pagination-wrapper"></div>
+    </div>
+
+    <!-- DETAILED JOB VIEW -->
+    <div id="view-rfq-detail" class="view-section hidden">
+        <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
+        <div id="rfq-detail-container"></div>
+    </div>
+
+    <!-- POST JOB VIEW -->
+    <div id="view-post-rfq" class="view-section hidden">
+        <div class="hero-banner" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #172554 100%);">
+            <h1>Post Your Project Free</h1>
+            <p>Homeowners: Submit your project details instantly to receive multiple quotes from professional contractors in your city and state.</p>
+        </div>
+
+        <div class="card">
+            <h2>Consumer / Homeowner Job Post Form</h2>
+            <form id="rfqForm" onsubmit="handlePostRFQ(event)">
+                <div class="form-group">
+                    <label>Homeowner / Contact Name</label>
+                    <input type="text" id="buyerName" placeholder="e.g., Sarah Jenkins" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Email</label>
+                    <input type="email" id="rfq-email" placeholder="sarah@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Project Title</label>
+                    <input type="text" id="projectTitle" placeholder="e.g., Kitchen Remodel & Cabinet Installation" required>
+                </div>
+                <div class="form-group">
+                    <label>Service Category</label>
+                    <input type="text" id="projectCategory" placeholder="Start typing category..." oninput="onPostInput()" autocomplete="off" required>
+                    <div id="post-dropdown" class="autocomplete-dropdown"></div>
+                </div>
+                <div class="form-group">
+                    <label>Location (City, State)</label>
+                    <input type="text" id="rfq-location" placeholder="e.g., New York, NY or Los Angeles, CA" required>
+                </div>
+                <div class="form-group">
+                    <label>Estimated Budget (USD)</label>
+                    <input type="text" id="projectBudget" placeholder="e.g., $5,000 - $10,000" required>
+                </div>
+                <div class="form-group">
+                    <label for="budgetFrequency">Project Timeline / Type</label>
+                    <select id="budgetFrequency" name="budgetFrequency" required>
+                        <option value="" disabled selected>Select timeline...</option>
+                        <option value="Immediate / Urgent">Immediate / Urgent</option>
+                        <option value="Within 2 Weeks">Within 2 Weeks</option>
+                        <option value="Flexible / Planning">Flexible / Planning</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Project End Date (Auto-removal date)</label>
+                    <input type="date" id="projectDeadline" required>
+                </div>
+                <div class="form-group">
+                    <label>Detailed Project Description</label>
+                    <textarea id="rfq-desc" rows="4" placeholder="Describe the scope of work..." required></textarea>
+                </div>
+                <button type="submit" class="btn">Post Project Free to Marketplace</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TERMS AND CONDITIONS VIEW -->
+    <div id="view-terms" class="view-section hidden">
+        <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
+        <div class="card">
+            <h2>Terms and Conditions & Hold Harmless Agreement</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;"><strong>Effective Date:</strong> January 1, 2026</p>
+            <div style="line-height: 1.7; color: #334155; font-size: 0.95rem;">
+                <h3 style="color: #0f172a; margin-top: 1.25rem;">1. Nature of Service (Marketplace Only)</h3>
+                <p>ProcureSOS is strictly a digital marketplace and communication platform connecting homeowners with independent contractors and vendors. ProcureSOS does not perform home improvement or construction services.</p>
+                <h3 style="color: #0f172a; margin-top: 1.25rem;">2. Hold Harmless and Limitation of Liability</h3>
+                <p>All users use this website entirely at their own risk. ProcureSOS explicitly disclaims all warranties and shall not be held liable for any disputes, damages, or losses arising from contractor engagements.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <a onclick="switchTab('marketplace')" class="footer-logo-container">
+            <div class="footer-logo-mark">
+                <svg class="footer-logo-house-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/>
+                </svg>
+                <div class="footer-logo-dot"></div>
+            </div>
+            <span class="footer-logo-text">Procure<span style="color: #4f46e5;">SOS</span></span>
+        </a>
+        <p class="copyright-text">&copy; 2026 ProcureSOS. All rights reserved.</p>
+        <div class="footer-links">
+            <a onclick="switchTab('terms')">Terms and Conditions & Hold Harmless Agreement</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const SUPABASE_URL = 'https://asptflxjowmdbvqsutuf.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzcHRmbHhqb3dtZGJ2cXN1dHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3KE3';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let rfqs = [];
+
+    async function fetchRFQs() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('rfqs') 
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) throw error;
+            rfqs = data && data.length > 0 ? data : getFallbackMockData();
+        } catch (err) {
+            console.warn('Falling back to localStorage:', err);
+            rfqs = JSON.parse(localStorage.getItem('procuresos_rfqs')) || getFallbackMockData();
+        }
+        renderRFQs();
+    }
+
+    function getFallbackMockData() {
+        return [
+            {
+                id: 1,
+                title: "Industrial Grade Valve Procurement",
+                buyer: "Apex Manufacturing",
+                email: "contact@apexmfg.com",
+                category: "Hardware",
+                location: "Houston, TX",
+                budget: "$45,000",
+                timeline: "Immediate / Urgent",
+                deadline: "2026-09-15",
+                description: "Looking for industrial grade valves for manufacturing plant overhaul.",
+                status: "Open"
+            }
+        ];
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await fetchRFQs();
+        await handleStripeReturn();
+    });
+
+    async function handleStripeReturn() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentSuccess = urlParams.get('payment_success');
+        const rfqId = urlParams.get('rfq_id') || localStorage.getItem('pending_rfq_id');
+
+        if (paymentSuccess === 'true' && rfqId) {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) return;
+
+                await supabaseClient
+                    .from('purchases')
+                    .insert([{ user_id: user.id, rfq_id: rfqId }]);
+
+                localStorage.removeItem('pending_rfq_id');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                openRfqDetail(rfqId);
+            } catch (err) {
+                console.error('Failed to record purchase:', err);
+            }
+        }
+    }
+
+    async function handlePostRFQ(event) {
+        if (event) event.preventDefault();
+
+        const newRfq = {
+            title: document.getElementById('projectTitle').value,
+            buyer: document.getElementById('buyerName').value,
+            email: document.getElementById('rfq-email').value,
+            category: document.getElementById('projectCategory').value,
+            location: document.getElementById('rfq-location').value,
+            budget: document.getElementById('projectBudget').value,
+            timeline: document.getElementById('budgetFrequency').value,
+            deadline: document.getElementById('projectDeadline').value,
+            description: document.getElementById('rfq-desc').value,
+            status: 'Open',
+            is_paid: false
+        };
+
+        try {
+            const { data, error } = await supabaseClient
+                .from('rfqs')
+                .insert([newRfq])
+                .select();
+
+            if (error) throw error;
+            if (data && data.length > 0) rfqs.unshift(data[0]);
+        } catch (err) {
+            console.error('Database insertion error:', err);
+        }
+
+        renderRFQs();
+        document.getElementById('rfqForm').reset();
+        switchTab('marketplace');
+    }
+
+    function openRfqDetail(id) {
+        currentDetailRfqId = id;
+        switchTab('detail');
+    }
+
+    const categories = [
+        "Air Conditioning Installation & Repair", "Bathroom Remodeling", "Commercial Roofing Services", 
+        "Electrical Wiring & Panel Upgrades", "Kitchen Remodeling", "Plumbing Leak Detection & Repair", 
+        "Roof Replacement & Repair", "Solar Panel Installation", "Window & Door Replacement"
+    ];
+
+    const majorUSCities = ["New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", "Dallas, TX", "Austin, TX"];
+
+    let selectedFilterCategory = 'All';
+    let currentDetailRfqId = null;
+    let currentPage = 1;
+    const itemsPerPage = 12;
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('main-tabs-container').style.display = 'flex';
+
+        if (tabName === 'marketplace') {
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.getElementById('view-marketplace').classList.remove('hidden');
+            renderRFQs();
+        } else if (tabName === 'post-rfq') {
+            document.querySelectorAll('.tab')[1].classList.add('active');
+            document.getElementById('view-post-rfq').classList.remove('hidden');
+        } else if (tabName === 'detail') {
+            document.getElementById('main-tabs-container').style.display = 'none';
+            document.getElementById('view-rfq-detail').classList.remove('hidden');
+            renderRFQDetail(currentDetailRfqId);
+        } else if (tabName === 'terms') {
+            document.getElementById('main-tabs-container').style.display = 'none';
+            document.getElementById('view-terms').classList.remove('hidden');
+        }
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function onFilterInput() {
+        const query = document.getElementById('filter-search').value.toLowerCase();
+        const dropdown = document.getElementById('filter-dropdown');
+        dropdown.innerHTML = '';
+
+        if (!query) {
+            dropdown.style.display = 'none';
+            selectedFilterCategory = 'All';
+            currentPage = 1;
+            renderRFQs();
+            return;
+        }
+
+        const matches = [...categories, ...majorUSCities].filter(item => item.toLowerCase().includes(query)).slice(0, 8);
+        if (matches.length > 0) {
+            dropdown.style.display = 'block';
+            matches.forEach(match => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.innerText = match;
+                item.onclick = () => {
+                    document.getElementById('filter-search').value = match;
+                    selectedFilterCategory = match;
+                    dropdown.style.display = 'none';
+                    currentPage = 1;
+                    renderRFQs();
+                };
+                dropdown.appendChild(item);
+            });
+        } else {
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function clearFilter() {
+        document.getElementById('filter-search').value = '';
+        selectedFilterCategory = 'All';
+        document.getElementById('filter-dropdown').style.display = 'none';
+        currentPage = 1;
+        renderRFQs();
+    }
+
+    function onPostInput() {
+        const query = document.getElementById('projectCategory').value.toLowerCase();
+        const dropdown = document.getElementById('post-dropdown');
+        dropdown.innerHTML = '';
+
+        if (!query) {
+            dropdown.style.display = 'none';
+            return;
+        }
+
+        const matches = categories.filter(c => c.toLowerCase().includes(query)).slice(0, 8);
+        if (matches.length > 0) {
+            dropdown.style.display = 'block';
+            matches.forEach(match => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.innerText = match;
+                item.onclick = () => {
+                    document.getElementById('projectCategory').value = match;
+                    dropdown.style.display = 'none';
+                };
+                dropdown.appendChild(item);
+            });
+        } else {
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function processStripeCheckout(rfqId) {
+        localStorage.setItem('pending_rfq_id', rfqId);
+        window.location.href = `https://buy.stripe.com/14AaEX0Oa5FZ2DZbr89Zm02?client_reference_id=${rfqId}`;
+    }
+
+    function changePage(direction) {
+        currentPage += direction;
+        renderRFQs();
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function renderRFQs() {
+        const container = document.getElementById('rfq-list-container');
+        const paginationWrapper = document.getElementById('pagination-wrapper');
+        container.innerHTML = '';
+        paginationWrapper.innerHTML = '';
+
+        const filteredRFQs = rfqs.filter(rfq => {
+            if (selectedFilterCategory === 'All') return true;
+            const query = selectedFilterCategory.toLowerCase();
+            return (rfq.category && rfq.category.toLowerCase().includes(query)) || 
+                   (rfq.title && rfq.title.toLowerCase().includes(query)) ||
+                   (rfq.location && rfq.location.toLowerCase().includes(query));
+        });
+
+        const totalPages = Math.ceil(filteredRFQs.length / itemsPerPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const currentItems = filteredRFQs.slice(startIndex, startIndex + itemsPerPage);
+
+        if (currentItems.length === 0) {
+            container.innerHTML = '<div class="card"><p>No active projects available matching this search filter.</p></div>';
+            return;
+        }
+
+        currentItems.forEach(rfq => {
+            const card = document.createElement('div');
+            card.className = 'rfq-item';
+            card.onclick = () => openRfqDetail(rfq.id);
+
+            card.innerHTML = `
+                <span class="badge">${rfq.category || 'General'}</span>
+                <h3 style="margin: 0.2rem 0 0.4rem 0; font-size: 1.05rem; color: #0f172a;">${rfq.title}</h3>
+                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.4rem;">
+                    <strong>Location:</strong> ${rfq.location || 'Nationwide'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span> | <strong>Deadline:</strong> ${rfq.deadline}
+                </p>
+                <p style="font-size: 0.8rem; color: #475569; margin: 0; font-style: italic;">Tap to view details & unlock contact info &rarr;</p>
+            `;
+            container.appendChild(card);
+        });
+
+        paginationWrapper.innerHTML = `
+            <div class="pagination-container">
+                <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1)">Previous</button>
+                <span class="page-info">Page ${currentPage} of ${totalPages}</span>
+                <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(1)">Next</button>
+            </div>
+        `;
+    }
+
+    async function renderRFQDetail(id) {
+        const container = document.getElementById('rfq-detail-container');
+        container.innerHTML = '<div class="card"><p>Loading project details...</p></div>';
+        
+        // 1. Check local in-memory array first (instantly handles mock data and cached items)
+        let rfq = rfqs.find(r => String(r.id) === String(id));
+
+        // 2. If not found in memory, query Supabase
+        if (!rfq) {
+            const { data, error } = await supabaseClient
+                .from('rfqs')
+                .select('*')
+                .eq('id', id)
+                .maybeSingle();
+
+            if (!error && data) {
+                rfq = data;
+            }
+        }
+
+        if (!rfq) {
+            container.innerHTML = '<div class="card"><p>Project not found.</p></div>';
+            return;
+        }
+
+        let isUnlockedForCurrentUser = false;
+        const { data: { user } } = await supabaseClient.auth.getUser();
+
+        if (user) {
+            const { data: purchaseData } = await supabaseClient
+                .from('purchases')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('rfq_id', id)
+                .maybeSingle();
+
+            if (purchaseData) isUnlockedForCurrentUser = true;
+        }
+
+        let contactSectionHtml = isUnlockedForCurrentUser ? `
+            <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
+                <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
+                <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0.25rem;"><strong>Buyer Name:</strong> ${rfq.buyer}</p>
+                <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0;"><strong>Buyer Email:</strong> <a href="mailto:${rfq.email}" style="color: #047857; text-decoration: underline;">${rfq.email}</a></p>
+            </div>
+        ` : `
+            <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+                <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
+                <button onclick="processStripeCheckout('${rfq.id}')" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
+                    Unlock Customer Details
+                </button>
+            </div>
+        `;
+
+        container.innerHTML = `
+            <div class="card">
+                <span class="badge">${rfq.category || 'General'}</span>
+                <h2 style="margin-top: 0.25rem;">${rfq.title}</h2>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;">
+                    <strong>Location:</strong> ${rfq.location || 'N/A'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span>
+                </p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
+                    <strong>Timeline:</strong> ${rfq.timeline || 'N/A'} | <strong>Deadline:</strong> <span style="color: #dc2626; font-weight: 600;">${rfq.deadline}</span>
+                </p>
+                <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h3 style="margin-top: 0; font-size: 1rem; color: #1e293b;">Project Description</h3>
+                    <p style="margin: 0 0 1rem 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${rfq.description || 'No description provided.'}</p>
+                </div>
+                ${contactSectionHtml}
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
