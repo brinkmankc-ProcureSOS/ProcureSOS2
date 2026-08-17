@@ -19,7 +19,7 @@
             --primary-dark: #1d4ed8;
             --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
             --logo-blue-gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-            --hero-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%);
+            --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
             --background: #f8fafc;
             --card-bg: rgba(255, 255, 255, 0.92);
             --text: #1e293b;
@@ -108,21 +108,71 @@
         .logo-tagline { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; font-weight: 700; margin-top: 2px; display: none; }
         @media (min-width: 480px) { .logo-tagline { display: block; } }
 
+        /* Polished Hero Banner Styles */
         .hero-banner {
             background: var(--hero-gradient);
             color: white;
-            padding: 1.5rem 1rem;
-            border-radius: 12px;
+            padding: 2rem 1.25rem;
+            border-radius: 16px;
             margin-bottom: 1.25rem;
-            box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.3);
+            box-shadow: 0 12px 30px -10px rgba(15, 23, 42, 0.35);
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        @media (min-width: 768px) { .hero-banner { padding: 2.5rem 2rem; margin-bottom: 2rem; } }
-        .hero-banner h1 { margin: 0 0 0.4rem 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
-        @media (min-width: 768px) { .hero-banner h1 { font-size: 2rem; } }
-        .hero-banner p { margin: 0; font-size: 0.9rem; opacity: 0.9; max-width: 600px; line-height: 1.5; }
-        @media (min-width: 768px) { .hero-banner p { font-size: 1.05rem; } }
+        @media (min-width: 768px) { 
+            .hero-banner { padding: 3rem 2.5rem; margin-bottom: 2rem; } 
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .hero-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(37, 99, 235, 0.25);
+            border: 1px solid rgba(96, 165, 250, 0.4);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #93c5fd;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-banner h1 { 
+            margin: 0 0 0.75rem 0; 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            letter-spacing: -0.6px; 
+            line-height: 1.15; 
+        }
+        @media (min-width: 768px) { 
+            .hero-banner h1 { font-size: 2.35rem; } 
+        }
+        
+        .hero-banner p { 
+            margin: 0; 
+            font-size: 0.95rem; 
+            color: #cbd5e1;
+            max-width: 680px; 
+            line-height: 1.6; 
+        }
+        @media (min-width: 768px) { 
+            .hero-banner p { font-size: 1.1rem; } 
+        }
 
         .container { max-width: 900px; margin: 0.75rem auto; padding: 0 0.65rem; position: relative; z-index: 1; flex: 1; width: 100%; }
         @media (min-width: 768px) { .container { margin: 2rem auto; padding: 0 1rem; } }
@@ -240,11 +290,11 @@
         @media (min-width: 640px) { .filter-bar { flex-direction: row; align-items: center; gap: 1rem; } }
         .filter-bar input { padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.95); flex: 1; width: 100%; font-size: 16px; min-height: 44px; }
 
-        .pagination-container { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; margin: 1.25rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.92); border-radius: 10px; border: 1px solid var(--border); text-align: center; }
-        @media (min-width: 640px) { .pagination-container { flex-direction: row; justify-content: space-between; } }
-        .page-btn { background: var(--accent-gradient); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; min-height: 44px; }
-        .page-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
-        .page-info { font-weight: 600; color: #475569; font-size: 0.9rem; }
+        .pagination-container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; padding: 0 0.5rem; }
+        .page-btn { padding: 0.625rem 1.5rem; background: #f1f5f9; color: #334155; font-weight: 500; border-radius: 0.75rem; border: none; cursor: pointer; transition: background 0.2s; }
+        .page-btn:hover:not(:disabled) { background: #e2e8f0; }
+        .page-btn:disabled { background: #f8fafc; color: #cbd5e1; cursor: not-allowed; }
+        .page-info { font-size: 0.875rem; font-weight: 500; color: #64748b; white-space: nowrap; }
         
         .back-btn { background: #e2e8f0; color: #334155; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 1rem; display: inline-flex; align-items: center; gap: 0.55rem; font-size: 0.9rem; min-height: 40px; }
 
@@ -294,19 +344,14 @@
 
     <!-- MARKETPLACE VIEW -->
     <div id="view-marketplace" class="view-section">
+        
+        <!-- Polished Hero Banner Section -->
         <div class="hero-banner">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
-                <div class="logo-mark" style="width: 40px; height: 40px; border-radius: 10px;">
-                    <svg class="logo-house-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px; height: 22px;">
-                        <path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/>
-                    </svg>
-                    <div class="logo-dot" style="bottom: 5px; right: 5px; width: 6px; height: 6px;"></div>
-                </div>
-                <div>
-                    <h1 style="margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">Procure<span style="color: #818cf8;">SOS</span></h1>
-                    <span style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.9; font-weight: 700;">Nationwide Homeowner Projects & Contractor Marketplace</span>
-                </div>
+            <div class="hero-badge-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                Nationwide Homeowner & Contractor Marketplace
             </div>
+            <h1>Procure<span style="color: #818cf8;">SOS</span> Marketplace</h1>
             <p>Connecting homeowners and property managers with trusted local contractors, handymen, and home service professionals across all 50 states and major U.S. cities.</p>
         </div>
 
@@ -334,6 +379,7 @@
     <!-- POST JOB VIEW -->
     <div id="view-post-rfq" class="view-section hidden">
         <div class="hero-banner" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #172554 100%);">
+            <div class="hero-badge-pill">Free Submission</div>
             <h1>Post Your Project Free</h1>
             <p>Homeowners: Submit your project details instantly to receive multiple quotes from professional contractors in your city and state.</p>
         </div>
@@ -473,10 +519,52 @@
     const categories = [
         "Air Conditioning Installation & Repair", "Bathroom Remodeling", "Commercial Roofing Services", 
         "Electrical Wiring & Panel Upgrades", "Kitchen Remodeling", "Plumbing Leak Detection & Repair", 
-        "Roof Replacement & Repair", "Solar Panel Installation", "Window & Door Replacement"
+        "Roof Replacement & Repair", "Solar Panel Installation", "Window & Door Replacement",
+        "Foundation Repair & Stabilization", "Drywall Installation & Repair", "Interior Painting & Wallpapering",
+        "Exterior House Painting", "Hardwood Floor Refinishing", "Tile & Grout Installation",
+        "Carpet Cleaning & Installation", "Custom Cabinetry & Carpentry", "Decks, Porches & Gazebos",
+        "Fence Installation & Repair", "Driveway Paving & Concrete Work", "Masonry, Brick & Stone Work",
+        "Siding Installation & Repair", "Gutters & Downspouts Service", "Chimney Cleaning & Inspection",
+        "Garbage Disposal Repair & Replacement", "Water Heater Installation & Repair", "Tankless Water Heater Services",
+        "Sewer Line Inspection & Repair", "Septic Tank Pumping & Maintenance", "Sump Pump Installation & Repair",
+        "Smart Home Automation Setup", "Home Security Systems Installation", "CCTV & Security Camera Setup",
+        "Home Theater & Audio Wiring", "Interior Lighting Design", "Landscape Lighting Installation",
+        "Generator Installation & Maintenance", "EV Home Charging Station Installation", "Attic Insulation & Ventilation",
+        "Blow-In Insulation Services", "Mold Remediation & Inspection", "Asbestos Abatement Services",
+        "Lead Paint Testing & Removal", "Water Damage Restoration", "Fire Damage Restoration",
+        "Pest Control & Extermination", "Termite Inspection & Treatment", "Wildlife Removal & Exclusion",
+        "Tree Trimming & Removal", "Stump Grinding Services", "Lawn Care & Landscaping Design",
+        "Irrigation & Sprinkler Systems", "Landscape Hardscaping", "Swimming Pool Construction & Repair",
+        "Pool Resurfacing & Maintenance", "Hot Tub & Spa Installation", "Interior Design & Space Planning",
+        "Architectural & Drafting Services", "Structural Engineering Consultation", "Home Energy Audit Services",
+        "Garage Door Installation & Repair", "Gate Automation & Repair", "Locksmith & Re-keying Services",
+        "Upholstery Cleaning & Restoration", "Window Tinting Services", "Blind & Shutter Installation",
+        "Handyman General Maintenance", "Pressure Washing & Power Washing", "Roof Soft Washing",
+        "Move-In / Move-Out Deep Cleaning", "Post-Construction Clean-Up", "Commercial Cleaning Services",
+        "HVAC Preventive Maintenance", "Boiler Installation & Repair", "Radiant Floor Heating Services",
+        "Gas Line Installation & Repair", "Appliance Installation & Repair", "Commercial Refrigeration Services"
     ];
 
-    const majorUSCities = ["New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", "Dallas, TX", "Austin, TX"];
+    const majorUSCities = [
+        "New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", "Dallas, TX", "Austin, TX",
+        "Philadelphia, PA", "San Diego, CA", "San Jose, CA", "San Francisco, CA", "Seattle, WA", "Denver, CO", 
+        "Washington, DC", "Boston, MA", "El Paso, TX", "Nashville, TN", "Detroit, MI", "Oklahoma City, OK", 
+        "Portland, OR", "Las Vegas, NV", "Memphis, TN", "Louisville, KY", "Baltimore, MD", "Milwaukee, WI", 
+        "Albuquerque, NM", "Tucson, AZ", "Fresno, CA", "Sacramento, CA", "Kansas City, MO", "Mesa, AZ", 
+        "Atlanta, GA", "Omaha, NE", "Colorado Springs, CO", "Raleigh, NC", "Long Beach, CA", "Virginia Beach, VA", 
+        "Miami, FL", "Oakland, CA", "Minneapolis, MN", "Tulsa, OK", "Bakersfield, CA", "Wichita, KS", 
+        "Arlington, TX", "Aurora, CO", "Tampa, FL", "New Orleans, LA", "Cleveland, OH", "Honolulu, HI", 
+        "Anaheim, CA", "Lexington, KY", "Stockton, CA", "Corpus Christi, TX", "Baton Rouge, LA", "Riverside, CA", 
+        "Irvine, CA", "Cincinnati, OH", "Pittsburgh, PA", "St. Louis, MO", "Greensboro, NC", "Anchorage, AK", 
+        "Lincoln, NE", "Plano, TX", "Orlando, FL", "Newark, NJ", "Durham, NC", "Chula Vista, CA", 
+        "Toledo, OH", "Fort Wayne, IN", "St. Petersburg, FL", "Laredo, TX", "Jersey City, NJ", "Chandler, AZ", 
+        "Madison, WI", "Lubbock, TX", "Scottsdale, AZ", "Reno, NV", "Buffalo, NY", "Gilbert, AZ", 
+        "Glendale, AZ", "North Las Vegas, NV", "Winston-Salem, NC", "Chesapeake, VA", "Norfolk, VA", "Fremont, CA", 
+        "Garland, TX", "Irving, TX", "Hialeah, FL", "Boise, ID", "Richmond, VA", "Spokane, WA", "Des Moines, IA", 
+        "Tacoma, WA", "Modesto, CA", "Fontana, CA", "San Bernardino, CA", "Santa Clarita, CA", "Oxnard, CA", 
+        "Fayetteville, NC", "Moreno Valley, CA", "Huntington Beach, CA", "Salt Lake City, UT", "Montgomery, AL", 
+        "Little Rock, AR", "Akron, OH", "Grand Rapids, MI", "Shreveport, LA", "Huntsville, AL", "Knoxville, TN"
+    ];
 
     async function fetchRFQs() {
         try {
@@ -601,13 +689,11 @@
 
         if (rfqId && sessionId) {
             try {
-                // Clean up the URL query params so it doesn't loop
                 localStorage.removeItem('pending_rfq_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) {
-                    // Check if purchase already exists
                     const { data: existingPurchase } = await supabaseClient
                         .from('purchases')
                         .select('*')
@@ -616,7 +702,6 @@
                         .maybeSingle();
 
                     if (!existingPurchase) {
-                        // Insert purchase record to unlock data
                         await supabaseClient
                             .from('purchases')
                             .insert([{
@@ -633,7 +718,6 @@
                 console.error('Failed to process post-stripe return purchase record:', err);
             }
         } else if (rfqId) {
-            // Fallback check if session_id is missing from URL query string but rfq_id exists
             try {
                 localStorage.removeItem('pending_rfq_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -806,7 +890,6 @@
     async function processStripeCheckout(rfqId) {
         const { data: { user } } = await supabaseClient.auth.getUser();
         
-        // If user is not signed in, redirect them to the auth tab
         if (!user) {
             switchTab('auth');
             return;
@@ -973,3 +1056,4 @@
 
 </body>
 </html>
+```[cite: 5, 6]
