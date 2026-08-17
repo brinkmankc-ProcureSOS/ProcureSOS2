@@ -595,46 +595,41 @@
     }
 
     async function handleStripeReturn() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const rfqIdFromUrl = urlParams.get('rfq_id');
+        // Check local storage for the pending RFQ ID saved right before checkout[cite: 10, 11]
         const pendingRfqId = localStorage.getItem('pending_rfq_id');
-        const rfqId = rfqIdFromUrl || pendingRfqId;
 
-        if (rfqId) {
+        if (pendingRfqId) {
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) {
-                    // Check if the purchase record already exists
+                    // Check if the purchase record already exists[cite: 10, 11]
                     const { data: existingPurchase } = await supabaseClient
                         .from('purchases')
                         .select('*')
                         .eq('user_id', user.id)
-                        .eq('rfq_id', rfqId)
+                        .eq('rfq_id', pendingRfqId)
                         .maybeSingle();
 
-                    // Insert purchase record if it doesn't exist yet
+                    // Insert purchase record if it doesn't exist yet[cite: 10, 11]
                     if (!existingPurchase) {
                         await supabaseClient
                             .from('purchases')
-                            .insert([{ user_id: user.id, rfq_id: rfqId }]);
+                            .insert([{ user_id: user.id, rfq_id: pendingRfqId }]);
                     }
                 }
                 
-                // Clean up localStorage immediately to prevent loops or stale states
+                // Clean up localStorage immediately to prevent loops[cite: 10, 11]
                 localStorage.removeItem('pending_rfq_id');
                 
-                // Clean the URL parameters without reloading the page
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                // Directly render and open the project detail view
-                openRfqDetail(rfqId);
+                // Directly render and open the project detail view[cite: 10, 11]
+                openRfqDetail(pendingRfqId);
                 return;
             } catch (err) {
                 console.error('Failed to process post-stripe return:', err);
             }
         }
         
-        // Clear any leftover pending state safely if no valid return flow occurred
+        // Clear any leftover pending state safely[cite: 10, 11]
         localStorage.removeItem('pending_rfq_id');
     }
 
