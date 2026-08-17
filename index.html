@@ -597,26 +597,71 @@
     async function handleStripeReturn() {
         const urlParams = new URLSearchParams(window.location.search);
         let rfqId = urlParams.get('rfq_id') || localStorage.getItem('pending_rfq_id');
+        let sessionId = urlParams.get('session_id');
 
-        if (rfqId) {
+        if (rfqId && sessionId) {
+            try {
+                // Clean up the URL query params so it doesn't loop
+                localStorage.removeItem('pending_rfq_id');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user) {
+                    // Check if purchase already exists
+                    const { data: existingPurchase } = await supabaseClient
+                        .from('purchases')
+                        .select('*')
+                        .eq('user_id', user.id)
+                        .eq('rfq_id', rfqId)
+                        .maybeSingle();
+
+                    if (!existingPurchase) {
+                        // Insert purchase record to unlock data
+                        await supabaseClient
+                            .from('purchases')
+                            .insert([{
+                                user_id: user.id,
+                                rfq_id: rfqId,
+                                stripe_session_id: sessionId
+                            }]);
+                    }
+                }
+                
+                openRfqDetail(rfqId);
+                return;
+            } catch (err) {
+                console.error('Failed to process post-stripe return purchase record:', err);
+            }
+        } else if (rfqId) {
+            // Fallback check if session_id is missing from URL query string but rfq_id exists
             try {
                 localStorage.removeItem('pending_rfq_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) {
-                    await supabaseClient
+                    const { data: existingPurchase } = await supabaseClient
                         .from('purchases')
                         .select('*')
                         .eq('user_id', user.id)
                         .eq('rfq_id', rfqId)
                         .maybeSingle();
+
+                    if (!existingPurchase) {
+                        await supabaseClient
+                            .from('purchases')
+                            .insert([{
+                                user_id: user.id,
+                                rfq_id: rfqId,
+                                stripe_session_id: 'manual_redirect'
+                            }]);
+                    }
                 }
                 
                 openRfqDetail(rfqId);
                 return;
             } catch (err) {
-                console.error('Failed to process post-stripe return:', err);
+                console.error('Failed to process fallback post-stripe return:', err);
             }
         }
         
@@ -924,25 +969,6 @@
             </div>
         `;
     }
-</script>
-
-<script>
-    // Handle return from Stripe and parse query parameters
-    window.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const rfqId = urlParams.get('rfq_id');
-        const sessionId = urlParams.get('session_id');
-
-        if (rfqId || sessionId) {
-            console.log("Returned from Stripe with ID:", rfqId || sessionId);
-            
-            // Trigger your unlock/fulfillment logic here
-            // Example: call your frontend function to update the UI or verify payment status
-            if (typeof unlockProjectDetails === 'function') {
-                unlockProjectDetails(rfqId || sessionId);
-            }
-        }
-    });
 </script>
 
 </body>
