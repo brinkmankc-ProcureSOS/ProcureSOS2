@@ -925,5 +925,25 @@
         `;
     }
 </script>
+
+<script>
+    // Handle return from Stripe and parse query parameters
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const rfqId = urlParams.get('rfq_id');
+        const sessionId = urlParams.get('session_id');
+
+        if (rfqId || sessionId) {
+            console.log("Returned from Stripe with ID:", rfqId || sessionId);
+            
+            // Trigger your unlock/fulfillment logic here
+            // Example: call your frontend function to update the UI or verify payment status
+            if (typeof unlockProjectDetails === 'function') {
+                unlockProjectDetails(rfqId || sessionId);
+            }
+        }
+    });
+</script>
+
 </body>
 </html>
