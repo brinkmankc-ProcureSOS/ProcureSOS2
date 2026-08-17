@@ -596,27 +596,13 @@
 
     async function handleStripeReturn() {
         const urlParams = new URLSearchParams(window.location.search);
-        let rfqId = null;
-        const clientRefParam = urlParams.get('client_reference_id');
-
-        if (clientRefParam) {
-            if (clientRefParam.includes(':')) {
-                const parts = clientRefParam.split(':');
-                rfqId = parts[1];
-            } else {
-                rfqId = clientRefParam;
-            }
-        } else {
-            rfqId = localStorage.getItem('pending_rfq_id');
-        }
+        let rfqId = urlParams.get('rfq_id') || localStorage.getItem('pending_rfq_id');
 
         if (rfqId) {
             try {
-                // Clean up localStorage and URL query parameters[cite: 1]
                 localStorage.removeItem('pending_rfq_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
-                // Perform a read check to confirm the webhook has processed and unlocked the contact details[cite: 1]
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) {
                     await supabaseClient
@@ -627,7 +613,6 @@
                         .maybeSingle();
                 }
                 
-                // Open the specific project detail view
                 openRfqDetail(rfqId);
                 return;
             } catch (err) {
@@ -782,10 +767,37 @@
             return;
         }
 
-        // Store the pending ID for fallback handling, then redirect to Stripe with composite reference ID
-        localStorage.setItem('pending_rfq_id', rfqId);
-        const clientRef = `${user.id}:${rfqId}`;
-        window.location.href = `https://buy.stripe.com/14AaEX0Oa5FZ2DZbr89Zm02?client_reference_id=${encodeURIComponent(clientRef)}`;
+        try {
+            localStorage.setItem('pending_rfq_id', rfqId);
+
+            const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                },
+                body: JSON.stringify({
+                    priceId: 'price_1U47ZXHb4wp2V5Gus1BxqKrf', 
+                    successUrl: `${window.location.origin}/?rfq_id=${rfqId}&session_id={CHECKOUT_SESSION_ID}`,
+                    cancelUrl: `${window.location.origin}/?rfq_id=${rfqId}`,
+                    userId: user.id,
+                    rfqId: rfqId
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            if (data.url) {
+                window.location.href = data.url;
+            }
+        } catch (err) {
+            console.error('Failed to create Stripe checkout session:', err);
+            alert('Could not initiate checkout. Please try again.');
+        }
     }
 
     function changePage(direction) {
@@ -915,4 +927,3 @@
 </script>
 </body>
 </html>
-```[cite: 2, 3]
