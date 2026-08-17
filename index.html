@@ -595,41 +595,46 @@
     }
 
     async function handleStripeReturn() {
-        // Check local storage for the pending RFQ ID saved right before checkout[cite: 10, 11]
-        const pendingRfqId = localStorage.getItem('pending_rfq_id');
+        const urlParams = new URLSearchParams(window.location.search);
+        let rfqId = null;
+        const clientRefParam = urlParams.get('client_reference_id');
 
-        if (pendingRfqId) {
+        if (clientRefParam) {
+            if (clientRefParam.includes(':')) {
+                const parts = clientRefParam.split(':');
+                rfqId = parts[1];
+            } else {
+                rfqId = clientRefParam;
+            }
+        } else {
+            rfqId = localStorage.getItem('pending_rfq_id');
+        }
+
+        if (rfqId) {
             try {
+                // Clean up localStorage and URL query parameters[cite: 1]
+                localStorage.removeItem('pending_rfq_id');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Perform a read check to confirm the webhook has processed and unlocked the contact details[cite: 1]
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) {
-                    // Check if the purchase record already exists[cite: 10, 11]
-                    const { data: existingPurchase } = await supabaseClient
+                    await supabaseClient
                         .from('purchases')
                         .select('*')
                         .eq('user_id', user.id)
-                        .eq('rfq_id', pendingRfqId)
+                        .eq('rfq_id', rfqId)
                         .maybeSingle();
-
-                    // Insert purchase record if it doesn't exist yet[cite: 10, 11]
-                    if (!existingPurchase) {
-                        await supabaseClient
-                            .from('purchases')
-                            .insert([{ user_id: user.id, rfq_id: pendingRfqId }]);
-                    }
                 }
                 
-                // Clean up localStorage immediately to prevent loops[cite: 10, 11]
-                localStorage.removeItem('pending_rfq_id');
-                
-                // Directly render and open the project detail view[cite: 10, 11]
-                openRfqDetail(pendingRfqId);
+                // Open the specific project detail view
+                openRfqDetail(rfqId);
                 return;
             } catch (err) {
                 console.error('Failed to process post-stripe return:', err);
             }
         }
         
-        // Clear any leftover pending state safely[cite: 10, 11]
         localStorage.removeItem('pending_rfq_id');
     }
 
@@ -777,9 +782,10 @@
             return;
         }
 
-        // Store the pending ID for fallback handling, then redirect to Stripe
+        // Store the pending ID for fallback handling, then redirect to Stripe with composite reference ID
         localStorage.setItem('pending_rfq_id', rfqId);
-        window.location.href = `https://buy.stripe.com/14AaEX0Oa5FZ2DZbr89Zm02?client_reference_id=${rfqId}`;
+        const clientRef = `${user.id}:${rfqId}`;
+        window.location.href = `https://buy.stripe.com/14AaEX0Oa5FZ2DZbr89Zm02?client_reference_id=${encodeURIComponent(clientRef)}`;
     }
 
     function changePage(direction) {
@@ -909,3 +915,4 @@
 </script>
 </body>
 </html>
+```[cite: 2, 3]
