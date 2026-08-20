@@ -409,6 +409,44 @@
         .footer-logo-text { font-size: 1.05rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
         .copyright-text { font-size: 0.82rem; color: #64748b; margin: 0; font-weight: 500; }
         .footer-links a { font-size: 0.82rem; color: #2563eb; text-decoration: underline; font-weight: 500; cursor: pointer; }
+
+        /* Legal / Terms Stylings */
+        .legal-block {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .legal-block h3 {
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+        .legal-block p, .legal-block ul {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #475569;
+        }
+        .legal-block ul {
+            padding-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+        .legal-block li {
+            margin-bottom: 0.35rem;
+        }
+        .legal-callout {
+            background: #f8fafc;
+            border-left: 4px solid #4f46e5;
+            padding: 0.85rem 1.1rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: #334155;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -569,13 +607,67 @@
     <div id="view-terms" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div class="card">
-            <h2>Terms and Conditions & Hold Harmless Agreement</h2>
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;"><strong>Effective Date:</strong> January 1, 2026</p>
-            <div style="line-height: 1.7; color: #334155; font-size: 0.95rem;">
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">1. Nature of Service (Marketplace Only)</h3>
-                <p>ProcureSOS is strictly a digital marketplace and communication platform connecting homeowners with independent contractors and vendors. ProcureSOS does not perform home improvement or construction services.</p>
-                <h3 style="color: #0f172a; margin-top: 1.25rem;">2. Hold Harmless and Limitation of Liability</h3>
-                <p>All users use this website entirely at their own risk. ProcureSOS explicitly disclaims all warranties and shall not be held liable for any disputes, damages, or losses arising from contractor engagements.</p>
+            <h2>Terms of Service & Hold Harmless Agreement</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem;"><strong>Last Updated & Effective Date:</strong> January 1, 2026</p>
+            
+            <div class="legal-block">
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing, browsing, submitting RFQs/projects, or purchasing lead contact information on ProcureSOS ("Platform," "we," "us," or "our"), you ("User," "Homeowner," or "Contractor/Provider") expressly agree to be bound by all terms, legal notices, disclaimers, and covenants set forth in this Agreement. If you do not agree to these terms in their entirety, you are strictly prohibited from using the Platform.</p>
+            </div>
+
+            <div class="legal-block">
+                <h3>2. Platform Neutrality & Nature of Services</h3>
+                <p>ProcureSOS operates purely and exclusively as an introductory digital venue and advertising conduit. <strong>ProcureSOS is not a general contractor, subcontractor, construction manager, architectural firm, engineering firm, broker, or employer.</strong></p>
+                <ul>
+                    <li>ProcureSOS does not endorse, recommend, warrant, or guarantee any contractor, handyman, trade professional, or service provider listed on or utilizing the Platform.</li>
+                    <li>ProcureSOS is not a party to any contract, agreement, work order, proposal, estimate, or transaction entered into between Homeowners and Contractors.</li>
+                    <li>All communications, pricing negotiations, contract drafting, project oversight, and financial settlements occur strictly and directly between the respective parties off-platform.</li>
+                </ul>
+            </div>
+
+            <div class="legal-block">
+                <h3>3. User Due Diligence, Licensing & Verification Disclaimers</h3>
+                <p>The Platform makes zero warranties, express or implied, regarding the trade licensure, state certifications, worker's compensation insurance, commercial general liability coverage, bonding status, background checks, creditworthiness, or competence of any Contractor or User.</p>
+                <div class="legal-callout">
+                    <strong>Mandatory Homeowner Notice:</strong> Homeowners are solely responsible for conducting independent background checks, verifying active state/municipal licensing with local registration boards, confirming valid Certificates of Insurance, and requesting references prior to hiring or permitting any contractor onto their property.
+                </div>
+            </div>
+
+            <div class="legal-block">
+                <h3>4. Accuracy of Project Submissions & Lead Purchases</h3>
+                <p>Homeowners warrant that all project descriptions, timelines, budgets, and contact details submitted are accurate and submitted in good faith without intent to spam or defraud.</p>
+                <ul>
+                    <li><strong>Lead Fees:</strong> Contractors acknowledge that fees paid to unlock contact information cover the communication technology and connection service only.</li>
+                    <li><strong>No Guaranteed Conversion:</strong> ProcureSOS does not guarantee that a lead will result in an award of contract, an in-person estimate, responsive homeowner communications, or business revenue.</li>
+                    <li><strong>Refund Policy:</strong> All lead unlocks and marketplace transaction fees are strictly non-refundable once the contact details have been revealed.</li>
+                </ul>
+            </div>
+
+            <div class="legal-block">
+                <h3>5. Complete Hold Harmless & Mutual Indemnification</h3>
+                <p>To the fullest extent permitted by applicable law, all Users (including Homeowners and Contractors) agree to release, defend, indemnify, and hold completely harmless ProcureSOS, its parent entities, subsidiaries, affiliates, officers, directors, employees, software developers, and agents from and against any and all claims, liabilities, damages, losses, costs, expenses, judgments, fines, and attorney's fees arising out of or in any way connected with:</p>
+                <ul>
+                    <li>Any bodily injury, death, property damage, structural failure, water damage, fire damage, or theft occurring at a project location.</li>
+                    <li>Breach of contract, sub-standard craftsmanship, code violations, mechanic's liens, payment disputes, or project abandonment.</li>
+                    <li>Any misrepresentation, fraud, unauthorized conduct, or illegal actions committed by any User.</li>
+                    <li>User violations of local municipal, state, or federal construction, labor, tax, or licensing statutes.</li>
+                </ul>
+            </div>
+
+            <div class="legal-block">
+                <h3>6. Comprehensive Limitation of Liability & Warranty Disclaimer</h3>
+                <p>THE PLATFORM AND ALL ASSOCIATED SERVICES ARE PROVIDED ENTIRELY ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. WE EXPRESSLY DISCLAIM ALL IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+                <p style="margin-top: 0.5rem;">UNDER NO CIRCUMSTANCES SHALL PROCURESOS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA LOSS, PROPERTY DAMAGE, OR BUSINESS INTERRUPTION. IN ALL EVENTS, PROCURESOS'S TOTAL AGGREGATE LIABILITY FOR ANY AND ALL CLAIMS SHALL NOT EXCEED THE TOTAL AMOUNT PAID BY THE CLAIMANT TO PROCURESOS IN THE SIX (6) MONTHS PRECEDING THE CLAIM OR ONE HUNDRED US DOLLARS ($100.00 USD), WHICHEVER IS LESS.</p>
+            </div>
+
+            <div class="legal-block">
+                <h3>7. Mandatory Binding Arbitration & Class Action Waiver</h3>
+                <p>Any dispute, controversy, or claim arising out of or relating to this Agreement or the use of ProcureSOS shall be settled by confidential, binding arbitration administered in accordance with the commercial rules of the American Arbitration Association (AAA). <strong>You agree that all disputes must be resolved on an individual basis, and you expressly waive any right to bring or participate in any class action, collective action, private attorney general action, or representative proceeding.</strong></p>
+            </div>
+
+            <div class="legal-block">
+                <h3>8. Governing Law & Severability</h3>
+                <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of the United States and the State of Delaware, without regard to conflicts of law principles. If any provision of this Agreement is held invalid or unenforceable by an arbitrator or court of competent jurisdiction, the remaining provisions shall remain in full force and effect.</p>
             </div>
         </div>
     </div>
@@ -594,7 +686,7 @@
         </a>
         <p class="copyright-text">&copy; 2026 ProcureSOS. All rights reserved.</p>
         <div class="footer-links">
-            <a onclick="switchTab('terms')">Terms and Conditions & Hold Harmless Agreement</a>
+            <a onclick="switchTab('terms')">Terms of Service & Hold Harmless Agreement</a>
         </div>
     </div>
 </footer>
