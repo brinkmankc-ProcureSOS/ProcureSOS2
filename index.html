@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ProcureSOS | Post Home Improvement Projects & Hire Local Contractors Nationwide</title>
+    <title>ProcureSOS | Hire Local Contractors & Home Improvement Pros</title>
     
     <!-- Core SEO & Search Discovery -->
-    <meta name="description" content="ProcureSOS is America's nationwide contractor marketplace. Homeowners post home improvement, repair, and remodeling jobs for free. Licensed local contractors and handymen review projects and quote across all 50 US states.">
+    <meta name="description" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="ProcureSOS">
     <meta name="application-name" content="ProcureSOS">
@@ -15,8 +15,8 @@
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://procuresos.com/">
-    <meta property="og:title" content="ProcureSOS | Nationwide Homeowner & Contractor Marketplace">
-    <meta property="og:description" content="Post home improvement projects for free. Connect with verified local contractors and handymen across every city and state in the United States.">
+    <meta property="og:title" content="ProcureSOS | Hire Local Contractors & Home Improvement Pros">
+    <meta property="og:description" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&h=630&q=80">
     <meta property="og:site_name" content="ProcureSOS">
     <meta property="og:locale" content="en_US">
@@ -24,8 +24,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://procuresos.com/">
-    <meta name="twitter:title" content="ProcureSOS | Post Homeowner Projects & Hire Local Contractors">
-    <meta name="twitter:description" content="Find trusted contractors or bid on active homeowner repair and remodeling jobs across all 50 states.">
+    <meta name="twitter:title" content="ProcureSOS | Hire Local Contractors & Home Improvement Pros">
+    <meta name="twitter:description" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&h=630&q=80">
 
     <!-- Structured Data / JSON-LD -->
@@ -34,18 +34,21 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "WebSite",
-          "@id": "https://procuresos.com/#website",
-          "url": "https://procuresos.com/",
-          "name": "ProcureSOS",
-          "description": "Nationwide Homeowner and Local Contractor Marketplace"
-        },
-        {
           "@type": "Organization",
           "@id": "https://procuresos.com/#organization",
           "name": "ProcureSOS",
           "url": "https://procuresos.com/",
-          "logo": "https://procuresos.com/logo.png"
+          "logo": "https://procuresos.com/logo.png",
+          "description": "Nationwide contractor marketplace connecting homeowners with local home improvement pros."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://procuresos.com/#website",
+          "url": "https://procuresos.com/",
+          "name": "ProcureSOS",
+          "publisher": {
+            "@id": "https://procuresos.com/#organization"
+          }
         },
         {
           "@type": "Service",
@@ -752,7 +755,6 @@
         await fetchRFQs();
         await handleStripeReturn();
 
-        // Check if page opened via a direct project link (?rfq_id=...)
         const urlParams = new URLSearchParams(window.location.search);
         const directRfqId = urlParams.get('rfq_id');
         const sessionId = urlParams.get('session_id');
@@ -766,7 +768,6 @@
         });
     });
 
-    // Handle browser back and forward button navigation
     window.addEventListener('popstate', (event) => {
         const urlParams = new URLSearchParams(window.location.search);
         const rfqId = urlParams.get('rfq_id');
