@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ProcureSOS | Hire Local Contractors & Home Improvement Pros</title>
+    <title id="meta-title">ProcureSOS | Hire Local Contractors & Home Improvement Pros</title>
     
     <!-- Core SEO & Search Discovery -->
-    <meta name="description" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
+    <meta name="description" id="meta-desc" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="ProcureSOS">
     <meta name="application-name" content="ProcureSOS">
-    <link rel="canonical" href="https://procuresos.com/">
+    <link rel="canonical" id="canonical-url" href="https://procuresos.com/">
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://procuresos.com/">
-    <meta property="og:title" content="ProcureSOS | Hire Local Contractors & Home Improvement Pros">
-    <meta property="og:description" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
+    <meta property="og:url" id="og-url" content="https://procuresos.com/">
+    <meta property="og:title" id="og-title" content="ProcureSOS | Hire Local Contractors & Home Improvement Pros">
+    <meta property="og:description" id="og-desc" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&h=630&q=80">
     <meta property="og:site_name" content="ProcureSOS">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://procuresos.com/">
-    <meta name="twitter:title" content="ProcureSOS | Hire Local Contractors & Home Improvement Pros">
-    <meta name="twitter:description" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
+    <meta name="twitter:url" id="twitter-url" content="https://procuresos.com/">
+    <meta name="twitter:title" id="twitter-title" content="ProcureSOS | Hire Local Contractors & Home Improvement Pros">
+    <meta name="twitter:description" id="twitter-desc" content="Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.">
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&h=630&q=80">
 
     <!-- Structured Data / JSON-LD -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" id="schema-jsonld">
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -166,7 +166,7 @@
         .logo-tagline { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; font-weight: 700; margin-top: 2px; display: none; }
         @media (min-width: 480px) { .logo-tagline { display: block; } }
 
-        /* Polished Hero Banner Styles */
+        /* Hero Banner Styles */
         .hero-banner {
             background: var(--hero-gradient);
             color: white;
@@ -307,6 +307,9 @@
             cursor: pointer; 
             position: relative; 
             overflow: hidden;
+            display: block;
+            text-decoration: none;
+            color: inherit;
         }
         .rfq-item::after {
             content: '';
@@ -432,16 +435,14 @@
     </div>
 </header>
 
-<div class="container">
+<main class="container">
     <div class="tabs" id="main-tabs-container">
         <div class="tab active" onclick="switchTab('marketplace')">Marketplace</div>
         <div class="tab" id="tab-post-rfq" onclick="switchTab('post-rfq')">Post Free Project</div>
     </div>
 
     <!-- MARKETPLACE VIEW -->
-    <div id="view-marketplace" class="view-section">
-        
-        <!-- Polished Hero Banner Section -->
+    <section id="view-marketplace" class="view-section">
         <div class="hero-banner">
             <div class="hero-badge-pill">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
@@ -464,16 +465,16 @@
         </div>
         <div id="rfq-list-container"></div>
         <div id="pagination-wrapper"></div>
-    </div>
+    </section>
 
     <!-- DETAILED JOB VIEW -->
-    <div id="view-rfq-detail" class="view-section hidden">
+    <section id="view-rfq-detail" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div id="rfq-detail-container"></div>
-    </div>
+    </section>
 
     <!-- POST JOB VIEW -->
-    <div id="view-post-rfq" class="view-section hidden">
+    <section id="view-post-rfq" class="view-section hidden">
         <div class="hero-banner" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #172554 100%);">
             <div class="hero-badge-pill">Free Submission</div>
             <h1>Post Your Project Free</h1>
@@ -528,10 +529,10 @@
                 <button type="submit" class="btn">Post Project Free to Marketplace</button>
             </form>
         </div>
-    </div>
+    </section>
 
     <!-- AUTHENTICATION VIEW -->
-    <div id="view-auth" class="view-section hidden">
+    <section id="view-auth" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div class="card" style="max-width: 500px; margin: 0 auto;">
             <div id="auth-form-container">
@@ -564,10 +565,10 @@
                 <button onclick="handleSignOut()" class="btn" style="background: #dc2626; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);">Sign Out</button>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- TERMS AND CONDITIONS VIEW -->
-    <div id="view-terms" class="view-section hidden">
+    <section id="view-terms" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div class="card">
             <h2>Terms of Service & Hold Harmless Agreement</h2>
@@ -633,8 +634,8 @@
                 <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of the United States and the State of Delaware, without regard to conflicts of law principles. If any provision of this Agreement is held invalid or unenforceable by an arbitrator or court of competent jurisdiction, the remaining provisions shall remain in full force and effect.</p>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+</main>
 
 <footer class="site-footer">
     <div class="footer-content">
@@ -750,6 +751,75 @@
         ];
     }
 
+    /* Dynamic SEO & Structured Data Updater for Search Engines */
+    function updateProjectSEO(rfq) {
+        if (!rfq) {
+            document.title = "ProcureSOS | Hire Local Contractors & Home Improvement Pros";
+            document.getElementById('meta-desc').setAttribute("content", "Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.");
+            document.getElementById('canonical-url').setAttribute("href", `${window.location.origin}/`);
+            document.getElementById('og-url').setAttribute("content", `${window.location.origin}/`);
+            document.getElementById('og-title').setAttribute("content", "ProcureSOS | Hire Local Contractors & Home Improvement Pros");
+            document.getElementById('og-desc').setAttribute("content", "Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.");
+            document.getElementById('twitter-url').setAttribute("content", `${window.location.origin}/`);
+            document.getElementById('twitter-title').setAttribute("content", "ProcureSOS | Hire Local Contractors & Home Improvement Pros");
+            document.getElementById('twitter-desc').setAttribute("content", "Connect with licensed local contractors for home remodeling, repairs, and landscaping.");
+            return;
+        }
+
+        const category = rfq.category || "Home Improvement";
+        const location = rfq.location || "Nationwide";
+        const dynamicTitle = `${rfq.title} | ${category} in ${location} | ProcureSOS`;
+        const dynamicDesc = `Active Homeowner Project: ${rfq.title}. Category: ${category} in ${location}. Estimated Budget: ${rfq.budget || 'Open'}. Review job details and submit your contractor bid on ProcureSOS.`;
+        const dynamicUrl = `${window.location.origin}/?rfq_id=${rfq.id}`;
+
+        document.title = dynamicTitle;
+        document.getElementById('meta-title').innerText = dynamicTitle;
+        document.getElementById('meta-desc').setAttribute("content", dynamicDesc);
+        document.getElementById('canonical-url').setAttribute("href", dynamicUrl);
+
+        document.getElementById('og-title').setAttribute("content", dynamicTitle);
+        document.getElementById('og-desc').setAttribute("content", dynamicDesc);
+        document.getElementById('og-url').setAttribute("content", dynamicUrl);
+
+        document.getElementById('twitter-title').setAttribute("content", dynamicTitle);
+        document.getElementById('twitter-desc').setAttribute("content", dynamicDesc);
+        document.getElementById('twitter-url').setAttribute("content", dynamicUrl);
+
+        const jobSchema = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "Service",
+                    "@id": `${dynamicUrl}#service`,
+                    "name": rfq.title,
+                    "serviceType": category,
+                    "description": rfq.description || dynamicDesc,
+                    "provider": {
+                        "@type": "Organization",
+                        "name": "ProcureSOS",
+                        "url": "https://procuresos.com/"
+                    },
+                    "areaServed": {
+                        "@type": "Place",
+                        "name": location
+                    },
+                    "offers": {
+                        "@type": "Offer",
+                        "price": rfq.budget ? rfq.budget.replace(/[^0-9]/g, '') || "0" : "0",
+                        "priceCurrency": "USD",
+                        "availability": "https://schema.org/InStock",
+                        "validThrough": rfq.deadline || undefined
+                    }
+                }
+            ]
+        };
+
+        let schemaScript = document.getElementById('schema-jsonld');
+        if (schemaScript) {
+            schemaScript.textContent = JSON.stringify(jobSchema, null, 2);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
         await checkAuthSession();
         await fetchRFQs();
@@ -776,6 +846,7 @@
             currentDetailRfqId = rfqId;
             switchTab('detail', false);
         } else {
+            updateProjectSEO(null);
             switchTab('marketplace', false);
         }
     });
@@ -968,6 +1039,7 @@
 
         if (updateUrl && tabName === 'marketplace') {
             window.history.pushState({}, '', window.location.pathname);
+            updateProjectSEO(null);
         }
 
         if (tabName === 'marketplace') {
@@ -1135,9 +1207,13 @@
         }
 
         currentItems.forEach(rfq => {
-            const card = document.createElement('div');
+            const card = document.createElement('a');
             card.className = 'rfq-item';
-            card.onclick = () => openRfqDetail(rfq.id);
+            card.href = `?rfq_id=${rfq.id}`;
+            card.onclick = (e) => {
+                e.preventDefault();
+                openRfqDetail(rfq.id);
+            };
 
             card.innerHTML = `
                 <span class="badge">${rfq.category || 'General'}</span>
@@ -1182,6 +1258,9 @@
             return;
         }
 
+        // Dynamically update SEO tags and structured JSON-LD data for the specific project
+        updateProjectSEO(rfq);
+
         let isUnlockedForCurrentUser = false;
         const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -1213,17 +1292,20 @@
         `;
 
         container.innerHTML = `
-            <div class="card">
-                <span class="badge">${rfq.category || 'General'}</span>
-                <h2 style="margin-top: 0.25rem;">${rfq.title}</h2>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;"><strong>Location:</strong> ${rfq.location || 'N/A'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span></p>
+            <article class="card" itemscope itemtype="https://schema.org/Service">
+                <span class="badge" itemprop="serviceType">${rfq.category || 'General'}</span>
+                <h2 style="margin-top: 0.25rem;" itemprop="name">${rfq.title}</h2>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;">
+                    <strong>Location:</strong> <span itemprop="areaServed">${rfq.location || 'N/A'}</span> | 
+                    <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;" itemprop="offers" itemscope itemtype="https://schema.org/Offer"><span itemprop="price">${rfq.budget}</span></span>
+                </p>
                 <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;"><strong>Timeline:</strong> ${rfq.timeline || 'N/A'} | <strong>Deadline:</strong> <span style="color: #dc2626; font-weight: 600;">${rfq.deadline}</span></p>
                 <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                     <h3 style="margin-top: 0; font-size: 1rem; color: #1e293b;">Project Description</h3>
-                    <p style="margin: 0 0 1rem 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${rfq.description || 'No description provided.'}</p>
+                    <p itemprop="description" style="margin: 0 0 1rem 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${rfq.description || 'No description provided.'}</p>
                 </div>
                 ${contactSectionHtml}
-            </div>
+            </article>
         `;
     }
 </script>
