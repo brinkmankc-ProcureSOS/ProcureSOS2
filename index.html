@@ -76,7 +76,7 @@
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
-            --logo-blue-gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            --logo-blue-gradient: linear-gradient(135deg, #0b1a4a 0%, #1e3a8a 100%);
             --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
             --background: #f8fafc;
             --card-bg: rgba(255, 255, 255, 0.92);
@@ -142,9 +142,10 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+            box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
             overflow: hidden;
             flex-shrink: 0;
+            animation: logoPulse 2.8s ease-in-out infinite;
         }
         @media (min-width: 768px) { .logo-mark { width: 44px; height: 44px; border-radius: 12px; } }
         .logo-house-icon { width: 20px; height: 20px; fill: #ffffff; z-index: 1; }
@@ -159,12 +160,44 @@
             border-radius: 50%;
             border: 2px solid #ffffff;
             z-index: 2;
+            animation: dotPulse 1.8s ease-in-out infinite;
         }
         .logo-text-wrapper { display: flex; flex-direction: column; }
         .logo-text { font-size: 1.15rem; font-weight: 800; color: #0f172a; text-decoration: none; line-height: 1.1; letter-spacing: -0.5px; }
         @media (min-width: 768px) { .logo-text { font-size: 1.4rem; } }
         .logo-tagline { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; font-weight: 700; margin-top: 2px; display: none; }
         @media (min-width: 480px) { .logo-tagline { display: block; } }
+
+        /* Darker Blue Tone Pulse Keyframes */
+        @keyframes logoPulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 22px rgba(15, 43, 110, 0.7);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
+            }
+        }
+
+        @keyframes dotPulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.75;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
         /* Hero Banner Styles */
         .hero-banner {
@@ -369,9 +402,31 @@
         }
         .footer-content { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; }
         .footer-logo-container { display: flex; align-items: center; justify-content: center; gap: 0.55rem; text-decoration: none; cursor: pointer; }
-        .footer-logo-mark { position: relative; width: 30px; height: 30px; background: var(--logo-blue-gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-mark { 
+            position: relative; 
+            width: 30px; 
+            height: 30px; 
+            background: var(--logo-blue-gradient); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
+            animation: logoPulse 2.8s ease-in-out infinite;
+        }
         .footer-logo-house-icon { width: 16px; height: 16px; fill: #ffffff; z-index: 1; }
-        .footer-logo-dot { position: absolute; bottom: 3px; right: 3px; width: 5px; height: 5px; background: #10b981; border-radius: 50%; border: 1.5px solid #ffffff; z-index: 2; }
+        .footer-logo-dot { 
+            position: absolute; 
+            bottom: 3px; 
+            right: 3px; 
+            width: 5px; 
+            height: 5px; 
+            background: #10b981; 
+            border-radius: 50%; 
+            border: 1.5px solid #ffffff; 
+            z-index: 2; 
+            animation: dotPulse 1.8s ease-in-out infinite;
+        }
         .footer-logo-text { font-size: 1.05rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
         .copyright-text { font-size: 0.82rem; color: #64748b; margin: 0; font-weight: 500; }
         .footer-links a { font-size: 0.82rem; color: #2563eb; text-decoration: underline; font-weight: 500; cursor: pointer; }
@@ -571,7 +626,7 @@
     <section id="view-terms" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div class="card">
-            <h2>Terms of Service & Hold Harmless Agreement</h2>
+            <h2>Terms of Service</h2>
             <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem;"><strong>Last Updated & Effective Date:</strong> January 1, 2026</p>
             
             <div class="legal-block">
@@ -650,7 +705,7 @@
         </a>
         <p class="copyright-text">&copy; 2026 ProcureSOS. All rights reserved.</p>
         <div class="footer-links">
-            <a onclick="switchTab('terms')">Terms of Service & Hold Harmless Agreement</a>
+            <a onclick="switchTab('terms')">Terms of Service</a>
         </div>
     </div>
 </footer>
