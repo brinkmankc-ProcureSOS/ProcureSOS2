@@ -76,7 +76,7 @@
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
-            --logo-blue-gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            --logo-blue-gradient: linear-gradient(135deg, #0b1a4a 0%, #1e3a8a 100%);
             --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
             --background: #f8fafc;
             --card-bg: rgba(255, 255, 255, 0.92);
@@ -142,9 +142,10 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+            box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
             overflow: hidden;
             flex-shrink: 0;
+            animation: logoPulse 2.8s ease-in-out infinite;
         }
         @media (min-width: 768px) { .logo-mark { width: 44px; height: 44px; border-radius: 12px; } }
         .logo-house-icon { width: 20px; height: 20px; fill: #ffffff; z-index: 1; }
@@ -159,12 +160,44 @@
             border-radius: 50%;
             border: 2px solid #ffffff;
             z-index: 2;
+            animation: dotPulse 1.8s ease-in-out infinite;
         }
         .logo-text-wrapper { display: flex; flex-direction: column; }
         .logo-text { font-size: 1.15rem; font-weight: 800; color: #0f172a; text-decoration: none; line-height: 1.1; letter-spacing: -0.5px; }
         @media (min-width: 768px) { .logo-text { font-size: 1.4rem; } }
         .logo-tagline { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; font-weight: 700; margin-top: 2px; display: none; }
         @media (min-width: 480px) { .logo-tagline { display: block; } }
+
+        /* Darker Blue Tone Pulse Keyframes */
+        @keyframes logoPulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 22px rgba(15, 43, 110, 0.7);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
+            }
+        }
+
+        @keyframes dotPulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.75;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
         /* Hero Banner Styles */
         .hero-banner {
@@ -359,6 +392,48 @@
         
         .back-btn { background: #e2e8f0; color: #334155; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 1rem; display: inline-flex; align-items: center; gap: 0.55rem; font-size: 0.9rem; min-height: 40px; }
 
+        /* States Directory Grid Styling */
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        @media (min-width: 640px) {
+            .states-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 860px) {
+            .states-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        .state-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+        }
+        .state-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            background: #eff6ff;
+        }
+        .state-name { font-weight: 600; font-size: 0.9rem; color: #1e293b; }
+        .state-code-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 0.2rem 0.45rem;
+            border-radius: 6px;
+        }
+
         footer.site-footer {
             background: rgba(255, 255, 255, 0.92);
             border-top: 1px solid var(--border);
@@ -369,11 +444,34 @@
         }
         .footer-content { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; }
         .footer-logo-container { display: flex; align-items: center; justify-content: center; gap: 0.55rem; text-decoration: none; cursor: pointer; }
-        .footer-logo-mark { position: relative; width: 30px; height: 30px; background: var(--logo-blue-gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-mark { 
+            position: relative; 
+            width: 30px; 
+            height: 30px; 
+            background: var(--logo-blue-gradient); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 4px 12px rgba(11, 26, 74, 0.5);
+            animation: logoPulse 2.8s ease-in-out infinite;
+        }
         .footer-logo-house-icon { width: 16px; height: 16px; fill: #ffffff; z-index: 1; }
-        .footer-logo-dot { position: absolute; bottom: 3px; right: 3px; width: 5px; height: 5px; background: #10b981; border-radius: 50%; border: 1.5px solid #ffffff; z-index: 2; }
+        .footer-logo-dot { 
+            position: absolute; 
+            bottom: 3px; 
+            right: 3px; 
+            width: 5px; 
+            height: 5px; 
+            background: #10b981; 
+            border-radius: 50%; 
+            border: 1.5px solid #ffffff; 
+            z-index: 2; 
+            animation: dotPulse 1.8s ease-in-out infinite;
+        }
         .footer-logo-text { font-size: 1.05rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
         .copyright-text { font-size: 0.82rem; color: #64748b; margin: 0; font-weight: 500; }
+        .footer-links { display: flex; align-items: center; justify-content: center; gap: 1.25rem; flex-wrap: wrap; }
         .footer-links a { font-size: 0.82rem; color: #2563eb; text-decoration: underline; font-weight: 500; cursor: pointer; }
 
         /* Legal / Terms Stylings */
@@ -567,11 +665,27 @@
         </div>
     </section>
 
+    <!-- STATES SERVICED DIRECTORY VIEW -->
+    <section id="view-states" class="view-section hidden">
+        <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
+        <div class="hero-banner" style="background: linear-gradient(135deg, #0b1a4a 0%, #1e3a8a 50%, #172554 100%);">
+            <div class="hero-badge-pill">Nationwide Coverage</div>
+            <h1>States Serviced Across America</h1>
+            <p>Browse active homeowner improvement, repair, and remodeling projects organized across all 50 states and U.S. territories.</p>
+        </div>
+
+        <div class="card">
+            <h2>Select a State to View Active Projects</h2>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.25rem;">Click any state below to instantly view open home improvement requests from local homeowners.</p>
+            <div id="states-grid-container" class="states-grid"></div>
+        </div>
+    </section>
+
     <!-- TERMS AND CONDITIONS VIEW -->
     <section id="view-terms" class="view-section hidden">
         <button class="back-btn" onclick="switchTab('marketplace')">&larr; Back to Marketplace</button>
         <div class="card">
-            <h2>Terms of Service & Hold Harmless Agreement</h2>
+            <h2>Terms of Service</h2>
             <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem;"><strong>Last Updated & Effective Date:</strong> January 1, 2026</p>
             
             <div class="legal-block">
@@ -650,7 +764,8 @@
         </a>
         <p class="copyright-text">&copy; 2026 ProcureSOS. All rights reserved.</p>
         <div class="footer-links">
-            <a onclick="switchTab('terms')">Terms of Service & Hold Harmless Agreement</a>
+            <a onclick="switchTab('states')">States Serviced</a>
+            <a onclick="switchTab('terms')">Terms of Service</a>
         </div>
     </div>
 </footer>
@@ -717,682 +832,32 @@
         "Little Rock, AR", "Akron, OH", "Grand Rapids, MI", "Shreveport, LA", "Huntsville, AL", "Knoxville, TN"
     ];
 
-    /* Helper function to generate clean, SEO-friendly keyword slugs */
-    function slugify(text) {
-        return (text || '')
-            .toString()
-            .toLowerCase()
-            .trim()
-            .replace(/[\s\W-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-    }
-
-    /* Build SEO Canonical Project URL */
-    function getProjectCanonicalUrl(rfq) {
-        const catSlug = slugify(rfq.category || 'contractor-service');
-        const locSlug = slugify(rfq.location || 'us');
-        return `${window.location.origin}/projects/${catSlug}-${locSlug}-${rfq.id}`;
-    }
-
-    /* Extract RFQ ID from either clean SEO paths or query parameters */
-    function getRfqIdFromCurrentUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const directParam = urlParams.get('rfq_id');
-        if (directParam) return directParam;
-
-        const path = window.location.pathname;
-        const projectMatch = path.match(/\/projects\/.*-(\d+)$/i) || path.match(/\/projects\/(\d+)$/i);
-        if (projectMatch && projectMatch[1]) {
-            return projectMatch[1];
-        }
-        return null;
-    }
-
-    async function fetchRFQs() {
-        try {
-            const { data, error } = await supabaseClient
-                .from('rfqs') 
-                .select('*')
-                .order('id', { ascending: false });
-
-            if (error) throw error;
-            rfqs = data && data.length > 0 ? data : getFallbackMockData();
-        } catch (err) {
-            console.warn('Falling back to localStorage:', err);
-            rfqs = JSON.parse(localStorage.getItem('procuresos_rfqs')) || getFallbackMockData();
-        }
-        renderRFQs();
-    }
-
-    function getFallbackMockData() {
-        return [
-            {
-                id: 1,
-                title: "Industrial Grade Valve Procurement",
-                buyer: "Apex Manufacturing",
-                email: "contact@apexmfg.com",
-                category: "Hardware",
-                location: "Houston, TX",
-                budget: "$45,000",
-                timeline: "Immediate / Urgent",
-                deadline: "2026-09-15",
-                description: "Looking for industrial grade valves for manufacturing plant overhaul.",
-                status: "Open"
-            }
-        ];
-    }
-
-    /* Dynamic SEO & Localized Structured Data Updater for Search Engines */
-    function updateProjectSEO(rfq) {
-        if (!rfq) {
-            const defaultTitle = "ProcureSOS | Hire Local Contractors & Home Improvement Pros";
-            const defaultDesc = "Connect with licensed local contractors for home remodeling, repairs, and landscaping. Post your project for free or find active homeowner leads nationwide.";
-            const defaultUrl = `${window.location.origin}/`;
-
-            document.title = defaultTitle;
-            document.getElementById('meta-title').innerText = defaultTitle;
-            document.getElementById('meta-desc').setAttribute("content", defaultDesc);
-            document.getElementById('canonical-url').setAttribute("href", defaultUrl);
-            
-            document.getElementById('og-url').setAttribute("content", defaultUrl);
-            document.getElementById('og-title').setAttribute("content", defaultTitle);
-            document.getElementById('og-desc').setAttribute("content", defaultDesc);
-            
-            document.getElementById('twitter-url').setAttribute("content", defaultUrl);
-            document.getElementById('twitter-title').setAttribute("content", defaultTitle);
-            document.getElementById('twitter-desc').setAttribute("content", defaultDesc);
-
-            const defaultSchema = {
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": `${defaultUrl}#organization`,
-                  "name": "ProcureSOS",
-                  "url": defaultUrl,
-                  "logo": `${defaultUrl}logo.png`,
-                  "description": defaultDesc
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": `${defaultUrl}#website`,
-                  "url": defaultUrl,
-                  "name": "ProcureSOS",
-                  "publisher": {
-                    "@id": `${defaultUrl}#organization`
-                  }
-                }
-              ]
-            };
-            let schemaScript = document.getElementById('schema-jsonld');
-            if (schemaScript) schemaScript.textContent = JSON.stringify(defaultSchema, null, 2);
-            return;
-        }
-
-        const category = rfq.category || "Home Improvement";
-        const location = rfq.location || "United States";
-        const dynamicTitle = `${rfq.title} - ${category} in ${location} | ProcureSOS`;
-        const dynamicDesc = `Active Homeowner Project in ${location}: ${rfq.title}. Category: ${category}. Budget: ${rfq.budget || 'Open'}. Timeline: ${rfq.timeline || 'Flexible'}. View project scope and connect directly on ProcureSOS.`;
-        const dynamicUrl = getProjectCanonicalUrl(rfq);
-
-        document.title = dynamicTitle;
-        document.getElementById('meta-title').innerText = dynamicTitle;
-        document.getElementById('meta-desc').setAttribute("content", dynamicDesc);
-        document.getElementById('canonical-url').setAttribute("href", dynamicUrl);
-
-        document.getElementById('og-title').setAttribute("content", dynamicTitle);
-        document.getElementById('og-desc').setAttribute("content", dynamicDesc);
-        document.getElementById('og-url').setAttribute("content", dynamicUrl);
-
-        document.getElementById('twitter-title').setAttribute("content", dynamicTitle);
-        document.getElementById('twitter-desc').setAttribute("content", dynamicDesc);
-        document.getElementById('twitter-url').setAttribute("content", dynamicUrl);
-
-        // Parse location parts for precise localized schema representation
-        const locationParts = (rfq.location || '').split(',').map(s => s.trim());
-        const cityName = locationParts[0] || location;
-        const stateCode = locationParts[1] || '';
-
-        const numericPrice = rfq.budget ? rfq.budget.replace(/[^0-9.]/g, '') : null;
-
-        const localizedJobSchema = {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "Demand",
-                    "@id": `${dynamicUrl}#demand`,
-                    "name": `${rfq.title} (${category})`,
-                    "description": rfq.description || dynamicDesc,
-                    "itemOffered": {
-                        "@type": "Service",
-                        "serviceType": category,
-                        "name": category
-                    },
-                    "areaServed": {
-                        "@type": "City",
-                        "name": cityName,
-                        ...(stateCode ? { "addressRegion": stateCode } : {}),
-                        "addressCountry": "US"
-                    },
-                    ...(numericPrice ? {
-                        "priceSpecification": {
-                            "@type": "PriceSpecification",
-                            "price": numericPrice,
-                            "priceCurrency": "USD"
-                        }
-                    } : {}),
-                    "validThrough": rfq.deadline ? `${rfq.deadline}T23:59:59Z` : undefined,
-                    "seller": {
-                        "@type": "Organization",
-                        "name": "ProcureSOS",
-                        "url": "https://procuresos.com/"
-                    }
-                }
-            ]
-        };
-
-        let schemaScript = document.getElementById('schema-jsonld');
-        if (schemaScript) {
-            schemaScript.textContent = JSON.stringify(localizedJobSchema, null, 2);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-        await checkAuthSession();
-        await fetchRFQs();
-        await handleStripeReturn();
-
-        const detectedRfqId = getRfqIdFromCurrentUrl();
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get('session_id');
-
-        if (detectedRfqId && !sessionId) {
-            openRfqDetail(detectedRfqId, false);
-        }
-
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            updateHeaderAuthUI(session?.user || null);
-        });
-    });
-
-    window.addEventListener('popstate', (event) => {
-        const detectedRfqId = getRfqIdFromCurrentUrl();
-
-        if (detectedRfqId) {
-            currentDetailRfqId = detectedRfqId;
-            switchTab('detail', false);
-        } else {
-            updateProjectSEO(null);
-            switchTab('marketplace', false);
-        }
-    });
-
-    async function checkAuthSession() {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        updateHeaderAuthUI(user);
-    }
-
-    function updateHeaderAuthUI(user) {
-        const container = document.getElementById('header-auth-container');
-        if (user) {
-            container.innerHTML = `
-                <button class="back-btn" style="margin: 0; padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="switchTab('auth')">Account (${user.email})</button>
-            `;
-            document.getElementById('auth-form-container').classList.add('hidden');
-            document.getElementById('auth-user-info').classList.remove('hidden');
-            document.getElementById('current-user-email').innerText = user.email;
-        } else {
-            container.innerHTML = `
-                <button class="back-btn" style="margin: 0; padding: 0.5rem 1rem; font-size: 0.85rem; background: var(--accent-gradient); color: white;" onclick="switchTab('auth')">Sign In / Register</button>
-            `;
-            document.getElementById('auth-form-container').classList.remove('hidden');
-            document.getElementById('auth-user-info').classList.add('hidden');
-        }
-    }
-
-    function toggleAuthMode() {
-        isSignUpMode = !isSignUpMode;
-        document.getElementById('auth-title').innerText = isSignUpMode ? 'Create a Contractor Account' : 'Sign In to Your Account';
-        document.getElementById('auth-submit-btn').innerText = isSignUpMode ? 'Sign Up' : 'Sign In';
-        document.getElementById('auth-toggle-btn').innerText = isSignUpMode ? 'Already have an account? Sign in' : 'Need an account? Create one';
-        document.getElementById('auth-error').style.display = 'none';
-        document.getElementById('auth-success').style.display = 'none';
-    }
-
-    async function handleAuthSubmit(event) {
-        if (event) event.preventDefault();
-        const email = document.getElementById('auth-email').value;
-        const password = document.getElementById('auth-password').value;
-        const errorDiv = document.getElementById('auth-error');
-        const successDiv = document.getElementById('auth-success');
-        
-        errorDiv.style.display = 'none';
-        successDiv.style.display = 'none';
-
-        try {
-            if (isSignUpMode) {
-                const { data, error } = await supabaseClient.auth.signUp({ email, password });
-                if (error) throw error;
-                successDiv.innerText = 'Account created successfully! You are now signed in.';
-                successDiv.style.display = 'block';
-                if (data.user) updateHeaderAuthUI(data.user);
-            } else {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) throw error;
-                successDiv.innerText = 'Signed in successfully!';
-                successDiv.style.display = 'block';
-                if (data.user) {
-                    updateHeaderAuthUI(data.user);
-                    setTimeout(() => switchTab('marketplace'), 1000);
-                }
-            }
-        } catch (err) {
-            errorDiv.innerText = err.message;
-            errorDiv.style.display = 'block';
-        }
-    }
-
-    async function handleSignOut() {
-        await supabaseClient.auth.signOut();
-        updateHeaderAuthUI(null);
-        document.getElementById('authForm').reset();
-        switchTab('marketplace');
-    }
-
-    async function handleStripeReturn() {
-        const urlParams = new URLSearchParams(window.location.search);
-        let rfqId = urlParams.get('rfq_id') || localStorage.getItem('pending_rfq_id') || getRfqIdFromCurrentUrl();
-        let sessionId = urlParams.get('session_id');
-
-        if (rfqId && sessionId) {
-            try {
-                localStorage.removeItem('pending_rfq_id');
-                
-                const { data: { user } } = await supabaseClient.auth.getUser();
-                if (user) {
-                    const { data: existingPurchase } = await supabaseClient
-                        .from('purchases')
-                        .select('*')
-                        .eq('user_id', user.id)
-                        .eq('rfq_id', rfqId)
-                        .maybeSingle();
-
-                    if (!existingPurchase) {
-                        await supabaseClient
-                            .from('purchases')
-                            .insert([{
-                                user_id: user.id,
-                                rfq_id: rfqId,
-                                stripe_session_id: sessionId
-                            }]);
-                    }
-                }
-                
-                openRfqDetail(rfqId);
-                return;
-            } catch (err) {
-                console.error('Failed to process post-stripe return purchase record:', err);
-            }
-        } else if (rfqId && !sessionId) {
-            try {
-                const { data: { user } } = await supabaseClient.auth.getUser();
-                if (user) {
-                    const { data: existingPurchase } = await supabaseClient
-                        .from('purchases')
-                        .select('*')
-                        .eq('user_id', user.id)
-                        .eq('rfq_id', rfqId)
-                        .maybeSingle();
-
-                    if (!existingPurchase) {
-                        await supabaseClient
-                            .from('purchases')
-                            .insert([{
-                                user_id: user.id,
-                                rfq_id: rfqId,
-                                stripe_session_id: 'manual_redirect'
-                            }]);
-                    }
-                }
-                
-                openRfqDetail(rfqId);
-                return;
-            } catch (err) {
-                console.error('Failed to process fallback post-stripe return:', err);
-            }
-        }
-        
-        localStorage.removeItem('pending_rfq_id');
-    }
-
-    async function handlePostRFQ(event) {
-        if (event) event.preventDefault();
-
-        const newRfq = {
-            title: document.getElementById('projectTitle').value,
-            buyer: document.getElementById('buyerName').value,
-            email: document.getElementById('rfq-email').value,
-            category: document.getElementById('projectCategory').value,
-            location: document.getElementById('rfq-location').value,
-            budget: document.getElementById('projectBudget').value,
-            timeline: document.getElementById('budgetFrequency').value,
-            deadline: document.getElementById('projectDeadline').value,
-            description: document.getElementById('rfq-desc').value,
-            status: 'Open',
-            is_paid: false
-        };
-
-        try {
-            const { data, error } = await supabaseClient
-                .from('rfqs')
-                .insert([newRfq])
-                .select();
-
-            if (error) throw error;
-            if (data && data.length > 0) {
-                rfqs.unshift(data[0]);
-                document.getElementById('rfqForm').reset();
-                openRfqDetail(data[0].id);
-                return;
-            }
-        } catch (err) {
-            console.error('Database insertion error:', err);
-        }
-
-        renderRFQs();
-        document.getElementById('rfqForm').reset();
-        switchTab('marketplace');
-    }
-
-    function openRfqDetail(id, pushUrl = true) {
-        currentDetailRfqId = id;
-        const targetRfq = rfqs.find(r => String(r.id) === String(id));
-        
-        if (pushUrl) {
-            const targetUrl = targetRfq ? getProjectCanonicalUrl(targetRfq) : `${window.location.origin}/?rfq_id=${id}`;
-            window.history.pushState({ rfqId: id }, '', targetUrl);
-        }
-        switchTab('detail', false);
-    }
-
-    function switchTab(tabName, updateUrl = true) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
-        document.getElementById('main-tabs-container').style.display = 'flex';
-
-        if (updateUrl && tabName === 'marketplace') {
-            window.history.pushState({}, '', '/');
-            updateProjectSEO(null);
-        }
-
-        if (tabName === 'marketplace') {
-            document.querySelectorAll('.tab')[0].classList.add('active');
-            document.getElementById('view-marketplace').classList.remove('hidden');
-            renderRFQs();
-        } else if (tabName === 'post-rfq') {
-            document.querySelectorAll('.tab')[1].classList.add('active');
-            document.getElementById('view-post-rfq').classList.remove('hidden');
-        } else if (tabName === 'detail') {
-            document.getElementById('main-tabs-container').style.display = 'none';
-            document.getElementById('view-rfq-detail').classList.remove('hidden');
-            renderRFQDetail(currentDetailRfqId);
-        } else if (tabName === 'auth') {
-            document.getElementById('main-tabs-container').style.display = 'none';
-            document.getElementById('view-auth').classList.remove('hidden');
-        } else if (tabName === 'terms') {
-            document.getElementById('main-tabs-container').style.display = 'none';
-            document.getElementById('view-terms').classList.remove('hidden');
-        }
-        window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-
-    function onFilterInput() {
-        const query = document.getElementById('filter-search').value.toLowerCase();
-        const dropdown = document.getElementById('filter-dropdown');
-        dropdown.innerHTML = '';
-
-        if (!query) {
-            dropdown.style.display = 'none';
-            selectedFilterCategory = 'All';
-            currentPage = 1;
-            renderRFQs();
-            return;
-        }
-
-        const matches = [...categories, ...majorUSCities].filter(item => item.toLowerCase().includes(query)).slice(0, 8);
-        if (matches.length > 0) {
-            dropdown.style.display = 'block';
-            matches.forEach(match => {
-                const item = document.createElement('div');
-                item.className = 'autocomplete-item';
-                item.innerText = match;
-                item.onclick = () => {
-                    document.getElementById('filter-search').value = match;
-                    selectedFilterCategory = match;
-                    dropdown.style.display = 'none';
-                    currentPage = 1;
-                    renderRFQs();
-                };
-                dropdown.appendChild(item);
-            });
-        } else {
-            dropdown.style.display = 'none';
-        }
-    }
-
-    function clearFilter() {
-        document.getElementById('filter-search').value = '';
-        selectedFilterCategory = 'All';
-        document.getElementById('filter-dropdown').style.display = 'none';
-        currentPage = 1;
-        renderRFQs();
-    }
-
-    function onPostInput() {
-        const query = document.getElementById('projectCategory').value.toLowerCase();
-        const dropdown = document.getElementById('post-dropdown');
-        dropdown.innerHTML = '';
-
-        if (!query) {
-            dropdown.style.display = 'none';
-            return;
-        }
-
-        const matches = categories.filter(c => c.toLowerCase().includes(query)).slice(0, 8);
-        if (matches.length > 0) {
-            dropdown.style.display = 'block';
-            matches.forEach(match => {
-                const item = document.createElement('div');
-                item.className = 'autocomplete-item';
-                item.innerText = match;
-                item.onclick = () => {
-                    document.getElementById('projectCategory').value = match;
-                    dropdown.style.display = 'none';
-                };
-                dropdown.appendChild(item);
-            });
-        } else {
-            dropdown.style.display = 'none';
-        }
-    }
-
-    async function processStripeCheckout(rfqId) {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        
-        if (!user) {
-            switchTab('auth');
-            return;
-        }
-
-        try {
-            localStorage.setItem('pending_rfq_id', rfqId);
-
-            const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                },
-                body: JSON.stringify({
-                    priceId: 'price_1U47ZXHb4wp2V5Gus1BxqKrf', 
-                    successUrl: `${window.location.origin}/?rfq_id=${rfqId}&session_id={CHECKOUT_SESSION_ID}`,
-                    cancelUrl: `${window.location.origin}/?rfq_id=${rfqId}`,
-                    userId: user.id,
-                    rfqId: rfqId
-                })
-            });
-
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(data.error);
-            }
-
-            if (data.url) {
-                window.location.href = data.url;
-            }
-        } catch (err) {
-            console.error('Failed to create Stripe checkout session:', err);
-            alert('Could not initiate checkout. Please try again.');
-        }
-    }
-
-    function changePage(direction) {
-        currentPage += direction;
-        renderRFQs();
-        window.scrollTo({ top: 150, behavior: 'smooth' });
-    }
-
-    function renderRFQs() {
-        const container = document.getElementById('rfq-list-container');
-        const paginationWrapper = document.getElementById('pagination-wrapper');
-        container.innerHTML = '';
-        paginationWrapper.innerHTML = '';
-
-        const filteredRFQs = rfqs.filter(rfq => {
-            if (selectedFilterCategory === 'All') return true;
-            const query = selectedFilterCategory.toLowerCase();
-            return (rfq.category && rfq.category.toLowerCase().includes(query)) || 
-                   (rfq.title && rfq.title.toLowerCase().includes(query)) ||
-                   (rfq.location && rfq.location.toLowerCase().includes(query));
-        });
-
-        const totalPages = Math.ceil(filteredRFQs.length / itemsPerPage) || 1;
-        if (currentPage > totalPages) currentPage = totalPages;
-        if (currentPage < 1) currentPage = 1;
-
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const currentItems = filteredRFQs.slice(startIndex, startIndex + itemsPerPage);
-
-        if (currentItems.length === 0) {
-            container.innerHTML = '<div class="card"><p>No active projects available matching this search filter.</p></div>';
-            return;
-        }
-
-        currentItems.forEach(rfq => {
-            const card = document.createElement('a');
-            card.className = 'rfq-item';
-            // Search crawlers follow this semantic URL while keeping in-app navigation instant
-            card.href = getProjectCanonicalUrl(rfq);
-            card.onclick = (e) => {
-                e.preventDefault();
-                openRfqDetail(rfq.id);
-            };
-
-            card.innerHTML = `
-                <span class="badge">${rfq.category || 'General'}</span>
-                <h3 style="margin: 0.2rem 0 0.4rem 0; font-size: 1.05rem; color: #0f172a;">${rfq.title}</h3>
-                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.4rem;">
-                    <strong>Location:</strong> ${rfq.location || 'Nationwide'} | <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;">${rfq.budget}</span> | <strong>Deadline:</strong> ${rfq.deadline}
-                </p>
-                <p style="font-size: 0.8rem; color: #475569; margin: 0; font-style: italic;">Tap to view details & unlock contact info &rarr;</p>
-            `;
-            container.appendChild(card);
-        });
-
-        paginationWrapper.innerHTML = `
-            <div class="pagination-container">
-                <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1)">Previous</button>
-                <span class="page-info">Page ${currentPage} of ${totalPages}</span>
-                <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(1)">Next</button>
-            </div>
-        `;
-    }
-
-    async function renderRFQDetail(id) {
-        const container = document.getElementById('rfq-detail-container');
-        container.innerHTML = '<div class="card"><p>Loading project details...</p></div>';
-        
-        let rfq = rfqs.find(r => String(r.id) === String(id));
-
-        if (!rfq) {
-            const { data, error } = await supabaseClient
-                .from('rfqs')
-                .select('*')
-                .eq('id', id)
-                .maybeSingle();
-
-            if (!error && data) {
-                rfq = data;
-            }
-        }
-
-        if (!rfq) {
-            container.innerHTML = '<div class="card"><p>Project not found.</p></div>';
-            return;
-        }
-
-        // Dynamically update SEO tags and structured JSON-LD data for the specific project
-        updateProjectSEO(rfq);
-
-        let isUnlockedForCurrentUser = false;
-        const { data: { user } } = await supabaseClient.auth.getUser();
-
-        if (user) {
-            const { data: purchaseData } = await supabaseClient
-                .from('purchases')
-                .select('*')
-                .eq('user_id', user.id)
-                .eq('rfq_id', id)
-                .maybeSingle();
-
-            if (purchaseData) isUnlockedForCurrentUser = true;
-        }
-
-        let contactSectionHtml = isUnlockedForCurrentUser ? `
-            <div style="background: #ecfdf5; border: 1px solid #10b981; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem;">
-                <h3 style="margin-top: 0; color: #065f46; font-size: 1.15rem;">Contact Unlocked Successfully</h3>
-                <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0.25rem;"><strong>Buyer Name:</strong> ${rfq.buyer}</p>
-                <p style="font-size: 0.95rem; color: #047857; margin-bottom: 0;"><strong>Buyer Email:</strong> <a href="mailto:${rfq.email}" style="color: #047857; text-decoration: underline;">${rfq.email}</a></p>
-            </div>
-        ` : `
-            <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; padding: 1.25rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
-                <h3 style="margin-top: 0; color: #1e293b; font-size: 1.15rem;">Unlock Contact Details</h3>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Pay a one-time project fee to immediately unlock the buyer's contact information.</p>
-                <button onclick="processStripeCheckout('${rfq.id}')" class="btn-stripe" style="max-width: 320px; margin: 0 auto;">
-                    Unlock Customer Details
-                </button>
-            </div>
-        `;
-
-        container.innerHTML = `
-            <article class="card" itemscope itemtype="https://schema.org/Demand">
-                <span class="badge" itemprop="itemOffered" itemscope itemtype="https://schema.org/Service"><span itemprop="serviceType">${rfq.category || 'General'}</span></span>
-                <h2 style="margin-top: 0.25rem;" itemprop="name">${rfq.title}</h2>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.5rem;">
-                    <strong>Location:</strong> <span itemprop="areaServed" itemscope itemtype="https://schema.org/Place"><span itemprop="name">${rfq.location || 'N/A'}</span></span> | 
-                    <strong>Budget:</strong> <span style="color: #059669; font-weight: 600;" itemprop="priceSpecification" itemscope itemtype="https://schema.org/PriceSpecification"><span itemprop="price">${rfq.budget}</span></span>
-                </p>
-                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;"><strong>Timeline:</strong> ${rfq.timeline || 'N/A'} | <strong>Deadline:</strong> <span style="color: #dc2626; font-weight: 600;" itemprop="validThrough">${rfq.deadline}</span></p>
-                <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3 style="margin-top: 0; font-size: 1rem; color: #1e293b;">Project Description</h3>
-                    <p itemprop="description" style="margin: 0 0 1rem 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${rfq.description || 'No description provided.'}</p>
-                </div>
-                ${contactSectionHtml}
-            </article>
-        `;
-    }
-</script>
-
-</body>
-</html>
+    const usStates = [
+        { name: "Alabama", code: "AL" }, { name: "Alaska", code: "AK" }, { name: "Arizona", code: "AZ" },
+        { name: "Arkansas", code: "AR" }, { name: "California", code: "CA" }, { name: "Colorado", code: "CO" },
+        { name: "Connecticut", code: "CT" }, { name: "Delaware", code: "DE" }, { name: "Florida", code: "FL" },
+        { name: "Georgia", code: "GA" }, { name: "Hawaii", code: "HI" }, { name: "Idaho", code: "ID" },
+        { name: "Illinois", code: "IL" }, { name: "Indiana", code: "IN" }, { name: "Iowa", code: "IA" },
+        { name: "Kansas", code: "KS" }, { name: "Kentucky", code: "KY" }, { name: "Louisiana", code: "LA" },
+        { name: "Maine", code: "ME" }, { name: "Maryland", code: "MD" }, { name: "Massachusetts", code: "MA" },
+        { name: "Michigan", code: "MI" }, { name: "Minnesota", code: "MN" }, { name: "Mississippi", code: "MS" },
+        { name: "Missouri", code: "MO" }, { name: "Montana", code: "MT" }, { name: "Nebraska", code: "NE" },
+        { name: "Nevada", code: "NV" }, { name: "New Hampshire", code: "NH" }, { name: "New Jersey", code: "NJ" },
+        { name: "New Mexico", code: "NM" }, { name: "New York", code: "NY" }, { name: "North Carolina", code: "NC" },
+        { name: "North Dakota", code: "ND" }, { name: "Ohio", code: "OH" }, { name: "Oklahoma", code: "OK" },
+        { name: "Oregon", code: "OR" }, { name: "Pennsylvania", code: "PA" }, { name: "Rhode Island", code: "RI" },
+        { name: "South Carolina",To implement this without touching your Stripe payment flows or Supabase authentication/schema settings, you only need to perform standard **read-only queries** on your existing database table.
+
+---
+
+### Step 1: Add the Link in the Footer
+Add a standard navigation link to your global footer component pointing to a new dedicated `/locations` or `/states` page.
+
+```jsx
+// Footer component
+<footer className="footer">
+  {/* Existing footer links */}
+  <a href="/locations" className="footer-link">
+    Areas Serviced
+  </a>
+</footer>
